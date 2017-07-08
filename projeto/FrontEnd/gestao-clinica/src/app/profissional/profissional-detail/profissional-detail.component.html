@@ -1,0 +1,25 @@
+<div class="row">
+  <div class="col s12">
+    <div class="card-panel">
+      <div class="card-stacked">
+        <div class="card-content">
+          <p>Dados Profissional:</p>
+          <p>Nome: {{ profissionalSelecionado?.nome }}</p>
+          <p>Email: {{ profissionalSelecionado?.email }}</p>
+          <p>Telefone: {{ profissionalSelecionado?.telefone }}</p>
+          <p>CRM: {{ profissionalSelecionado?.crm }}</p>
+        </div>
+        <div class="card-action">
+          <a class="waves-effect waves-light btn"
+            (click)="editar()">
+            <i class="material-icons left">mode_edit</i>Editar
+          </a>
+          <a class="waves-effect waves-light btn red"
+            (click)="deletar()">
+            <i class="material-icons left">delete</i>Remover
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

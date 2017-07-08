@@ -1,0 +1,26 @@
+<nav class="green darken-3">
+    <div class="nav-wrapper">
+      <a class="brand-logo right" style="padding-left: 15px"
+      routerLink="">
+      Gestão Clínica
+    </a>
+    <ul id="nav-mobile" class="left">
+      <li routerLinkActive="active">
+        <a routerLink="/profissional">Cadastro Profissionais</a>
+      </li>
+      <li routerLinkActive="active">
+        <a routerLink="/paciente">Cadastro Paciente</a>
+      </li>
+      <li routerLinkActive="active">
+        <a routerLink="/controleAgenda">Cadastro Agenda</a>
+      </li>
+      <li routerLinkActive="active">
+        <a (click)="onLogout()">Logout</a>
+      </li>
+    </ul>
+    </div>
+</nav>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
