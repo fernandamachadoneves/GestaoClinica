@@ -24,9 +24,12 @@ export class ProfissionalDetailComponent implements OnInit {
     this.subscription = this.route.params.subscribe(
       (params: any) => {
         this.idProfissional = params['id'];
-        this.profissionalSelecionado = this._profissionalService.recuperarProfissionalPorId(this.idProfissional)
-      }
-    );
+        debugger
+        this._profissionalService.recuperarProfissionalPorId(this.idProfissional).subscribe(
+            result => {
+                this.profissionalSelecionado = result;
+        });
+      });
   }
 
   editar() {

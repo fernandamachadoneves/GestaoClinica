@@ -11,7 +11,6 @@
         <label for="nome"
                [class.active]="profissional.nome"
                data-error="É preciso informar ao menos 3 caracteres">
-          Nome
         </label>
       </div>
     </div>
@@ -28,22 +27,35 @@
         </label>
       </div>
     </div>
-    <div formGroupName="telefone">
-      <div class="row">
-        <div class="input-field col s12">
-          <i class="material-icons prefix">phone</i>
-          <input id="numeroTelefone" type="text" class="validate"
-                 [(ngModel)]="contact.telefone" formControlName="numeroTelefone"
-                 [class.invalid]="form.controls['telefone'].controls['numeroTelefone'].touched
-                  && !form.controls['telefone'].controls['numeroTelefone'].valid">
-          <label for="numeroTelefone"
-                 [class.active]="profissional.telefone"
-                 data-error="Telefone Inválido">
-            Telefone
-          </label>
-        </div>
+
+  <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">phone</i>
+        <input id="telefone" type="text" class="validate"
+               [(ngModel)]="profissional.telefone" formControlName="telefone"
+               [class.invalid]="form.controls['telefone'].touched && !form.controls['telefone'].valid">
+        <label for="telefone"
+               [class.active]="profissional.telefone"
+               data-error="telefone inválido">
+          Telefone
+        </label>
       </div>
-    </div>
+  </div>
+
+  <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">work</i>
+        <input id="crm" type="text" class="validate"
+               [(ngModel)]="profissional.crm" formControlName="crm"
+               [class.invalid]="form.controls['crm'].touched && !form.controls['crm'].valid">
+        <label for="crm"
+               [class.active]="profissional.crm"
+               data-error="crm inválido">
+          CRM
+        </label>
+      </div>
+  </div>
+ 
     <div class="row">
       <div class="col-xs-12">
         <button class="btn waves-effect waves-light" type="submit"

@@ -27,36 +27,42 @@ export class ProfissionalCadastroComponent implements OnInit {
     private _profissionalService: ProfissionalService) { }
 
   ngOnInit() {
-    debugger
+    this.profissional = new Profissional();
     this.subscription = this.route.params.subscribe(
       (params: any) => {
         if (params.hasOwnProperty('id')) {
           this.isNovo = false;
           this.idProfissional = +params['id'];
-          this.profissional = this._profissionalService.recuperarProfissionalPorId(this.idProfissional)
+          this._profissionalService.recuperarProfissionalPorId(this.idProfissional).subscribe(
+            profissional => {
+                this.profissional = profissional;
+        });
           this.titulo = 'Editar Profissional';
         } else {
           this.isNovo = true;
           this.profissional = new Profissional();
           this.titulo = 'Novo Profissional';
         }
-        //this.initForm();
+        this.initForm();
       }
     );
   }
 
   private initForm() {
     this.form = this.formBuilder.group({
-      name: ['', [
+      nome: ['', [
         Validators.required,
         Validators.minLength(3)
       ]],
       email: ['', [
         Validators.required,
       ]],
-      telefone: this.formBuilder.group({
-        numeroTelefone: []
-      })
+      telefone: ['', [
+        Validators.required,
+      ]],
+      crm: ['', [
+        Validators.required,
+      ]]
     });
   }
 
@@ -73,9 +79,9 @@ export class ProfissionalCadastroComponent implements OnInit {
     let result;
 
     if (this.isNovo){
-      result = this._profissionalService.update(valoresProfissional);
-    } else {
       result = this._profissionalService.add(valoresProfissional);
+    } else {
+      result = this._profissionalService.update(valoresProfissional);
     }
 
     this.form.reset();

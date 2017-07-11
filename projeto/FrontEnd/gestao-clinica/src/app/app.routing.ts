@@ -9,8 +9,8 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   { path: 'profissional', component: ProfissionalComponent,
     children: [
-      { path: ':id', component: ProfissionalDetailComponent },
       { path: 'novo', component: ProfissionalCadastroComponent },
+      { path: ':id', component: ProfissionalDetailComponent },
       { path: ':id/edit', component: ProfissionalCadastroComponent }
   ]},
   { path: 'paciente', component: PacienteComponent},
