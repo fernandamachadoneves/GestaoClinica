@@ -66,19 +66,19 @@ public class ProfissionalResourceRESTService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Profissional> listAllMembers() {
+    public List<Profissional> listarTodosProfissionais() {
         return repository.findAllOrderedByName();
     }
 
     @GET
     @Path("/{id:[0-9][0-9]*}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Profissional lookupMemberById(@PathParam("id") long id) {
-        Profissional member = repository.findById(id);
-        if (member == null) {
+    public Profissional recuperarProfissionalPorId(@PathParam("id") long id) {
+        Profissional profissional = repository.findById(id);
+        if (profissional == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        return member;
+        return profissional;
     }
 
     /**
@@ -88,7 +88,7 @@ public class ProfissionalResourceRESTService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createMember(Profissional profissional) {
+    public Response criarProfissional(Profissional profissional) {
 
         Response.ResponseBuilder builder = null;
 
