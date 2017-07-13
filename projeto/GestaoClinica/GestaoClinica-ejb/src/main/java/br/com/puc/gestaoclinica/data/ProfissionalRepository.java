@@ -21,6 +21,7 @@ import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -35,6 +36,34 @@ public class ProfissionalRepository {
 
     public Profissional findById(Long id) {
         return em.find(Profissional.class, id);
+    }
+    
+    public List<Profissional> recuperarProfissionalPorNome(String nome){
+		StringBuilder hql = new StringBuilder("select obj ");
+		hql.append(" from Profissional obj ");
+		hql.append(" where obj.nome like :nome ");
+		hql.append(" order by obj.nome asc ");
+		
+		try{
+			Query query = em.createQuery(hql.toString());
+			query.setParameter("nome", "%"+nome+"%");
+			query.setMaxResults(20);
+			
+			return query.getResultList();
+			
+		}catch(Exception e){
+			return null;
+		}
+	}
+    
+    public List<Profissional> recuperarPorNome(String nome) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Profissional> criteria = cb.createQuery(Profissional.class);
+        Root<Profissional> profissional = criteria.from(Profissional.class);
+        criteria.select(profissional).where(cb.equal(profissional.get("nome"), nome));
+        criteria.select(profissional).where(cb.equal(profissional.get("ativo"), Boolean.TRUE));
+        criteria.select(profissional).orderBy(cb.asc(profissional.get("nome")));
+        return em.createQuery(criteria).getResultList();
     }
 
     public Profissional findByEmail(String email) {
@@ -55,6 +84,7 @@ public class ProfissionalRepository {
         // Swap criteria statements if you would like to try out type-safe criteria queries, a new
         // feature in JPA 2.0
         // criteria.select(member).orderBy(cb.asc(member.get(Member_.name)));
+        criteria.select(member).where(cb.equal(member.get("ativo"), Boolean.TRUE));
         criteria.select(member).orderBy(cb.asc(member.get("nome")));
         return em.createQuery(criteria).getResultList();
     }

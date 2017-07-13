@@ -38,9 +38,17 @@ public class ProfissionalRegistration {
     @Inject
     private Event<Profissional> memberEventSrc;
 
-    public void register(Profissional profissional) throws Exception {
+    public void cadastrar(Profissional profissional) throws Exception {
         log.info("Registering " + profissional.getNome());
+        profissional.setAtivo(Boolean.TRUE);
         em.persist(profissional);
+        memberEventSrc.fire(profissional);
+    }
+    
+    public void editar(Profissional profissional) throws Exception {
+    	log.info("Editar " + profissional.getNome());
+        em.merge(profissional);
+        em.flush();
         memberEventSrc.fire(profissional);
     }
 }
