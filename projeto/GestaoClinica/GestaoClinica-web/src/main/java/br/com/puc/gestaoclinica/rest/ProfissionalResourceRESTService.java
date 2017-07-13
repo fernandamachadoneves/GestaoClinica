@@ -73,7 +73,7 @@ public class ProfissionalResourceRESTService {
     ProfissionalRegistration registration;
     
     @Inject
-    ConfiguracaoHorarioProfissionalRegistration ConfigRegistration;
+    ConfiguracaoHorarioProfissionalRegistration configRegistration;
     
     private static ObjectMapper mapper = new ObjectMapper();
 
@@ -133,7 +133,7 @@ public class ProfissionalResourceRESTService {
             registration.cadastrar(profissional);
             
             configProf.setProfissional(profissional);
-            ConfigRegistration.cadastrar(configProf);
+            configRegistration.cadastrar(configProf);
 
             // Create an "ok" response
             builder = Response.ok();
@@ -159,12 +159,20 @@ public class ProfissionalResourceRESTService {
     @Path("/editar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response editarProfissional(Profissional profissional) {
+    public Response editarProfissional(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
 
-        Response.ResponseBuilder builder = null;
+        objeto.get("profissional");
+        Profissional profissional = mapper.readValue(objeto.get("profissional").toString(), Profissional.class);
+    	
+    	ConfiguracaoHorarioProfissional configProf = mapper.readValue(objeto.get("configProf").toString(), ConfiguracaoHorarioProfissional.class);
 
+    	Response.ResponseBuilder builder = null;
+    	
         try {
             registration.editar(profissional);
+            
+            configProf.setProfissional(profissional);
+            configRegistration.editar(configProf);
 
             // Create an "ok" response
             builder = Response.ok();

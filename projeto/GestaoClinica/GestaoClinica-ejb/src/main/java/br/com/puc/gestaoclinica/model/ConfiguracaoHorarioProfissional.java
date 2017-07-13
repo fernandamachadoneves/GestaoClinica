@@ -36,6 +36,8 @@ public class ConfiguracaoHorarioProfissional {
 	@OneToOne
 	@JoinColumn(name = "prof_id")
 	private Profissional profissional;
+	
+	private String diasDaSemana;
 
 	public Long getId() {
 		return id;
@@ -76,6 +78,13 @@ public class ConfiguracaoHorarioProfissional {
 	public void setProfissional(Profissional profissional) {
 		this.profissional = profissional;
 	}
-	
+
+	public String getDiasDaSemana() {
+		return diasDaSemana;
+	}
+
+	public void setDiasDaSemana(String diasDaSemana) {
+		this.diasDaSemana = diasDaSemana;
+	}
 	
 }

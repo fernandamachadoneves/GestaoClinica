@@ -47,6 +47,7 @@ public class Profissional implements Serializable {
 	
 	private Boolean ativo;
 
+
 	public Long getId() {
 		return id;
 	}
