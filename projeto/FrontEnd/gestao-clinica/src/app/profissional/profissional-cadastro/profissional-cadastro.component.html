@@ -31,7 +31,7 @@
   <div class="row">
       <div class="input-field col s12">
         <i class="material-icons prefix">phone</i>
-        <input id="telefone" type="text" class="validate"
+        <input id="telefone" type="text" class="validate" [textMask]="{mask: maskTelefone}"
                [(ngModel)]="profissional.telefone" formControlName="telefone"
                [class.invalid]="form.controls['telefone'].touched && !form.controls['telefone'].valid">
         <label for="telefone"
@@ -55,16 +55,86 @@
         </label>
       </div>
   </div>
- 
+  </form>
+  <form materialize class="col s12" [formGroup]="formConfig" (ngSubmit)="onSave()">
+  <h5>Horário Atendimento</h5>
+  <table class="responsive-table">
+    <tbody>
+      <tr>
+        <td>
+          <input type="checkbox" id="diaSemanaDom" class="filled-in" /><label  for="diaSemanaDom">DOM</label>
+        </td>
+        <td>
+          <input type="checkbox" id="diaSemanaSeg" class="filled-in" /><label  for="diaSemanaSeg">SEG</label>
+        </td>
+        <td>
+          <input type="checkbox" id="diaSemanaTer" class="filled-in" /><label  for="diaSemanaTer">TER</label>
+        </td>
+        <td>
+          <input type="checkbox" id="diaSemanaQua" class="filled-in" /><label  for="diaSemanaQua">QUA</label>
+        </td>
+        <td>
+          <input type="checkbox" id="diaSemanaQui" class="filled-in" /><label  for="diaSemanaQui">QUI</label>
+        </td>
+        <td>
+          <input type="checkbox" id="diaSemanaSex" class="filled-in" /><label  for="diaSemanaSex">SEX</label>
+        </td>
+        <td>
+          <input type="checkbox" id="diaSemanaSab" class="filled-in" /><label  for="diaSemanaSab">SAB</label>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="row">
+      <div class="input-field col s3">
+        <i class="material-icons prefix">lock_open</i>
+        <input id="horarioInicio" type="text" class="validate" [textMask]="{mask: maskHora}"
+               [(ngModel)]="configuracaoHorarioProfissional.horarioInicio" formControlName="horarioInicio"
+               [class.invalid]="formConfig.controls['horarioInicio'].touched && !formConfig.controls['horarioInicio'].valid">
+        <label for="horarioInicio"
+               [class.active]="configuracaoHorarioProfissional.horarioInicio"
+               data-error="Hora Início inválida">
+          Hora Início
+        </label>
+      </div>
+      <div class="input-field col s3">
+        <i class="material-icons prefix">lock_outline</i>
+        <input id="horarioFinal" type="text" class="validate" [textMask]="{mask: maskHora}"
+               [(ngModel)]="configuracaoHorarioProfissional.horarioFinal" formControlName="horarioFinal"
+               [class.invalid]="formConfig.controls['horarioFinal'].touched && !formConfig.controls['horarioFinal'].valid">
+        <label for="horarioFinal"
+               [class.active]="configuracaoHorarioProfissional.horarioFinal"
+               data-error="Hora Fim inválida">
+          Hora Fim
+        </label>
+      </div>
+      <div class="input-field col s6">
+        <i class="material-icons prefix">query_builder</i>
+        <input id="tempoConsulta" type="text" class="validate" data-length="3"
+               [(ngModel)]="configuracaoHorarioProfissional.tempoConsulta" formControlName="tempoConsulta"
+               [class.invalid]="formConfig.controls['tempoConsulta'].touched && !formConfig.controls['tempoConsulta'].valid">
+        <label for="tempoConsulta"
+               [class.active]="configuracaoHorarioProfissional.tempoConsulta"
+               data-error="Tempo Consulta inválido">
+          Tempo Consulta (min)
+        </label>
+      </div>
+  </div>
+
+
+  <br/>
     <div class="row">
       <div class="col-xs-12">
         <button class="btn waves-effect waves-light" type="submit"
                 [disabled]="!form.valid">
-          Submit<i class="material-icons right">send</i>
+          Salvar<i class="material-icons right">send</i>
         </button>
         <a class="waves-effect waves-light btn red"
         (click)="onCancel()">Cancelar</a>
       </div>
     </div>
+
   </form>
 </div>
+

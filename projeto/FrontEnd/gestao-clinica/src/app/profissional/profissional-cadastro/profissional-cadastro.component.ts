@@ -1,3 +1,4 @@
+import { ConfiguracaoHorarioProfissional } from './../../shared/models/configuracaoHorarioProfissional';
 import { ProfissionalService } from './../../shared/profissional.service';
 import { Profissional } from './../../shared/models/profissional';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -13,11 +14,16 @@ import { Subscription, Observable } from 'rxjs/Rx';
 })
 export class ProfissionalCadastroComponent implements OnInit {
 
+  public maskHora = [/\d/, /\d/, ':', /\d/, /\d/];
+  public maskTelefone = ['(', /[1-9]/, /\d/, ')', ' ',/\d/,/\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+
   form: FormGroup;
+  formConfig: FormGroup;
   private idProfissional: number;
   private titulo: string;
   private isNovo: boolean = true;
   private profissional: Profissional;
+  private configuracaoHorarioProfissional: ConfiguracaoHorarioProfissional;
   private subscription: Subscription;
 
   constructor(
@@ -28,6 +34,8 @@ export class ProfissionalCadastroComponent implements OnInit {
 
   ngOnInit() {
     this.profissional = new Profissional();
+    this.configuracaoHorarioProfissional = new ConfiguracaoHorarioProfissional();
+
     this.subscription = this.route.params.subscribe(
       (params: any) => {
         if (params.hasOwnProperty('id')) {
@@ -44,6 +52,7 @@ export class ProfissionalCadastroComponent implements OnInit {
           this.titulo = 'Novo Profissional';
         }
         this.initForm();
+        this.initFormConfig();
       }
     );
   }
@@ -66,28 +75,46 @@ export class ProfissionalCadastroComponent implements OnInit {
     });
   }
 
+  private initFormConfig() {
+    this.formConfig = this.formBuilder.group({
+      horarioInicio: ['', [
+        Validators.required,
+      ]],
+      horarioFinal: ['', [
+        Validators.required,
+      ]],
+      tempoConsulta: ['', [
+        Validators.required,
+      ]]
+    });
+  }
+
   onCancel() {
     this.navigateBack();
   }
 
   private navigateBack() {
+    debugger
     this.router.navigate(['/profissional']);
   }
 
   onSave() {
+    debugger
     const valoresProfissional = this.form.value;
+    const configuracao = this.formConfig.value;
     let result;
 
     if (this.isNovo){
-      result = this._profissionalService.add(valoresProfissional);
+      result = this._profissionalService.add(valoresProfissional, configuracao);
     } else {
-      result = this._profissionalService.update(valoresProfissional);
+      result = this._profissionalService.update(valoresProfissional, this.idProfissional);
     }
 
     this.form.reset();
 
-    result.subscribe(data => this.navigateBack(),
+  result.subscribe(data => this.navigateBack(),
     err => {
+      debugger
       alert("An error occurred.");
     });
   }

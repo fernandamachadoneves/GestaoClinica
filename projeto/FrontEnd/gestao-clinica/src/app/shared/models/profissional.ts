@@ -4,4 +4,5 @@ export class Profissional {
   email: string;
   telefone: string;
   crm: string;
+  ativo: boolean;
 }

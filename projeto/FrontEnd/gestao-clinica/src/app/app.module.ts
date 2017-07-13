@@ -13,7 +13,8 @@ import { ControleAgendaComponent } from './controle-agenda/controle-agenda.compo
 import { PacienteComponent } from './paciente/paciente.component';
 import { ProfissionalDetailComponent } from './profissional/profissional-detail/profissional-detail.component';
 import { ProfissionalCadastroComponent } from './profissional/profissional-cadastro/profissional-cadastro.component';
-//import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { TextMaskModule } from 'angular2-text-mask';
+import { MyDatePickerModule } from 'mydatepicker';
 
 @NgModule({
   declarations: [
@@ -30,8 +31,9 @@ import { ProfissionalCadastroComponent } from './profissional/profissional-cadas
     ReactiveFormsModule,
     AppRoutingModule,
     MaterializeModule.forRoot(),
-    HttpModule
-    //InMemoryWebApiModule.forRoot(ContactsInMemoryDS, { delay: 600 }),
+    HttpModule,
+    TextMaskModule,
+    MyDatePickerModule
   ],
   providers: [ProfissionalService],
   bootstrap: [AppComponent]

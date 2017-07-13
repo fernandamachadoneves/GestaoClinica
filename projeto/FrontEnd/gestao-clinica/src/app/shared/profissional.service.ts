@@ -1,7 +1,8 @@
+import { ConfiguracaoHorarioProfissional } from './models/configuracaoHorarioProfissional';
 import { environment } from './../../environments/environment.prod';
 import { Profissional } from './models/profissional';
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 
@@ -10,6 +11,8 @@ export class ProfissionalService {
 
   private urlRecuperarProfissional = environment.context + '/GestaoClinica-web/rest/profissional/';
   private urlRecuperarProfissionalPorId = environment.context + '/GestaoClinica-web/rest/profissional/:id';
+  private urlEditarProfissional = environment.context + '/GestaoClinica-web/rest/profissional/editar';
+  private urlRecuperarProfissionalPorNome = environment.context + '/GestaoClinica-web/rest/profissional/pesquisar/:nome';
 
   profissionais = new Array<Profissional>();
 
@@ -30,27 +33,54 @@ export class ProfissionalService {
                     .map(this.extractData);
   }
 
-  add(profissional: Profissional){
-    debugger
-    return this.http.post(this.urlRecuperarProfissional, JSON.stringify(profissional), {headers: this.getHeaders()})
+  recuperarProfissionalPorNome(nome: string){
+    let headers = new Headers();
+    let url = this.urlRecuperarProfissionalPorNome.replace(':nome', nome.toString());
+    return this.http.get(url)
                     .map(this.extractData);
   }
 
-  update(record){
+  add(profissional: Profissional, configProf: ConfiguracaoHorarioProfissional){
+    let jsonPost = { "profissional": JSON.stringify(profissional),
+                     "configProf": JSON.stringify(configProf)
+    }
+    debugger
+    profissional.ativo = true;
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(this.urlRecuperarProfissional, jsonPost,
+      options).map((res: Response) => res);
+  }
+
+  update(profissional: Profissional, idProfissional: number){
+    profissional.id = idProfissional;
+    profissional.ativo = true;
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(this.urlEditarProfissional, JSON.stringify(profissional),
+      options).map((res: Response) => res);
+  }
+
+  remover(profissional: Profissional, idProfissional: number){
+    debugger
+    profissional.id = idProfissional;
+    profissional.ativo = false;
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.post(this.urlEditarProfissional, JSON.stringify(profissional),
+      options).map((res: Response) => res);
   }
 
   private extractData(res: Response) {
     let body = res.json();
-    return body || { };
-  }
-
-  private getHeaders(){
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    return headers;
+    return body;
   }
  
   private handleError (error: Response | any) {
+    debugger
     // In a real world app, you might use a remote logging infrastructure
     let errMsg: string;
     if (error instanceof Response) {

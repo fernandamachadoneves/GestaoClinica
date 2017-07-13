@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IMyOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 
 @Component({
   selector: 'app-controle-agenda',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./controle-agenda.component.css']
 })
 export class ControleAgendaComponent implements OnInit {
+
 
   constructor() { }
 

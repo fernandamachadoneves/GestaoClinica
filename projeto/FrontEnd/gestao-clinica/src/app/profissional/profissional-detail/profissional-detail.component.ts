@@ -36,4 +36,9 @@ export class ProfissionalDetailComponent implements OnInit {
     this.router.navigate(['/profissional', this.idProfissional, 'edit']);
   }
 
+  remover() {
+    debugger
+    this._profissionalService.remover(this.profissionalSelecionado, this.idProfissional).subscribe();
+  }
+
 }

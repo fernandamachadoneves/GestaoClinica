@@ -10,17 +10,23 @@ import { Component, OnInit } from '@angular/core';
 export class ProfissionalComponent implements OnInit {
 
   profissionais = new Array<Profissional>();
+  profissionalPesquisa: string;
 
   constructor(private _profissionalService: ProfissionalService) { }
 
   ngOnInit() {
-    debugger
     this._profissionalService.getProfissionais().subscribe(
       profissional => {
         this.profissionais = profissional;
       }
-
     );
   }
 
+  pesquisar(){
+    this._profissionalService.recuperarProfissionalPorNome(this.profissionalPesquisa).subscribe(
+      profissional => {
+        this.profissionais = profissional;
+      }
+    );
+  }
 }
