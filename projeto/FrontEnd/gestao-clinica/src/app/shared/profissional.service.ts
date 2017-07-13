@@ -41,11 +41,11 @@ export class ProfissionalService {
                     .map(this.extractData);
   }
 
-  add(profissional: Profissional, configProf: ConfiguracaoHorarioProfissional){
+  add(profissional: Profissional, configProf: ConfiguracaoHorarioProfissional, diasDaSemana: string){
+    configProf.diasDaSemana = diasDaSemana;
     let jsonPost = { "profissional": JSON.stringify(profissional),
                      "configProf": JSON.stringify(configProf)
     }
-    debugger
     profissional.ativo = true;
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -54,13 +54,19 @@ export class ProfissionalService {
       options).map((res: Response) => res);
   }
 
-  update(profissional: Profissional, idProfissional: number){
+  update(profissional: Profissional, idProfissional: number, configProf: ConfiguracaoHorarioProfissional, idConfig: number, diasDaSemana: string){
+    debugger
     profissional.id = idProfissional;
     profissional.ativo = true;
+    configProf.id = idConfig;
+    configProf.diasDaSemana = diasDaSemana;
+    let jsonPost = { "profissional": JSON.stringify(profissional),
+                     "configProf": JSON.stringify(configProf)
+    }
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.urlEditarProfissional, JSON.stringify(profissional),
+    return this.http.post(this.urlEditarProfissional, jsonPost,
       options).map((res: Response) => res);
   }
 

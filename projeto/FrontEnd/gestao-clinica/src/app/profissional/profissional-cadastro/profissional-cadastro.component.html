@@ -62,25 +62,25 @@
     <tbody>
       <tr>
         <td>
-          <input type="checkbox" id="diaSemanaDom" class="filled-in" /><label  for="diaSemanaDom">DOM</label>
+          <input type="checkbox" (click)="updateCheckedOptions($event)" id="DOM" class="filled-in" [checked]="checkedDom"/><label  for="DOM">DOM</label>
         </td>
         <td>
-          <input type="checkbox" id="diaSemanaSeg" class="filled-in" /><label  for="diaSemanaSeg">SEG</label>
+          <input type="checkbox" (click)="updateCheckedOptions($event)" id="SEG" class="filled-in" [checked]="checkedSeg"/><label  for="SEG">SEG</label>
         </td>
         <td>
-          <input type="checkbox" id="diaSemanaTer" class="filled-in" /><label  for="diaSemanaTer">TER</label>
+          <input type="checkbox" (click)="updateCheckedOptions($event)" id="TER" class="filled-in" [checked]="checkedTer"/><label  for="TER">TER</label>
         </td>
         <td>
-          <input type="checkbox" id="diaSemanaQua" class="filled-in" /><label  for="diaSemanaQua">QUA</label>
+          <input type="checkbox" (click)="updateCheckedOptions($event)" id="QUA" class="filled-in" [checked]="checkedQua"/><label  for="QUA">QUA</label>
         </td>
         <td>
-          <input type="checkbox" id="diaSemanaQui" class="filled-in" /><label  for="diaSemanaQui">QUI</label>
+          <input type="checkbox" (click)="updateCheckedOptions($event)" id="QUI" class="filled-in" [checked]="checkedQui"/><label  for="QUI">QUI</label>
         </td>
         <td>
-          <input type="checkbox" id="diaSemanaSex" class="filled-in" /><label  for="diaSemanaSex">SEX</label>
+          <input type="checkbox" (click)="updateCheckedOptions($event)" id="SEX" class="filled-in" [checked]="checkedSex"/><label  for="SEX">SEX</label>
         </td>
         <td>
-          <input type="checkbox" id="diaSemanaSab" class="filled-in" /><label  for="diaSemanaSab">SAB</label>
+          <input type="checkbox" (click)="updateCheckedOptions($event)" id="SAB" class="filled-in" [checked]="checkedSab"/><label  for="SAB">SAB</label>
         </td>
       </tr>
     </tbody>

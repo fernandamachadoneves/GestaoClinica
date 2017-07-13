@@ -3,4 +3,5 @@ export class ConfiguracaoHorarioProfissional {
   horarioInicio: string;
   horarioFinal: string;
   tempoConsulta: number;
+  diasDaSemana: string;
 }
