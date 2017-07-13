@@ -5,6 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -27,6 +32,10 @@ public class ConfiguracaoHorarioProfissional {
 	
 	@Column(name = "tempoConsulta")
 	private Integer tempoConsulta;
+	
+	@OneToOne
+	@JoinColumn(name = "prof_id")
+	private Profissional profissional;
 
 	public Long getId() {
 		return id;
@@ -59,4 +68,14 @@ public class ConfiguracaoHorarioProfissional {
 	public void setTempoConsulta(Integer tempoConsulta) {
 		this.tempoConsulta = tempoConsulta;
 	}
+
+	public Profissional getProfissional() {
+		return profissional;
+	}
+
+	public void setProfissional(Profissional profissional) {
+		this.profissional = profissional;
+	}
+	
+	
 }

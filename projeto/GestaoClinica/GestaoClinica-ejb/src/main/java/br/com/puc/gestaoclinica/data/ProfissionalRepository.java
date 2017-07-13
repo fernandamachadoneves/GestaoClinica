@@ -26,6 +26,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import br.com.puc.gestaoclinica.model.ConfiguracaoHorarioProfissional;
 import br.com.puc.gestaoclinica.model.Profissional;
 
 @ApplicationScoped
@@ -55,6 +56,22 @@ public class ProfissionalRepository {
 			return null;
 		}
 	}
+    
+    public ConfiguracaoHorarioProfissional recuperarConfiguracaoPorIdProfissional(Long idProfissional){
+ 		StringBuilder hql = new StringBuilder("select obj ");
+ 		hql.append(" from ConfiguracaoHorarioProfissional obj ");
+ 		hql.append(" where obj.profissional.id = :idProfissional ");
+ 		
+ 		try{
+ 			Query query = em.createQuery(hql.toString());
+ 			query.setParameter("idProfissional", idProfissional);
+
+ 			return (ConfiguracaoHorarioProfissional) query.getSingleResult();
+ 			
+ 		}catch(Exception e){
+ 			return null;
+ 		}
+ 	}
     
     public List<Profissional> recuperarPorNome(String nome) {
         CriteriaBuilder cb = em.getCriteriaBuilder();

@@ -100,6 +100,13 @@ public class ProfissionalResourceRESTService {
     public List<Profissional> recuperarProfissionalPorId(@PathParam("nome") String nome) {
         return repository.recuperarProfissionalPorNome(nome);
     }
+    
+    @GET
+    @Path("/pesquisarConfiguracao/{idProfissional:[0-9][0-9]*}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ConfiguracaoHorarioProfissional recuperarConfiguracaoPorIdProfissional(@PathParam("idProfissional") Long idProfissional) {
+        return repository.recuperarConfiguracaoPorIdProfissional(idProfissional);
+    }
 
     /**
      * Creates a new member from the values provided. Performs validation, and will return a JAX-RS response with either 200 ok,
@@ -125,6 +132,7 @@ public class ProfissionalResourceRESTService {
 
             registration.cadastrar(profissional);
             
+            configProf.setProfissional(profissional);
             ConfigRegistration.cadastrar(configProf);
 
             // Create an "ok" response
