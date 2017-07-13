@@ -46,7 +46,6 @@ public class ConfiguracaoHorarioProfissionalRegistration {
     
     public void editar(ConfiguracaoHorarioProfissional config) throws Exception {
         em.merge(config);
-        em.flush();
         configEventSrc.fire(config);
     }
 }
