@@ -13,6 +13,7 @@ export class ProfissionalService {
   private urlRecuperarProfissionalPorId = environment.context + '/GestaoClinica-web/rest/profissional/:id';
   private urlEditarProfissional = environment.context + '/GestaoClinica-web/rest/profissional/editar';
   private urlRecuperarProfissionalPorNome = environment.context + '/GestaoClinica-web/rest/profissional/pesquisar/:nome';
+  private urlRecuperarConfigProfPorId = environment.context + '/GestaoClinica-web/rest/profissional/pesquisarConfiguracao/:idProfissional';
 
   profissionais = new Array<Profissional>();
 
@@ -72,6 +73,13 @@ export class ProfissionalService {
     let options = new RequestOptions({ headers: headers });
     return this.http.post(this.urlEditarProfissional, JSON.stringify(profissional),
       options).map((res: Response) => res);
+  }
+
+  recuperarConfigProfissionalPorId(idProfissional: number){
+    let headers = new Headers();
+    let url = this.urlRecuperarConfigProfPorId.replace(':idProfissional', idProfissional.toString());
+    return this.http.get(url)
+                    .map(this.extractData);
   }
 
   private extractData(res: Response) {

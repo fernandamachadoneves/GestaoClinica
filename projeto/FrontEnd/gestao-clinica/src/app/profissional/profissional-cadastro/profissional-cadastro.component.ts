@@ -44,7 +44,11 @@ export class ProfissionalCadastroComponent implements OnInit {
           this._profissionalService.recuperarProfissionalPorId(this.idProfissional).subscribe(
             profissional => {
                 this.profissional = profissional;
-        });
+          });
+          this._profissionalService.recuperarConfigProfissionalPorId(this.idProfissional).subscribe(
+             result => {
+                this.configuracaoHorarioProfissional = result;
+          });
           this.titulo = 'Editar Profissional';
         } else {
           this.isNovo = true;
