@@ -9,7 +9,6 @@ export class ProfissionalListarService {
   constructor() { }
 
   incluirProfissional(cadastrouNovo: boolean) {
-    debugger
     ProfissionalListarService.incluiuProfissional.emit(cadastrouNovo);
   }
 }

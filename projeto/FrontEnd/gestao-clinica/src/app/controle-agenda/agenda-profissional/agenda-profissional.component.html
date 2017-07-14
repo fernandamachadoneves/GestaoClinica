@@ -1,0 +1,21 @@
+ <br>
+ <button (click)="teste()"></button>
+ <div class="row">
+   <div class="col s12">
+          <label>Profissional</label>
+            <br/> 
+          <select materialize="material_select" [materializeSelectOptions]="listProfissionais" [(ngModel)]="idProfissional">
+            <option value="" disabled selected>Selecione o profissional</option>
+            <option *ngFor="let e of listProfissionais" [value]="e.id">{{e.nome}}</option>
+          </select>
+    </div>
+    <div class="col s12">
+          <label>Data</label>
+          <br/>
+          <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="data"
+                      (dateChanged)="onDateChanged($event)"></my-date-picker>
+      </div>
+ </div>
+        
+<a class="waves-effect waves-light btn" (click)="pesquisar()">Pesquisar</a>
+

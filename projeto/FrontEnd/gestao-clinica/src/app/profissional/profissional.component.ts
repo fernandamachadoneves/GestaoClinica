@@ -36,10 +36,18 @@ export class ProfissionalComponent implements OnInit {
   }
 
   pesquisar(){
-    this._profissionalService.recuperarProfissionalPorNome(this.profissionalPesquisa).subscribe(
-      profissional => {
-        this.profissionais = profissional;
-      }
-    );
+    if (this.profissionalPesquisa != ''){
+      this._profissionalService.recuperarProfissionalPorNome(this.profissionalPesquisa).subscribe(
+        profissional => {
+          this.profissionais = profissional;
+        }
+      );
+    } else {
+      this._profissionalService.getProfissionais().subscribe(
+        profissional => {
+          this.profissionais = profissional;
+        }
+      );
+    }
   }
 }

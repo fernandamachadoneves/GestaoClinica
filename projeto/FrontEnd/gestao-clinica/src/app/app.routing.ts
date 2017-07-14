@@ -1,3 +1,5 @@
+import { AgendaPacienteComponent } from './controle-agenda/agenda-paciente/agenda-paciente.component';
+import { AgendaProfissionalComponent } from './controle-agenda/agenda-profissional/agenda-profissional.component';
 import { ProfissionalCadastroComponent } from './profissional/profissional-cadastro/profissional-cadastro.component';
 import { ProfissionalDetailComponent } from './profissional/profissional-detail/profissional-detail.component';
 import { PacienteComponent } from './paciente/paciente.component';
@@ -14,7 +16,11 @@ const routes: Routes = [
       { path: ':id/edit', component: ProfissionalCadastroComponent }
   ]},
   { path: 'paciente', component: PacienteComponent},
-  { path: 'controleAgenda', component: ControleAgendaComponent},
+  { path: 'controleAgenda', component: ControleAgendaComponent,
+    children: [
+      { path: 'agendaProfissinal', component: AgendaProfissionalComponent},
+      { path: 'agendaPaciente', component: AgendaPacienteComponent}
+    ]},
   // otherwise redirect to home
   { path: '**', redirectTo: '' }
 ];

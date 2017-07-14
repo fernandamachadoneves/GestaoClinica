@@ -183,8 +183,10 @@ export class ProfissionalCadastroComponent implements OnInit {
 
     if (this.isNovo){
       result = this._profissionalService.add(valoresProfissional, configuracao, dias).subscribe(
-        result =>
-              this._profissionalListarService.incluirProfissional(true)
+        atualizar =>{
+              this._profissionalListarService.incluirProfissional(true);
+              this.navigateBack();
+        }
       )
     } else {
       result = this._profissionalService.update(valoresProfissional, this.idProfissional, configuracao, this.idConfig, dias);

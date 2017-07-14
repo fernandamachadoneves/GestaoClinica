@@ -4,6 +4,7 @@ import { Profissional } from './models/profissional';
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/toPromise';
 
 
 @Injectable()
@@ -25,6 +26,19 @@ export class ProfissionalService {
     let headers = new Headers();
     return this.http.get(this.urlRecuperarProfissional)
                     .map(this.extractData);
+  }
+
+  recuperarProfissionais(): Promise<any> {
+    debugger;
+    let url = this.urlRecuperarProfissional;
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.get(url, options)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
   }
 
 
@@ -85,6 +99,18 @@ export class ProfissionalService {
     let url = this.urlRecuperarConfigProfPorId.replace(':idProfissional', idProfissional.toString());
     return this.http.get(url)
                     .map(this.extractData);
+  }
+
+  recuperarConfigProfissional(idProfissional: number): Promise<any> {
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    let url = this.urlRecuperarConfigProfPorId.replace(':idProfissional', idProfissional.toString());
+
+    return this.http.get(url, options)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
   }
 
   private extractData(res: Response) {

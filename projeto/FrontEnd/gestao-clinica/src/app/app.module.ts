@@ -1,3 +1,4 @@
+import { ConfiguracaoHorarioProfissionalService } from './shared/service/configuracaoHorarioProfissional.service';
 import { ProfissionalListarService } from './profissional/profissionalListar.service';
 import { HttpModule, JsonpModule } from '@angular/http';
 
@@ -16,6 +17,9 @@ import { ProfissionalDetailComponent } from './profissional/profissional-detail/
 import { ProfissionalCadastroComponent } from './profissional/profissional-cadastro/profissional-cadastro.component';
 import { TextMaskModule } from 'angular2-text-mask';
 import { MyDatePickerModule } from 'mydatepicker';
+import { AgendaProfissionalComponent } from './controle-agenda/agenda-profissional/agenda-profissional.component';
+import { AgendaPacienteComponent } from './controle-agenda/agenda-paciente/agenda-paciente.component';
+import { MaterializeDirective } from 'angular2-materialize';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,10 @@ import { MyDatePickerModule } from 'mydatepicker';
     PacienteComponent,
     ProfissionalComponent,
     ProfissionalDetailComponent,
-    ProfissionalCadastroComponent
+    ProfissionalCadastroComponent,
+    AgendaProfissionalComponent,
+    AgendaPacienteComponent,
+    MaterializeDirective
   ],
   imports: [
     BrowserModule,
@@ -38,7 +45,9 @@ import { MyDatePickerModule } from 'mydatepicker';
   ],
   providers: [
     ProfissionalService, 
-    ProfissionalListarService],
+    ProfissionalListarService,
+    ConfiguracaoHorarioProfissionalService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
