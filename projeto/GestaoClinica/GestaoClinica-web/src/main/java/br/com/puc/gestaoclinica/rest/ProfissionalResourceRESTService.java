@@ -156,6 +156,32 @@ public class ProfissionalResourceRESTService {
     }
     
     @POST
+    @Path("/excluir")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response excluirProfissional(Profissional profissional) {
+
+        profissional.setAtivo(Boolean.FALSE);
+
+    	Response.ResponseBuilder builder = null;
+    	
+        try {
+            registration.editar(profissional);
+
+            // Create an "ok" response
+            builder = Response.ok();
+        
+        } catch (Exception e) {
+            // Handle generic exceptions
+            Map<String, String> responseObj = new HashMap<>();
+            responseObj.put("error", e.getMessage());
+            builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
+        }
+
+        return builder.build();
+    }
+    
+    @POST
     @Path("/editar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
