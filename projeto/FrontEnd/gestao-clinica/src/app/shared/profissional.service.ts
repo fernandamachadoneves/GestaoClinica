@@ -12,6 +12,7 @@ export class ProfissionalService {
   private urlRecuperarProfissional = environment.context + '/GestaoClinica-web/rest/profissional/';
   private urlRecuperarProfissionalPorId = environment.context + '/GestaoClinica-web/rest/profissional/:id';
   private urlEditarProfissional = environment.context + '/GestaoClinica-web/rest/profissional/editar';
+  private urlExcluirProfissional = environment.context + '/GestaoClinica-web/rest/profissional/excluir';
   private urlRecuperarProfissionalPorNome = environment.context + '/GestaoClinica-web/rest/profissional/pesquisar/:nome';
   private urlRecuperarConfigProfPorId = environment.context + '/GestaoClinica-web/rest/profissional/pesquisarConfiguracao/:idProfissional';
 
@@ -55,7 +56,7 @@ export class ProfissionalService {
   }
 
   update(profissional: Profissional, idProfissional: number, configProf: ConfiguracaoHorarioProfissional, idConfig: number, diasDaSemana: string){
-    debugger
+    
     profissional.id = idProfissional;
     profissional.ativo = true;
     configProf.id = idConfig;
@@ -71,13 +72,11 @@ export class ProfissionalService {
   }
 
   remover(profissional: Profissional, idProfissional: number){
-    debugger
     profissional.id = idProfissional;
-    profissional.ativo = false;
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
-    return this.http.post(this.urlEditarProfissional, JSON.stringify(profissional),
+    return this.http.post(this.urlExcluirProfissional, JSON.stringify(profissional),
       options).map((res: Response) => res);
   }
 

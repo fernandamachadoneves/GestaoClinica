@@ -1,3 +1,4 @@
+import { ProfissionalListarService } from './profissionalListar.service';
 import { Profissional } from './../shared/models/profissional';
 import { ProfissionalService } from './../shared/profissional.service';
 import { Component, OnInit } from '@angular/core';
@@ -19,6 +20,18 @@ export class ProfissionalComponent implements OnInit {
       profissional => {
         this.profissionais = profissional;
       }
+    );
+    ProfissionalListarService.incluiuProfissional.subscribe(
+      profNovo => {
+        if (profNovo){
+            this._profissionalService.getProfissionais().subscribe(
+                profissional => {
+                  this.profissionais = profissional;
+            }
+          );
+        }
+      }
+      
     );
   }
 

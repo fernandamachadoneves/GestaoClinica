@@ -1,3 +1,4 @@
+import { ProfissionalListarService } from './../profissionalListar.service';
 import { ConfiguracaoHorarioProfissional } from './../../shared/models/configuracaoHorarioProfissional';
 import { ProfissionalService } from './../../shared/profissional.service';
 import { Profissional } from './../../shared/models/profissional';
@@ -39,7 +40,8 @@ export class ProfissionalCadastroComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private _profissionalService: ProfissionalService) { }
+    private _profissionalService: ProfissionalService,
+    private _profissionalListarService: ProfissionalListarService) { }
 
   ngOnInit() {
     debugger
@@ -170,19 +172,20 @@ export class ProfissionalCadastroComponent implements OnInit {
   }
 
   private navigateBack() {
-    debugger
     this.router.navigate(['/profissional']);
   }
 
   onSave() {
-    debugger
     const valoresProfissional = this.form.value;
     const configuracao = this.formConfig.value;
     let result;
     let dias = this.configurarCheckDiaDaSemana();
 
     if (this.isNovo){
-      result = this._profissionalService.add(valoresProfissional, configuracao, dias);
+      result = this._profissionalService.add(valoresProfissional, configuracao, dias).subscribe(
+        result =>
+              this._profissionalListarService.incluirProfissional(true)
+      )
     } else {
       result = this._profissionalService.update(valoresProfissional, this.idProfissional, configuracao, this.idConfig, dias);
     }

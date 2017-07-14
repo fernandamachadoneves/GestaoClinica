@@ -1,3 +1,4 @@
+import { ProfissionalListarService } from './profissional/profissionalListar.service';
 import { HttpModule, JsonpModule } from '@angular/http';
 
 import { ProfissionalService } from './shared/profissional.service';
@@ -35,7 +36,9 @@ import { MyDatePickerModule } from 'mydatepicker';
     TextMaskModule,
     MyDatePickerModule
   ],
-  providers: [ProfissionalService],
+  providers: [
+    ProfissionalService, 
+    ProfissionalListarService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
