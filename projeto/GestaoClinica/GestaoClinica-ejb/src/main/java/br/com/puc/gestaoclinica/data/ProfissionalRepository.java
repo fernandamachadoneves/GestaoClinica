@@ -43,11 +43,13 @@ public class ProfissionalRepository {
 		StringBuilder hql = new StringBuilder("select obj ");
 		hql.append(" from Profissional obj ");
 		hql.append(" where obj.nome like :nome ");
+		hql.append(" and obj.ativo = :ativo ");
 		hql.append(" order by obj.nome asc ");
 		
 		try{
 			Query query = em.createQuery(hql.toString());
 			query.setParameter("nome", "%"+nome+"%");
+			query.setParameter("ativo", Boolean.TRUE);
 			query.setMaxResults(20);
 			
 			return query.getResultList();
