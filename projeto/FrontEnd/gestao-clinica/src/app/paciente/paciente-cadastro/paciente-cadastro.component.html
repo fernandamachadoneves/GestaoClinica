@@ -1,0 +1,59 @@
+<h5>{{ title }}</h5>
+<div class="row" *ngIf="paciente" >
+  <form materialize class="col s12" [formGroup]="form" (ngSubmit)="onSave()">
+    <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">account_circle</i>
+        <input id="nome" type="text" class="validate"
+               [(ngModel)]="paciente.nome" formControlName="nome"
+               [class.invalid]="form.controls['nome'].touched && !form.controls['nome'].valid"
+        >
+        <label for="nome"
+               [class.active]="paciente.nome"
+               data-error="É preciso informar ao menos 3 caracteres">
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">email</i>
+        <input id="email" type="email" class="validate"
+               [(ngModel)]="paciente.email" formControlName="email"
+               [class.invalid]="form.controls['email'].touched && !form.controls['email'].valid">
+        <label for="email"
+               [class.active]="paciente.email"
+               data-error="email inválido">
+          Email
+        </label>
+      </div>
+    </div>
+
+  <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">phone</i>
+        <input id="telefone" type="text" class="validate" [textMask]="{mask: maskTelefone}"
+               [(ngModel)]="paciente.telefone" formControlName="telefone"
+               [class.invalid]="form.controls['telefone'].touched && !form.controls['telefone'].valid">
+        <label for="telefone"
+               [class.active]="paciente.telefone"
+               data-error="telefone inválido">
+          Telefone
+        </label>
+      </div>
+  </div>
+
+  <br/>
+  <div class="row">
+    <div class="col-xs-12">
+      <button class="btn waves-effect waves-light" type="submit"
+              [disabled]="!form.valid">
+        Salvar<i class="material-icons right">send</i>
+      </button>
+      <a class="waves-effect waves-light btn red"
+      (click)="onCancel()">Cancelar</a>
+    </div>
+  </div>
+
+  </form>
+</div>
+

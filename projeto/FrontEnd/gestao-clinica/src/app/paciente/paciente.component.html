@@ -1,16 +1,30 @@
-<p>
-  paciente works!
-</p>
-<div class="row section">
-  <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Click to open modal</a>
-</div>
-<!-- Modal Structure -->
-<div id="modal1" class="modal">
-  <div class="modal-content">
-    <h4>Modal Header</h4>
-    <p>A bunch of text</p>
+<div class="row">
+  <div class="col s5">
+      <div class="row">
+       <div class="input-field col s10">
+          <input placeholder="Digite o nome" id="first_name" type="text" [(ngModel)]="pacientePesquisa">
+        </div>
+        <div class="input-field col s2">
+            <a class="btn-floating" (click)="pesquisar()"><i class="material-icons">search</i></a>
+        </div>
+        </div>
+      <div class="collection" *ngFor="let pac of pacientes">
+        <a class="collection-item"
+          [routerLink]="[pac.id]"
+          routerLinkActive="active">
+          {{ pac.nome }}
+        </a>
+      </div>
+
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large waves-effect waves-light green"
+          routerLink="novo">
+          <i class="material-icons">add</i>
+        </a>
+      </div>
   </div>
-  <div class="modal-footer">
-    <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
-  </div>
+    
+    <div class="col s7">
+        <router-outlet></router-outlet>
+    </div>
 </div>

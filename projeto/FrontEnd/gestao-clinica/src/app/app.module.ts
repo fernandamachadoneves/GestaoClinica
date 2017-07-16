@@ -1,3 +1,5 @@
+import { PacienteService } from './shared/service/paciente.service';
+import { PacienteListarService } from './paciente/pacienteListar.service';
 import { ConfiguracaoHorarioProfissionalService } from './shared/service/configuracaoHorarioProfissional.service';
 import { ProfissionalListarService } from './profissional/profissionalListar.service';
 import { HttpModule, JsonpModule } from '@angular/http';
@@ -21,6 +23,8 @@ import { AgendaProfissionalComponent } from './controle-agenda/agenda-profission
 import { AgendaPacienteComponent } from './controle-agenda/agenda-paciente/agenda-paciente.component';
 import { MaterializeDirective } from 'angular2-materialize';
 import { CalendarioComponent } from './shared/components/calendario/calendario.component';
+import { PacienteCadastroComponent } from './paciente/paciente-cadastro/paciente-cadastro.component';
+import { PacienteDetailComponent } from './paciente/paciente-detail/paciente-detail.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +37,9 @@ import { CalendarioComponent } from './shared/components/calendario/calendario.c
     AgendaProfissionalComponent,
     AgendaPacienteComponent,
     MaterializeDirective,
-    CalendarioComponent
+    CalendarioComponent,
+    PacienteCadastroComponent,
+    PacienteDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +54,9 @@ import { CalendarioComponent } from './shared/components/calendario/calendario.c
   providers: [
     ProfissionalService, 
     ProfissionalListarService,
-    ConfiguracaoHorarioProfissionalService
+    ConfiguracaoHorarioProfissionalService,
+    PacienteListarService,
+    PacienteService
   ],
   bootstrap: [AppComponent]
 })
