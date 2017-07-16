@@ -115,11 +115,11 @@ export class ProfissionalService {
 
   private extractData(res: Response) {
     let body = res.json();
+
     return body;
   }
- 
+
   private handleError (error: Response | any) {
-    debugger
     // In a real world app, you might use a remote logging infrastructure
     let errMsg: string;
     if (error instanceof Response) {

@@ -20,6 +20,7 @@ import { MyDatePickerModule } from 'mydatepicker';
 import { AgendaProfissionalComponent } from './controle-agenda/agenda-profissional/agenda-profissional.component';
 import { AgendaPacienteComponent } from './controle-agenda/agenda-paciente/agenda-paciente.component';
 import { MaterializeDirective } from 'angular2-materialize';
+import { CalendarioComponent } from './shared/components/calendario/calendario.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { MaterializeDirective } from 'angular2-materialize';
     ProfissionalCadastroComponent,
     AgendaProfissionalComponent,
     AgendaPacienteComponent,
-    MaterializeDirective
+    MaterializeDirective,
+    CalendarioComponent
   ],
   imports: [
     BrowserModule,

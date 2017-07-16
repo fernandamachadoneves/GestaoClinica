@@ -1,8 +1,11 @@
+import { ConsultasProfissionalVO } from './../../shared/models/consultaProfissionalVO';
+import { ConfiguracaoHorarioProfissional } from './../../shared/models/configuracaoHorarioProfissional';
 import { ConfiguracaoHorarioProfissionalService } from './../../shared/service/configuracaoHorarioProfissional.service';
 import { ProfissionalService } from './../../shared/profissional.service';
 import { Profissional } from './../../shared/models/profissional';
 import { Component, OnInit } from '@angular/core';
 import { IMyOptions, IMyDateModel, IMyDate } from 'mydatepicker';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-agenda-profissional',
@@ -13,32 +16,37 @@ export class AgendaProfissionalComponent implements OnInit {
   
   listProfissionais = new Array<Profissional>();
   idProfissional: number;
-  data: Object;
   dias: Array<string>;
-
-  myDatePickerOptions: IMyOptions = {
-    dateFormat: 'dd/mm/yyyy',
-    firstDayOfWeek: 'mo',
-    dayLabels: {su: 'Dom', mo: 'Seg', tu: 'Ter', we: 'Qua', th: 'Qui', fr: 'Sex', sa: 'Sab'},
-    monthLabels: { 1: 'Jan', 2: 'Fev', 3: 'Mar', 4: 'Abr', 5: 'Mai', 6: 'Jun', 7: 'Jul', 8: 'Ago', 9: 'Set', 10: 'Out', 11: 'Nov', 12: 'Dez' },
-    todayBtnTxt: 'Hoje',
-    width: '135px',
-    height: '24px',
-    selectionTxtFontSize: '14px',
-    inline: false,
-    editableDateField: false,
-    openSelectorOnInputClick: true,
-    showClearDateBtn: false
-  };
-
+  selecionouProfissional: boolean;
+  dataAgenda: Date;
+  configuracaoHorarioProfissional: ConfiguracaoHorarioProfissional;
+  pesquisou: boolean;
+  listaConsultasProf = new Array<ConsultasProfissionalVO>();
+  profissional: Profissional;
+   
   constructor(private _profissionalService: ProfissionalService,
-              private _configHorProfService: ConfiguracaoHorarioProfissionalService) { }
+              private _configHorProfService: ConfiguracaoHorarioProfissionalService,
+              private router: Router) { }
 
   ngOnInit() {
     debugger
-    this.myDatePickerOptions.disableWeekdays = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
     this.iniciarFiltros();
+    this.selecionouProfissional = false;
+    this.pesquisou = false;
+  }
 
+  alterarProfissional(){
+    this.router.navigate(['/controleAgenda']);
+  }
+
+  selecionouProfissinal($event, profSecionado) {
+    debugger;
+    this.idProfissional = profSecionado;
+    this.selecionouProfissional = true;
+    this._profissionalService.recuperarProfissionalPorId(this.idProfissional).subscribe(
+      profissional => {
+          this.profissional = profissional;
+    });
   }
 
   iniciarFiltros(){
@@ -51,104 +59,56 @@ export class AgendaProfissionalComponent implements OnInit {
          $('select').material_select();
       }
     );
-    
-    // let data = new Date();
-    //this.data = { date: { year: data.getFullYear(), month: data.getMonth() + 1, day: data.getDate() } }
   }
-
-
-  onDateChanged(event: IMyDateModel) {
-    this.data = event.jsdate;
+   
+  alterarData(event) {
+    this.dataAgenda = event.dataJson;
+    this.configuracaoHorarioProfissional = event.configProf;
   }
 
   pesquisar() {
     debugger
-    this._profissionalService.recuperarConfigProfissional(this.idProfissional).then(
-      result => {
-          this.recuperarDiasDaSemana(result.diasDaSemana);
-      }
-    );
+    let horInicio = this.configuracaoHorarioProfissional.horarioInicio;
+    let horFim = this.configuracaoHorarioProfissional.horarioFinal;
+    
+    let arrayInicio = horInicio.split(':');
+    var inicio = arrayInicio[0]; 
+
+    let arrayFim = horFim.split(':');
+    let fim = arrayFim[0]; 
+
+    let diferencaTempoHoras = parseInt(fim) - parseInt(inicio);
+    let diferencaTempoMin = diferencaTempoHoras * 60;
+    
+    let numeroHorarios = diferencaTempoMin / this.configuracaoHorarioProfissional.tempoConsulta;
+    
+    let consultaHorario = new ConsultasProfissionalVO();
+
+    var hora = new Date();
+    hora.setHours(parseInt(inicio));
+    hora.setMinutes(parseInt(arrayInicio[1]));
+
+    consultaHorario.agendado = true;
+    consultaHorario.horario = (hora.getHours() < 10 ? '0' : '') + hora.getHours() + ':' + (hora.getMinutes() < 10 ? '0' : '') + hora.getMinutes() 
+    consultaHorario.nomePaciente = 'Fernanda Machado Neves da Silva';
+
+    this.listaConsultasProf.push(consultaHorario);
+
+    for (let i=0; i<numeroHorarios-1; i++) {
+      let consultaHorario = new ConsultasProfissionalVO();
+      consultaHorario.agendado = false;
+      hora.setMinutes(hora.getMinutes() + this.configuracaoHorarioProfissional.tempoConsulta);
+      let hour = (hora.getHours() < 10 ? '0' : '') + hora.getHours();
+      let min = (hora.getMinutes() < 10 ? '0' : '') + hora.getMinutes();
+      consultaHorario.horario = hour + ':' + min;
+      consultaHorario.nomePaciente = '';
+      this.listaConsultasProf.push(consultaHorario);
+    }
+
+    this.pesquisou = true;
   }
 
-  teste(){
-    debugger
-
-    let array = new Array();
-    array.push('\'tu\'');
-    
-    array.toString().replace(/\"/g, "");
-    
-    this.myDatePickerOptions.disableWeekdays = array;
-
-  }
-
-  recuperarDiasDaSemana(configProfDias: string) {
-    debugger
-    let teste = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
-    let array = new Array;
-    array.push('tu');
-    
-    let diasSemanaBloquear
-    diasSemanaBloquear += "'" + 'tu' + "'";
-    
-    this.myDatePickerOptions.disableWeekdays = array;
-
-    this.myDatePickerOptions.disableWeekdays = [diasSemanaBloquear];
-
-  //  teste.splice(2, 1);
-   // teste.splice(3, 1);
-   // var RegExp = /["|']/g;
-  //	teste.toString().replace(RegExp,"");
-    //teste.toString().replace("\"", "'");
-    //teste.toString().replace('\"', "\\u0022");
-    //var teste = { a: function(a){ console.log(a.name); } }
-    //teste.a({name:'\'a\''});
-    //teste.push('\'su\'')
-    //teste.toString().replace(/[\\"]/g, '');
-    //let pos = teste.indexOf('su');
-    //teste.slice(pos);  
-
-    /*
-
-    debugger
-
-    let diasSemanaBloquear = '';
-
-    let diasSemana = [
-      {dia: 'DOM', atributo: 'su', bloquear: true},
-      {dia: 'SEG', atributo: 'mo', bloquear: true},
-      {dia: 'TER', atributo: 'tu', bloquear: true},
-      {dia: 'QUA', atributo: 'we', bloquear: true},
-      {dia: 'QUI', atributo: 'th', bloquear: true},
-      {dia: 'SEX', atributo: 'fr', bloquear: true},
-      {dia: 'SAB', atributo: 'sa', bloquear: true},
-    ]
-
-    var array : string[] = configProfDias.split(";");
-    for (let i=0; i<diasSemana.length; i++) {
-        for (let j=0; j<array.length; j++) {
-           if (diasSemana[i].dia == array[j]){
-             diasSemana[i].bloquear = false;
-           }
-        }
-    }
-
-    // dias que o profissional não atende
-    for (let i=0; i<diasSemana.length; i++) {
-      if (diasSemana[i].bloquear){
-        diasSemanaBloquear += "'" + diasSemana[i].atributo + "', "
-      }
-    }
-
-    if (diasSemanaBloquear!=''){
-      //diasSemanaBloquear = diasSemanaBloquear.substr(1,(diasSemanaBloquear.length - 1));
-      diasSemanaBloquear = diasSemanaBloquear.substr(0, diasSemanaBloquear.length - 2);
-      console.log(diasSemanaBloquear);
-      diasSemanaBloquear.replace('\"', '\'');
-      this.myDatePickerOptions.disableWeekdays = [diasSemanaBloquear];
-
-      this.myDatePickerOptions.disableWeekdays = [diasSemanaBloquear];
-    }
-  */
+  agendar(){
+    $('.modal').modal();
   }
 }
