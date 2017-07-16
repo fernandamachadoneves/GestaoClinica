@@ -51,8 +51,16 @@
   <!-- Modal Structure -->
   <div id="modalAgendar" class="modal">
     <div class="modal-content">
-      <h4>Agendar Consulta</h4>
-      <p>Fulano da silva</p>
+      <h5>Agendar Consulta</h5>
+      <label>Paciente</label>
+          <br/> 
+          <div>
+            <select materialize="material_select" [materializeSelectOptions]="listPacientes"
+              #pac (change)="selecionouPaciente($event, prof.value)" [(ngModel)]="idPaciente">
+              <option value="" disabled selected>Selecione o Paciente</option>
+              <option *ngFor="let e of listPacientes" [value]="e.id">{{e.nome}}</option>
+            </select>
+          </div>
     </div>
     <div class="modal-footer">
       <a class="modal-action modal-close waves-effect waves-green btn-flat">Marcar Consulta</a>

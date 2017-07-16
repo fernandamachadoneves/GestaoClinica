@@ -1,3 +1,5 @@
+import { PacienteService } from './../../shared/service/paciente.service';
+import { Paciente } from './../../shared/models/paciente';
 import { ConsultasProfissionalVO } from './../../shared/models/consultaProfissionalVO';
 import { ConfiguracaoHorarioProfissional } from './../../shared/models/configuracaoHorarioProfissional';
 import { ConfiguracaoHorarioProfissionalService } from './../../shared/service/configuracaoHorarioProfissional.service';
@@ -23,10 +25,13 @@ export class AgendaProfissionalComponent implements OnInit {
   pesquisou: boolean;
   listaConsultasProf = new Array<ConsultasProfissionalVO>();
   profissional: Profissional;
+  listPacientes = new Array<Paciente>();
+  idPaciente: number;
    
   constructor(private _profissionalService: ProfissionalService,
               private _configHorProfService: ConfiguracaoHorarioProfissionalService,
-              private router: Router) { }
+              private router: Router,
+              private _pacienteService: PacienteService) { }
 
   ngOnInit() {
     debugger
@@ -110,5 +115,13 @@ export class AgendaProfissionalComponent implements OnInit {
 
   agendar(){
     $('.modal').modal();
+    this.idPaciente = 0;
+    this.listPacientes = new Array();
+    this._pacienteService.recuperarPacientes().then(
+      result => {
+        this.listPacientes = result;
+         $('select').material_select();
+      }
+    );
   }
 }
