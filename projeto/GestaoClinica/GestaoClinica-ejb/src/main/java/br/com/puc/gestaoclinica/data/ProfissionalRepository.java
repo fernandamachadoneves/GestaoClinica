@@ -46,6 +46,7 @@ public class ProfissionalRepository {
 		hql.append(" and obj.ativo = :ativo ");
 		hql.append(" order by obj.nome asc ");
 		
+		
 		try{
 			Query query = em.createQuery(hql.toString());
 			query.setParameter("nome", "%"+nome+"%");
