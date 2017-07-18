@@ -1,3 +1,4 @@
+import { MarcacaoConsultaService } from './shared/service/marcacaoConsulta.service';
 import { PacienteService } from './shared/service/paciente.service';
 import { PacienteListarService } from './paciente/pacienteListar.service';
 import { ConfiguracaoHorarioProfissionalService } from './shared/service/configuracaoHorarioProfissional.service';
@@ -56,7 +57,8 @@ import { PacienteDetailComponent } from './paciente/paciente-detail/paciente-det
     ProfissionalListarService,
     ConfiguracaoHorarioProfissionalService,
     PacienteListarService,
-    PacienteService
+    PacienteService,
+    MarcacaoConsultaService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,3 +1,4 @@
+import { MarcacaoConsultaService } from './../../shared/service/marcacaoConsulta.service';
 import { PacienteService } from './../../shared/service/paciente.service';
 import { Paciente } from './../../shared/models/paciente';
 import { ConsultasProfissionalVO } from './../../shared/models/consultaProfissionalVO';
@@ -28,22 +29,25 @@ export class AgendaProfissionalComponent implements OnInit {
   profissional: Profissional;
   listPacientes = new Array<Paciente>();
   idPaciente: number;
-  teste: string;
+  pacienteAgendar: Paciente;
+  horarioAgendar: string;
+
   private autoCompleteParams = [{'data': {}}];
    
   constructor(private _profissionalService: ProfissionalService,
               private _configHorProfService: ConfiguracaoHorarioProfissionalService,
               private router: Router,
-              private _pacienteService: PacienteService) { }
+              private _pacienteService: PacienteService,
+              private _marcacaoConsultaService: MarcacaoConsultaService) { }
 
   getAutocompleteParams(){
     this.autoCompleteParams[0].data[""]=null;
     for (let i=0; i<this.listPacientes.length; i++){
-      this.autoCompleteParams[0].data[this.listPacientes[i].nome]=null;
+      this.autoCompleteParams[0].data[this.listPacientes[i].nome]=this.listPacientes[i].id;
     }
     return this.autoCompleteParams;
   }
-  
+    
 
   ngOnInit() {
     debugger
@@ -125,15 +129,30 @@ export class AgendaProfissionalComponent implements OnInit {
     this.pesquisou = true;
   }
 
-  agendar(){
+  agendar(horario: string){
+    this.horarioAgendar = horario; 
     $('.modal').modal();
     this.idPaciente = 0;
     this.listPacientes = new Array();
     this._pacienteService.recuperarPacientes().then(
       result => {
         this.listPacientes = result;
-         $('select').material_select();
       }
     );
+  }
+
+  selecionouPaciente($event, pacSelecionado) {
+    if (pacSelecionado!==null && pacSelecionado!== undefined){
+      this._pacienteService.recuperarPacientePorNome(pacSelecionado).subscribe(
+        result => {
+          if (result!=null && result!=undefined){
+            this.pacienteAgendar = result[0];
+          }
+      });
+    }
+  }
+
+  marcaConsulta() {
+    this._marcacaoConsultaService.marcarHorario(this.pacienteAgendar, this.profissional, this.dataAgenda, this.horarioAgendar);
   }
 }
