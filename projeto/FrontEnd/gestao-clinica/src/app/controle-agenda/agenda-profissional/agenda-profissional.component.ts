@@ -16,6 +16,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class AgendaProfissionalComponent implements OnInit {
   
+  
   listProfissionais = new Array<Profissional>();
   idProfissional: number;
   dias: Array<string>;
@@ -27,11 +28,22 @@ export class AgendaProfissionalComponent implements OnInit {
   profissional: Profissional;
   listPacientes = new Array<Paciente>();
   idPaciente: number;
+  teste: string;
+  private autoCompleteParams = [{'data': {}}];
    
   constructor(private _profissionalService: ProfissionalService,
               private _configHorProfService: ConfiguracaoHorarioProfissionalService,
               private router: Router,
               private _pacienteService: PacienteService) { }
+
+  getAutocompleteParams(){
+    this.autoCompleteParams[0].data[""]=null;
+    for (let i=0; i<this.listPacientes.length; i++){
+      this.autoCompleteParams[0].data[this.listPacientes[i].nome]=null;
+    }
+    return this.autoCompleteParams;
+  }
+  
 
   ngOnInit() {
     debugger
