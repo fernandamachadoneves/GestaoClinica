@@ -17,7 +17,9 @@
 package br.com.puc.gestaoclinica.rest;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -25,8 +27,10 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.validation.ValidationException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -62,6 +66,17 @@ public class MarcacaoConsultaResourceRESTService {
  
     
     private static ObjectMapper mapper = new ObjectMapper();
+    
+    @POST
+    @Path("/pesquisarMarcacoes/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<MarcacaoConsulta> recuperarProfissionalPorId(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
+    	
+    	Profissional profissional = mapper.readValue(objeto.get("profissional").toString(), Profissional.class);
+    	Date data = mapper.readValue(objeto.get("data").toString(), Date.class);
+    	
+        return repository.recuperarAgendamentos(profissional.getId(), data);
+    }
 
     
     @POST
@@ -71,14 +86,16 @@ public class MarcacaoConsultaResourceRESTService {
     	
     	MarcacaoConsulta consulta = mapper.readValue(objeto.get("consulta").toString(), MarcacaoConsulta.class);
     	
-//    	Paciente paciente = mapper.readValue(objeto.get("paciente").toString(), Paciente.class);
-//    	Profissional profissional = mapper.readValue(objeto.get("profissional").toString(), Profissional.class);
-//    	String horario = mapper.readValue(objeto.get("horario").toString(), String.class);
-
+    	Paciente paciente = mapper.readValue(objeto.get("paciente").toString(), Paciente.class);
+    	
+    	Profissional profissional = mapper.readValue(objeto.get("profissional").toString(), Profissional.class);
+    	
         Response.ResponseBuilder builder = null;
 
         try {
-        	
+        	consulta.setPaciente(paciente);
+        	consulta.setProfissional(profissional);
+        	consulta.setMarcado(Boolean.TRUE);
             //registration.cadastrar(criarObjetoMarcacaoConsulta(paciente, profissional, horario));
         	registration.cadastrar(consulta);
 
@@ -98,15 +115,4 @@ public class MarcacaoConsultaResourceRESTService {
 
         return builder.build();
     }
-    
-//    public MarcacaoConsulta criarObjetoMarcacaoConsulta(Paciente paciente, Profissional profissional, String horario){
-//    	
-//    	MarcacaoConsulta consulta = new MarcacaoConsulta();
-//    	consulta.setPaciente(paciente);
-//    	consulta.setProfissional(profissional);
-//    	consulta.setHorario(horario);
-//    	consulta.setMarcado(Boolean.TRUE);
-//    	
-//    	return consulta;
-//    }
 }

@@ -3,10 +3,13 @@ package br.com.puc.gestaoclinica.model;
 import java.io.Serializable;
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -20,17 +23,25 @@ public class MarcacaoConsulta implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	
+	@Column(name = "horario")
 	private String horario;
 	
+	@Column(name = "data_consulta")
 	private Date dataConsulta;
 	
+	@Column(name = "data_agendamento")
 	private Date dataAgendamento;
-
+	
+	@ManyToOne
+	@JoinColumn(name = "paciente_id")
 	private Paciente paciente;
 	
+	@ManyToOne
+	@JoinColumn(name = "profisional_id")
 	private Profissional profissional;
 	
+	@Column(name = "marcado")
 	private Boolean marcado;
 
 	public Long getId() {

@@ -16,15 +16,41 @@
  */
 package br.com.puc.gestaoclinica.data;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import br.com.puc.gestaoclinica.model.MarcacaoConsulta;
+import br.com.puc.gestaoclinica.model.Profissional;
 
 @ApplicationScoped
 public class MarcacaoConsultaRepository {
 
     @Inject
     private EntityManager em;
+    
+    public List<MarcacaoConsulta> recuperarAgendamentos(Long idProfissional, Date data){
+		StringBuilder hql = new StringBuilder("select obj ");
+		hql.append(" from MarcacaoConsulta obj ");
+		hql.append(" where obj.profissional.id = :idProfissional ");
+		hql.append(" and obj.dataConsulta = :data ");
+		
+		
+		try{
+			Query query = em.createQuery(hql.toString());
+			query.setParameter("idProfissional", idProfissional);
+			query.setParameter("data", data);
+			
+			return query.getResultList();
+			
+		}catch(Exception e){
+			return null;
+		}
+	}
 
  
 }
