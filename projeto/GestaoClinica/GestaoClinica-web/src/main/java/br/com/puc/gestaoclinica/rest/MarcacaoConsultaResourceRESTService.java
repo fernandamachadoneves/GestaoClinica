@@ -79,6 +79,16 @@ public class MarcacaoConsultaResourceRESTService {
     }
     
     @POST
+    @Path("/pesquisarMarcacoesPorPaciente/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<MarcacaoConsulta> pesquisarMarcacoesPorPaciente(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
+    	
+    	Long idPaciente = mapper.readValue(objeto.get("idPaciente").toString(), Long.class);
+    	
+        return repository.recuperarAgendamentosPorIdPaciente(idPaciente);
+    }
+    
+    @POST
     @Path("/desmarcarConsulta/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response desmarcarConsulta (JSONObject objeto) throws Exception {

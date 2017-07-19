@@ -68,6 +68,26 @@ public class MarcacaoConsultaRepository {
 			return null;
 		}
 	}
+    
+    public List<MarcacaoConsulta> recuperarAgendamentosPorIdPaciente(Long id) {
+    	StringBuilder hql = new StringBuilder("select obj ");
+		hql.append(" from MarcacaoConsulta obj ");
+		hql.append(" where obj.paciente.id = :id ");
+		hql.append(" and obj.marcado = :agendado ");
+		hql.append(" order by obj.dataConsulta, obj.horario desc ");
+		
+		try{
+			Query query = em.createQuery(hql.toString());
+			query.setParameter("id", id);
+			query.setParameter("agendado", Boolean.TRUE);
+			
+			return (List<MarcacaoConsulta>) query.getResultList();
+			
+		}catch(Exception e){
+			return null;
+		}
+        
+    }
 
  
 }

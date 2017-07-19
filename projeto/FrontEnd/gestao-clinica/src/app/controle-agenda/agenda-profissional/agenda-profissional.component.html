@@ -1,6 +1,6 @@
  <br>
  <div class="row">
-   <div class="col s12">
+   <div class="col s6">
           <label>Profissional</label>
           <br/> 
           <div *ngIf="!selecionouProfissional">
@@ -11,7 +11,7 @@
             </select>
           </div>
           <div *ngIf="selecionouProfissional">
-            {{profissional.nome}}
+            {{profissional?.nome}}
             <a 
               (click)="alterarProfissional()">
             <i class="material-icons">mode_edit</i>
@@ -23,7 +23,7 @@
       </div>
  </div>
         
-<a class="waves-effect waves-light btn" (click)="pesquisar()">Pesquisar</a>
+<a *ngIf="exibirBotaoPesquisar"  class="waves-effect waves-light btn" (click)="pesquisar()">Pesquisar</a>
 
 <div *ngIf="pesquisou">
    <table class="responsive-table">
@@ -52,15 +52,14 @@
   <div id="modalAgendar" class="modal">
     <div class="modal-content">
       <h5>Agendar Consulta</h5>
-      <label>Paciente</label>
-          <br/> 
           <div>
             <div class="row">
     <div class="col s12">
       <div class="row">
-        <div class="input-field col s12">
-            <input type="text" #pac (change)="selecionouPaciente($event, pac.value)" [(ngModel)]="teste"
+        <div class="input-field col s6">
+            <input id="nomePaciente" name="nomePaciente" type="text" #pac (change)="selecionouPaciente($event, pac.value)"
               name="interestsAutoComplete" materialize="autocomplete" [materializeParams]="getAutocompleteParams()">
+            <label>Paciente</label>  
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ import { ConfiguracaoHorarioProfissional } from './../../shared/models/configura
 import { ConfiguracaoHorarioProfissionalService } from './../../shared/service/configuracaoHorarioProfissional.service';
 import { ProfissionalService } from './../../shared/profissional.service';
 import { Profissional } from './../../shared/models/profissional';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import { IMyOptions, IMyDateModel, IMyDate } from 'mydatepicker';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -17,6 +17,8 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./agenda-profissional.component.css']
 })
 export class AgendaProfissionalComponent implements OnInit {
+
+  @ViewChild('pac') pac; 
   
   
   listProfissionais = new Array<Profissional>();
@@ -33,6 +35,7 @@ export class AgendaProfissionalComponent implements OnInit {
   pacienteAgendar: Paciente;
   horarioAgendar: string;
   listMarcacoes = new Array<MarcacaoConsulta>();
+  exibirBotaoPesquisar;
 
   private autoCompleteParams = [{'data': {}}];
    
@@ -56,6 +59,7 @@ export class AgendaProfissionalComponent implements OnInit {
     this.iniciarFiltros();
     this.selecionouProfissional = false;
     this.pesquisou = false;
+    this.exibirBotaoPesquisar = false;
   }
 
   alterarProfissional(){
@@ -87,6 +91,7 @@ export class AgendaProfissionalComponent implements OnInit {
   alterarData(event) {
     this.dataAgenda = event.dataJson;
     this.configuracaoHorarioProfissional = event.configProf;
+    this.exibirBotaoPesquisar = true;
   }
 
   pesquisar() {
@@ -140,8 +145,13 @@ export class AgendaProfissionalComponent implements OnInit {
 
   agendar(horario: string){
     this.horarioAgendar = horario; 
-    $('.modal').modal();
+    $('.modal').modal({
+       dismissible: true
+    }
+    );
     this.idPaciente = 0;
+    this.pac.nativeElement.value = '';
+    this.pacienteAgendar = new Paciente();
     this.listPacientes = new Array();
     this._pacienteService.recuperarPacientes().then(
       result => {
@@ -162,12 +172,17 @@ export class AgendaProfissionalComponent implements OnInit {
   }
 
   marcaConsulta() {
-    let consulta = this.marcarHorario(this.dataAgenda, this.horarioAgendar);
-    this._marcacaoConsultaService.marcar(consulta, this.pacienteAgendar, this.profissional).subscribe(
-      result =>{
-        this.pesquisar();
-      }
-    );
+    debugger
+    if (this.pacienteAgendar==null || this.pacienteAgendar == undefined || this.pacienteAgendar.id == null){
+      alert('É necessário informar o paciente para agendar');
+    } else {
+      let consulta = this.marcarHorario(this.dataAgenda, this.horarioAgendar);
+      this._marcacaoConsultaService.marcar(consulta, this.pacienteAgendar, this.profissional).subscribe(
+        result =>{
+          this.pesquisar();
+        }
+      );
+    }
   }
 
    marcarHorario(data: Date, horario: string) {
