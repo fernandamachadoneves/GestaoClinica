@@ -12,32 +12,33 @@ import 'rxjs/add/operator/toPromise';
 export class MarcacaoConsultaService {
 
   private urlMarcarConsulta = environment.context + '/GestaoClinica-web/rest/marcacaoConsulta/';
+  private urlPesquisarMarcacoes = environment.context + '/GestaoClinica-web/rest/marcacaoConsulta/pesquisarMarcacoes';
 
   constructor(private http: Http) { }
 
-  marcarHorario(paciente: Paciente, profissional: Profissional, data: Date, horario: string) {
-    debugger
-
-    let marcacaoConsulta = new MarcacaoConsulta();
-    marcacaoConsulta.dataAgendamento = new Date();
-    marcacaoConsulta.dataConsulta = data;
-    marcacaoConsulta.horario = horario;
-    marcacaoConsulta.marcado = true;
-    marcacaoConsulta.paciente = paciente;
-    marcacaoConsulta.profissional = profissional;
-
-    this.marcar(marcacaoConsulta);
-  }
-
-  marcar(consulta: MarcacaoConsulta){
-    debugger
-    let jsonPost = { "consulta": JSON.stringify(consulta)
+  marcar(consulta: MarcacaoConsulta, paciente: Paciente, profissional: Profissional) {
+    let jsonPost = { "consulta": JSON.stringify(consulta),
+            "profissional": JSON.stringify(profissional),
+            "paciente": JSON.stringify(paciente)
     }
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
     return this.http.post(this.urlMarcarConsulta, jsonPost,
       options).map((res: Response) => res);
+  }
+
+  pesquisarMarcacoes(profissional: Profissional, data: Date){
+
+    let jsonPost = { "profissional": JSON.stringify(profissional),
+                     "data": JSON.stringify(data)
+    }
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.post(this.urlPesquisarMarcacoes, jsonPost,
+      options).map(this.extractData);
   }
 
   private extractData(res: Response) {
@@ -47,6 +48,7 @@ export class MarcacaoConsultaService {
   }
 
   private handleError (error: Response | any) {
+    debugger
     // In a real world app, you might use a remote logging infrastructure
     let errMsg: string;
     if (error instanceof Response) {

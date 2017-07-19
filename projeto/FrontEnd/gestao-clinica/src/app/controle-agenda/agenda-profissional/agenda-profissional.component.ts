@@ -1,3 +1,4 @@
+import { MarcacaoConsulta } from './../../shared/models/marcacaoConsulta';
 import { MarcacaoConsultaService } from './../../shared/service/marcacaoConsulta.service';
 import { PacienteService } from './../../shared/service/paciente.service';
 import { Paciente } from './../../shared/models/paciente';
@@ -31,6 +32,7 @@ export class AgendaProfissionalComponent implements OnInit {
   idPaciente: number;
   pacienteAgendar: Paciente;
   horarioAgendar: string;
+  listMarcacoes = new Array<MarcacaoConsulta>();
 
   private autoCompleteParams = [{'data': {}}];
    
@@ -43,7 +45,7 @@ export class AgendaProfissionalComponent implements OnInit {
   getAutocompleteParams(){
     this.autoCompleteParams[0].data[""]=null;
     for (let i=0; i<this.listPacientes.length; i++){
-      this.autoCompleteParams[0].data[this.listPacientes[i].nome]=this.listPacientes[i].id;
+      this.autoCompleteParams[0].data[this.listPacientes[i].nome]=null;
     }
     return this.autoCompleteParams;
   }
@@ -102,29 +104,35 @@ export class AgendaProfissionalComponent implements OnInit {
     let diferencaTempoMin = diferencaTempoHoras * 60;
     
     let numeroHorarios = diferencaTempoMin / this.configuracaoHorarioProfissional.tempoConsulta;
-    
-    let consultaHorario = new ConsultasProfissionalVO();
 
     var hora = new Date();
     hora.setHours(parseInt(inicio));
     hora.setMinutes(parseInt(arrayInicio[1]));
 
-    consultaHorario.agendado = true;
-    consultaHorario.horario = (hora.getHours() < 10 ? '0' : '') + hora.getHours() + ':' + (hora.getMinutes() < 10 ? '0' : '') + hora.getMinutes() 
-    consultaHorario.nomePaciente = 'Fernanda Machado Neves da Silva';
 
-    this.listaConsultasProf.push(consultaHorario);
+    this._marcacaoConsultaService.pesquisarMarcacoes(this.profissional, this.dataAgenda).subscribe(
+      marcacoes => {
+        this.listaConsultasProf = new Array();
+        for (let i=0; i<numeroHorarios-1; i++) {
+          let consultaHorario = new ConsultasProfissionalVO();
+          consultaHorario.agendado = false;
+          hora.setMinutes(hora.getMinutes() + this.configuracaoHorarioProfissional.tempoConsulta);
+          let hour = (hora.getHours() < 10 ? '0' : '') + hora.getHours();
+          let min = (hora.getMinutes() < 10 ? '0' : '') + hora.getMinutes();
+          consultaHorario.horario = hour + ':' + min;
+          consultaHorario.nomePaciente = '';
 
-    for (let i=0; i<numeroHorarios-1; i++) {
-      let consultaHorario = new ConsultasProfissionalVO();
-      consultaHorario.agendado = false;
-      hora.setMinutes(hora.getMinutes() + this.configuracaoHorarioProfissional.tempoConsulta);
-      let hour = (hora.getHours() < 10 ? '0' : '') + hora.getHours();
-      let min = (hora.getMinutes() < 10 ? '0' : '') + hora.getMinutes();
-      consultaHorario.horario = hour + ':' + min;
-      consultaHorario.nomePaciente = '';
-      this.listaConsultasProf.push(consultaHorario);
-    }
+          for (let i=0; i<marcacoes.length; i++) {
+            if (consultaHorario.horario===marcacoes[i].horario){
+              consultaHorario.agendado = true;
+              consultaHorario.nomePaciente = marcacoes[i].paciente.nome;
+            }
+          }
+
+          this.listaConsultasProf.push(consultaHorario);
+        } 
+        
+    });
 
     this.pesquisou = true;
   }
@@ -153,6 +161,23 @@ export class AgendaProfissionalComponent implements OnInit {
   }
 
   marcaConsulta() {
-    this._marcacaoConsultaService.marcarHorario(this.pacienteAgendar, this.profissional, this.dataAgenda, this.horarioAgendar);
+    debugger
+    let consulta = this.marcarHorario(this.dataAgenda, this.horarioAgendar);
+    this._marcacaoConsultaService.marcar(consulta, this.pacienteAgendar, this.profissional).subscribe(
+      result =>{
+        this.pesquisar();
+      }
+    );
+  }
+
+   marcarHorario(data: Date, horario: string) {
+    debugger
+
+    let marcacaoConsulta = new MarcacaoConsulta();
+    marcacaoConsulta.dataAgendamento = new Date();
+    marcacaoConsulta.dataConsulta = data;
+    marcacaoConsulta.horario = horario;
+
+    return marcacaoConsulta;
   }
 }
