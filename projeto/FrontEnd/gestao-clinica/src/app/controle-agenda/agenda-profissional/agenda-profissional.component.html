@@ -40,7 +40,7 @@
             <td>{{horarios.horario}}</td>
             <td>{{horarios.nomePaciente}}</td>
             <td><a *ngIf="!horarios.agendado" class="waves-effect waves-light btn" href="#modalAgendar" (click)="agendar(horarios.horario)">Agendar</a>
-                <a *ngIf="horarios.agendado" class="waves-effect waves-light btn red" (click)="desmarcar()">Desmarcar</a>
+                <a *ngIf="horarios.agendado" class="waves-effect waves-light btn red" (click)="desmarcar(horarios.idMarcacaoConsulta)">Desmarcar</a>
             </td>
           </tr>
         </tbody>

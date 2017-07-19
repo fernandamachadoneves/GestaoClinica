@@ -12,9 +12,24 @@ import 'rxjs/add/operator/toPromise';
 export class MarcacaoConsultaService {
 
   private urlMarcarConsulta = environment.context + '/GestaoClinica-web/rest/marcacaoConsulta/';
+  private urlDesmarcarConsulta= environment.context + '/GestaoClinica-web/rest/marcacaoConsulta/desmarcarConsulta';
   private urlPesquisarMarcacoes = environment.context + '/GestaoClinica-web/rest/marcacaoConsulta/pesquisarMarcacoes';
 
   constructor(private http: Http) { }
+
+
+  pesquisarMarcacoes(profissional: Profissional, data: Date){
+
+    let jsonPost = { "profissional": JSON.stringify(profissional),
+                     "data": JSON.stringify(data)
+    }
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.post(this.urlPesquisarMarcacoes, jsonPost,
+      options).map(this.extractData);
+  }
 
   marcar(consulta: MarcacaoConsulta, paciente: Paciente, profissional: Profissional) {
     let jsonPost = { "consulta": JSON.stringify(consulta),
@@ -28,17 +43,14 @@ export class MarcacaoConsultaService {
       options).map((res: Response) => res);
   }
 
-  pesquisarMarcacoes(profissional: Profissional, data: Date){
-
-    let jsonPost = { "profissional": JSON.stringify(profissional),
-                     "data": JSON.stringify(data)
+  desmarcar(idMarcacaoConsulta: number) {
+     let jsonPost = { "idMarcacaoConsulta": JSON.stringify(idMarcacaoConsulta)
     }
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
-
-    return this.http.post(this.urlPesquisarMarcacoes, jsonPost,
-      options).map(this.extractData);
+    return this.http.post(this.urlDesmarcarConsulta, jsonPost,
+      options).map((res: Response) => res);
   }
 
   private extractData(res: Response) {

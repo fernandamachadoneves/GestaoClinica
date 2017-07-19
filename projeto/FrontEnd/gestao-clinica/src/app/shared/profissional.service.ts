@@ -22,14 +22,12 @@ export class ProfissionalService {
   constructor(private http: Http) { }
 
   getProfissionais() {
-    debugger;
     let headers = new Headers();
     return this.http.get(this.urlRecuperarProfissional)
                     .map(this.extractData);
   }
 
   recuperarProfissionais(): Promise<any> {
-    debugger;
     let url = this.urlRecuperarProfissional;
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');

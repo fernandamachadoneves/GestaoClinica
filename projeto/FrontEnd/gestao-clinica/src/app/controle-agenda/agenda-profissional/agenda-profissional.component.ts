@@ -126,6 +126,7 @@ export class AgendaProfissionalComponent implements OnInit {
             if (consultaHorario.horario===marcacoes[i].horario){
               consultaHorario.agendado = true;
               consultaHorario.nomePaciente = marcacoes[i].paciente.nome;
+              consultaHorario.idMarcacaoConsulta = marcacoes[i].id;
             }
           }
 
@@ -161,7 +162,6 @@ export class AgendaProfissionalComponent implements OnInit {
   }
 
   marcaConsulta() {
-    debugger
     let consulta = this.marcarHorario(this.dataAgenda, this.horarioAgendar);
     this._marcacaoConsultaService.marcar(consulta, this.pacienteAgendar, this.profissional).subscribe(
       result =>{
@@ -171,13 +171,19 @@ export class AgendaProfissionalComponent implements OnInit {
   }
 
    marcarHorario(data: Date, horario: string) {
-    debugger
-
     let marcacaoConsulta = new MarcacaoConsulta();
     marcacaoConsulta.dataAgendamento = new Date();
     marcacaoConsulta.dataConsulta = data;
     marcacaoConsulta.horario = horario;
 
     return marcacaoConsulta;
+  }
+
+  desmarcar(idMarcacaoConsulta: number){
+    this._marcacaoConsultaService.desmarcar(idMarcacaoConsulta).subscribe(
+      result => {
+        this.pesquisar();
+      }
+    )
   }
 }
