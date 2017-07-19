@@ -25,7 +25,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import br.com.puc.gestaoclinica.model.MarcacaoConsulta;
-import br.com.puc.gestaoclinica.model.Profissional;
 
 @ApplicationScoped
 public class MarcacaoConsultaRepository {
@@ -33,17 +32,35 @@ public class MarcacaoConsultaRepository {
     @Inject
     private EntityManager em;
     
+    public MarcacaoConsulta findById(Long id) {
+    	StringBuilder hql = new StringBuilder("select obj ");
+		hql.append(" from MarcacaoConsulta obj ");
+		hql.append(" where obj.id = :id ");
+		
+		try{
+			Query query = em.createQuery(hql.toString());
+			query.setParameter("id", id);
+			
+			return (MarcacaoConsulta) query.getSingleResult();
+			
+		}catch(Exception e){
+			return null;
+		}
+        
+    }
+    
     public List<MarcacaoConsulta> recuperarAgendamentos(Long idProfissional, Date data){
 		StringBuilder hql = new StringBuilder("select obj ");
 		hql.append(" from MarcacaoConsulta obj ");
 		hql.append(" where obj.profissional.id = :idProfissional ");
 		hql.append(" and obj.dataConsulta = :data ");
-		
+		hql.append(" and obj.marcado = :ativo ");
 		
 		try{
 			Query query = em.createQuery(hql.toString());
 			query.setParameter("idProfissional", idProfissional);
 			query.setParameter("data", data);
+			query.setParameter("ativo", Boolean.TRUE);
 			
 			return query.getResultList();
 			

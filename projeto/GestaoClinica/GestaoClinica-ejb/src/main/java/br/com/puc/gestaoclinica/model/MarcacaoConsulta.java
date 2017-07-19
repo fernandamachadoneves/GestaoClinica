@@ -27,18 +27,18 @@ public class MarcacaoConsulta implements Serializable {
 	@Column(name = "horario")
 	private String horario;
 	
-	@Column(name = "data_consulta")
+	@Column(name = "dataConsulta")
 	private Date dataConsulta;
 	
-	@Column(name = "data_agendamento")
+	@Column(name = "dataAgendamento")
 	private Date dataAgendamento;
 	
 	@ManyToOne
-	@JoinColumn(name = "paciente_id")
+	@JoinColumn(name = "paciente")
 	private Paciente paciente;
 	
 	@ManyToOne
-	@JoinColumn(name = "profisional_id")
+	@JoinColumn(name = "profissional")
 	private Profissional profissional;
 	
 	@Column(name = "marcado")

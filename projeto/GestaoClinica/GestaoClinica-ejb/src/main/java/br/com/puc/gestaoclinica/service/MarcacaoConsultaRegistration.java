@@ -39,6 +39,7 @@ public class MarcacaoConsultaRegistration {
     
     public void editar(MarcacaoConsulta marcacaoConsulta) throws Exception {
         em.merge(marcacaoConsulta);
+        em.flush();
         marcarEventSrc.fire(marcacaoConsulta);
     }
 }

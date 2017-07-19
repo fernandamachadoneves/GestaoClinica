@@ -70,12 +70,42 @@ public class MarcacaoConsultaResourceRESTService {
     @POST
     @Path("/pesquisarMarcacoes/")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<MarcacaoConsulta> recuperarProfissionalPorId(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
+    public List<MarcacaoConsulta> pesquisarMarcacoes(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
     	
     	Profissional profissional = mapper.readValue(objeto.get("profissional").toString(), Profissional.class);
     	Date data = mapper.readValue(objeto.get("data").toString(), Date.class);
     	
         return repository.recuperarAgendamentos(profissional.getId(), data);
+    }
+    
+    @POST
+    @Path("/desmarcarConsulta/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response desmarcarConsulta (JSONObject objeto) throws Exception {
+    	
+    	Long idMarcacaoConsulta = mapper.readValue(objeto.get("idMarcacaoConsulta").toString(), Long.class);
+    	
+		Response.ResponseBuilder builder = null;
+		
+		try {
+		
+	    	MarcacaoConsulta consulta = repository.findById(idMarcacaoConsulta);
+	    	
+	    	consulta.setMarcado(Boolean.FALSE);
+	    	registration.editar(consulta);
+	    	
+	    	builder = Response.ok();
+		
+		 } catch (Exception e) {
+	         Map<String, String> responseObj = new HashMap<>();
+	         responseObj.put("error", e.getMessage());
+	         builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
+			 
+		 }
+		
+		return builder.build();
+    	
+        
     }
 
     
