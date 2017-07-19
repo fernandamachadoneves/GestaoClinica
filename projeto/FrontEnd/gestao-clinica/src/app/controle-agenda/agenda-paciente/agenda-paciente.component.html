@@ -1,3 +1,30 @@
-<p>
-  agenda-paciente works!
-</p>
+<div class="col s12">
+  <div class="row">
+    <div class="input-field col s6">
+        <input id="nomePaciente" name="nomePaciente" type="text" #pac (change)="selecionouPaciente($event, pac.value)"
+          name="interestsAutoComplete" materialize="autocomplete" [materializeParams]="getAutocompleteParams()">
+        <label>Paciente</label>  
+    </div>
+  </div>
+  <a *ngIf="exibirPesquisar"  class="waves-effect waves-light btn" (click)="pesquisar()">Pesquisar</a>
+</div>
+
+<table class="responsive-table" *ngIf="listConsultas.length > 0" >
+  <thead>
+    <tr>
+        <th>Dia</th>
+        <th>Horario</th>
+        <th>Médico</th>
+        <th></th>
+    </tr>
+  </thead>
+
+  <tbody *ngFor="let item of listConsultas">
+    <tr>
+      <td>{{item.dataConsulta | date:"dd/MM/yyyy"}}</td>
+      <td>{{item.horario}}</td>
+      <td>{{item.profissional.nome}}</td>
+      <td><a class="waves-effect waves-light btn red" (click)="desmarcar()">Desmarcar</a></td>
+    </tr>
+  </tbody>
+</table>

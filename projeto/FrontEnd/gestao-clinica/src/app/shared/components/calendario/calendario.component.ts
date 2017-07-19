@@ -39,8 +39,6 @@ myDatePickerOptions: IMyOptions = {
   }
 
   ngOnChanges() {  
-    debugger
-    console.log('ngOnChanges: '+  this.idProfissional);
     this.myDatePickerOptions.disableWeekdays = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
     this._profissionalService.recuperarConfigProfissional(this.idProfissional).then(
       result => {

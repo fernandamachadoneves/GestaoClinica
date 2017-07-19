@@ -14,6 +14,7 @@ export class MarcacaoConsultaService {
   private urlMarcarConsulta = environment.context + '/GestaoClinica-web/rest/marcacaoConsulta/';
   private urlDesmarcarConsulta= environment.context + '/GestaoClinica-web/rest/marcacaoConsulta/desmarcarConsulta';
   private urlPesquisarMarcacoes = environment.context + '/GestaoClinica-web/rest/marcacaoConsulta/pesquisarMarcacoes';
+  private urlPesquisarMarcacoesPaciente = environment.context + '/GestaoClinica-web/rest/marcacaoConsulta/pesquisarMarcacoesPorPaciente';
 
   constructor(private http: Http) { }
 
@@ -51,6 +52,18 @@ export class MarcacaoConsultaService {
     let options = new RequestOptions({ headers: headers });
     return this.http.post(this.urlDesmarcarConsulta, jsonPost,
       options).map((res: Response) => res);
+  }
+
+  pesquisarAgendamentosPaciente(idPaciente: number){
+
+    let jsonPost = { "idPaciente": JSON.stringify(idPaciente)
+    }
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+
+    return this.http.post(this.urlPesquisarMarcacoesPaciente, jsonPost,
+      options).map(this.extractData);
   }
 
   private extractData(res: Response) {
