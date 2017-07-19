@@ -30,7 +30,6 @@ export class PacienteCadastroComponent implements OnInit {
     private _pacienteListarService: PacienteListarService) { }
 
   ngOnInit() {
-    debugger
     this.paciente = new Paciente();
 
     this.subscription = this.route.params.subscribe(

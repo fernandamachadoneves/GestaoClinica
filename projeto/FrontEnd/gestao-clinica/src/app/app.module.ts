@@ -1,3 +1,5 @@
+import { MedicamentoListarService } from './medicamentos/medicamentoListar.service';
+import { MedicamentoService } from './shared/service/medicamento.service';
 import { MarcacaoConsultaService } from './shared/service/marcacaoConsulta.service';
 import { PacienteService } from './shared/service/paciente.service';
 import { PacienteListarService } from './paciente/pacienteListar.service';
@@ -26,6 +28,13 @@ import { MaterializeDirective } from 'angular2-materialize';
 import { CalendarioComponent } from './shared/components/calendario/calendario.component';
 import { PacienteCadastroComponent } from './paciente/paciente-cadastro/paciente-cadastro.component';
 import { PacienteDetailComponent } from './paciente/paciente-detail/paciente-detail.component';
+import { AtendimentoComponent } from './atendimento/atendimento.component';
+import { ProntuarioComponent } from './prontuario/prontuario.component';
+import { ExamesComponent } from './exames/exames.component';
+import { ReceitasComponent } from './receitas/receitas.component';
+import { MedicamentosComponent } from './medicamentos/medicamentos.component';
+import { MedicamentoCadastroComponent } from './medicamentos/medicamento-cadastro/medicamento-cadastro.component';
+import { MedicamentoDetailComponent } from './medicamentos/medicamento-detail/medicamento-detail.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +49,14 @@ import { PacienteDetailComponent } from './paciente/paciente-detail/paciente-det
     MaterializeDirective,
     CalendarioComponent,
     PacienteCadastroComponent,
-    PacienteDetailComponent
+    PacienteDetailComponent,
+    AtendimentoComponent,
+    ProntuarioComponent,
+    ExamesComponent,
+    ReceitasComponent,
+    MedicamentosComponent,
+    MedicamentoCadastroComponent,
+    MedicamentoDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +74,9 @@ import { PacienteDetailComponent } from './paciente/paciente-detail/paciente-det
     ConfiguracaoHorarioProfissionalService,
     PacienteListarService,
     PacienteService,
-    MarcacaoConsultaService
+    MarcacaoConsultaService,
+    MedicamentoService,
+    MedicamentoListarService
   ],
   bootstrap: [AppComponent]
 })

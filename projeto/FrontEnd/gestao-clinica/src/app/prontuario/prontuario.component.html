@@ -1,0 +1,21 @@
+<div class="row">
+
+  <div class="col s2">
+    <div class="collection">
+        <a class="collection-item"
+            routerLink="receita"
+            routerLinkActive="active">
+            Receitas
+        </a>
+        <a class="collection-item"
+            routerLink="exame"
+            routerLinkActive="active">
+            Exames
+        </a>
+    </div>
+  </div>
+      <div class="col s7">
+        <h5>  {{paciente.nome}} </h5>
+        <router-outlet></router-outlet>
+    </div>
+</div>

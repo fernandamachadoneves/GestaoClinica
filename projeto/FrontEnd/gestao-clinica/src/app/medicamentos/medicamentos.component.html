@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col s5">
+      <div class="row">
+       <div class="input-field col s10">
+          <input placeholder="Digite o nome do medicamento" id="first_name" type="text" [(ngModel)]="medicamentoPesquisa">
+        </div>
+        <div class="input-field col s2">
+            <a class="btn-floating" (click)="pesquisar()"><i class="material-icons">search</i></a>
+        </div>
+        </div>
+      <div class="collection" *ngFor="let medicamento of medicamentos">
+        <a class="collection-item"
+          [routerLink]="[medicamento.id]"
+          routerLinkActive="active">
+          {{ medicamento.nomeGenerico }}
+        </a>
+      </div>
+
+      <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large waves-effect waves-light green"
+          routerLink="novo">
+          <i class="material-icons">add</i>
+        </a>
+      </div>
+  </div>
+    
+    <div class="col s7">
+        <router-outlet></router-outlet>
+    </div>
+</div>

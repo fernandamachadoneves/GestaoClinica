@@ -4,6 +4,8 @@ import { PacienteService } from './../../shared/service/paciente.service';
 import { Paciente } from './../../shared/models/paciente';
 import { Component, OnInit } from '@angular/core';
 
+declare var Materialize:any;
+
 @Component({
   selector: 'app-agenda-paciente',
   templateUrl: './agenda-paciente.component.html',
@@ -54,9 +56,15 @@ export class AgendaPacienteComponent implements OnInit {
   }
 
   pesquisar(){
+    debugger
      this._marcacoesConsultaService.pesquisarAgendamentosPaciente(this.pacienteSelecionado.id).subscribe(
       marcacoes => {
-        this.listConsultas = marcacoes;
+        if (marcacoes!==null && marcacoes!=undefined && marcacoes.length > 0){
+          this.listConsultas = marcacoes;
+        } else {
+          //Materialize.toast('Paciente não possui nenhuma consulta agendada', 3000, "");
+          alert('Paciente não possui nenhuma consulta agendada');
+        }
     });
   }
 
