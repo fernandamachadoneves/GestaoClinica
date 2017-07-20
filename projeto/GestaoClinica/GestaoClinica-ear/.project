@@ -3,6 +3,7 @@
 	<name>GestaoClinica-ear</name>
 	<comment></comment>
 	<projects>
+		<project>GestaoClinica</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
