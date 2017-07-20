@@ -1,3 +1,6 @@
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { TipoDosagem } from './../shared/models/tipoDosagem';
+import { EnumService } from './../shared/service/enum.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +9,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./receitas.component.css']
 })
 export class ReceitasComponent implements OnInit {
+ 
+  tipoDosagemOptions = Array<TipoDosagem>();
+  dosagem: string;
 
-  constructor() { }
+  constructor(private _enumService: EnumService) { }
 
   ngOnInit() {
+    $('select').material_select();
+    this._enumService.getEnum('TipoDosagem').subscribe(tipos => this.tipoDosagemOptions = tipos);
   }
 
+  adicionarReceita(){
+    debugger
+     $('.modal').modal({
+       dismissible: true
+    }
+    );
+  }
 }

@@ -1,3 +1,24 @@
-<p>
-  receitas works!
-</p>
+<a  class="waves-effect waves-light btn" href="#modalReceita" (click)="adicionarReceita()">Adcionar Receita</a>
+
+
+<!-- Modal Structure -->
+  <div id="modalReceita" class="modal">
+    <div class="modal-content">
+      <h5>Agendar Consulta</h5>  
+        <select materialize="material_select" [materializeSelectOptions]="tipoDosagemOptions"
+            (change)="selecionouProfissinal($event, prof.value)" [(ngModel)]="dosagem">
+            <option value="" disabled selected>Selecione a dosagem</option>
+            <option *ngFor="let e of tipoDosagemOptions" [value]="e.type">{{e.descricao}}</option>
+        </select>
+    
+    
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="quantidade" type="text" class="validate" data-length="6">
+                <label>
+                 Quantidade
+                </label>
+            </div>
+        </div>        
+    </div>
+  </div>

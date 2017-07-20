@@ -1,4 +1,4 @@
-import { Medicanto } from './../models/medicamento';
+import { Medicamento} from './../models/medicamento';
 import { Paciente } from './../models/paciente';
 import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
@@ -53,7 +53,7 @@ export class MedicamentoService {
                     .map(this.extractData);
   }
 
-  add(medicamento: Medicanto){
+  add(medicamento: Medicamento){
     let jsonPost = { "medicamento": JSON.stringify(medicamento)
     }
     medicamento.ativo = true;
@@ -64,7 +64,7 @@ export class MedicamentoService {
       options).map((res: Response) => res);
   }
 
-  update(medicamento: Medicanto, idMedicamento: number){
+  update(medicamento: Medicamento, idMedicamento: number){
     
     medicamento.id = idMedicamento;
     medicamento.ativo = true;
@@ -77,7 +77,7 @@ export class MedicamentoService {
       options).map((res: Response) => res);
   }
 
-  remover(medicamento: Medicanto, idMedicamento: number){
+  remover(medicamento: Medicamento, idMedicamento: number){
     medicamento.id = idMedicamento;
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
