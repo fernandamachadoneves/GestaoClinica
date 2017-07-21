@@ -23,11 +23,12 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import br.com.puc.gestaoclinica.model.ItemReceita;
 import br.com.puc.gestaoclinica.model.Receita;
 
 // The @Stateless annotation eliminates the need for manual transaction demarcation
 @Stateless
-public class ReceitaRegistration {
+public class ItemReceitaRegistration {
 
     @Inject
     private Logger log;
@@ -36,17 +37,15 @@ public class ReceitaRegistration {
     private EntityManager em;
 
     @Inject
-    private Event<Receita> receitaEventSrc;
+    private Event<ItemReceita> itemReceitaEventSrc;
 
-    public Receita cadastrar(Receita receita) throws Exception {
-    	receita.setAtivo(Boolean.TRUE);
-        em.persist(receita);
-        receitaEventSrc.fire(receita);
-        return receita;
+    public void cadastrar(Receita receita, ItemReceita itemReceita) throws Exception {
+    	em.persist(itemReceita);
+    	itemReceitaEventSrc.fire(itemReceita);
     }
     
-    public void editar(Receita receita) throws Exception {
-        em.merge(receita);
-        receitaEventSrc.fire(receita);
+    public void editar(ItemReceita itemReceita) throws Exception {
+        em.merge(itemReceita);
+        itemReceitaEventSrc.fire(itemReceita);
     }
 }

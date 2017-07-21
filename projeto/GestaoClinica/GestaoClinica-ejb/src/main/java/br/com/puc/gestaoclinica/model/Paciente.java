@@ -39,7 +39,15 @@ public class Paciente implements Serializable {
 	private String telefone;
 	
 	private Boolean ativo;
-
+	
+	public Paciente (){
+		super();
+	}
+	
+	public Paciente (Long id){
+		super();
+		this.id = id;
+	}
 
 	public Long getId() {
 		return id;

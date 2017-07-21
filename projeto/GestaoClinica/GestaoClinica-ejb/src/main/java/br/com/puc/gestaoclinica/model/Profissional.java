@@ -46,7 +46,15 @@ public class Profissional implements Serializable {
 	private String telefone;
 	
 	private Boolean ativo;
-
+	
+	public Profissional(){
+		super();
+	}
+	
+	public Profissional(Long id){
+		super();
+		this.id = id;
+	}
 
 	public Long getId() {
 		return id;

@@ -44,7 +44,7 @@ public class MedicamentoRepository {
 		hql.append(" from Medicamento obj ");
 		hql.append(" where obj.nomeGenerico like :nome ");
 		hql.append(" and obj.ativo = :ativo");
-		hql.append(" order by obj.nome asc ");
+		hql.append(" order by obj.nomeGenerico asc ");
 		
 		try{
 			Query query = em.createQuery(hql.toString());

@@ -27,8 +27,10 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.validation.ValidationException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -40,10 +42,13 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.puc.gestaoclinica.data.ReceitaRepository;
+import br.com.puc.gestaoclinica.model.ItemReceita;
 import br.com.puc.gestaoclinica.model.MarcacaoConsulta;
 import br.com.puc.gestaoclinica.model.Paciente;
 import br.com.puc.gestaoclinica.model.Profissional;
 import br.com.puc.gestaoclinica.model.Receita;
+import br.com.puc.gestaoclinica.model.TipoDosagem;
+import br.com.puc.gestaoclinica.service.ItemReceitaRegistration;
 import br.com.puc.gestaoclinica.service.ReceitaRegistration;
 
 /**
@@ -51,7 +56,7 @@ import br.com.puc.gestaoclinica.service.ReceitaRegistration;
  * <p/>
  * This class produces a RESTful service to read/write the contents of the members table.
  */
-@Path("/paciente")
+@Path("/receita")
 @RequestScoped
 public class ReceitaResourceRESTService {
     @Inject
@@ -62,33 +67,53 @@ public class ReceitaResourceRESTService {
 
     @Inject
     ReceitaRegistration registration;
+    
+    @Inject
+    ItemReceitaRegistration itemReceitaRegistration;
  
     
     private static ObjectMapper mapper = new ObjectMapper();
     
-    @POST
-    @Path("/pesquisarReceitas/")
+    @GET
+    @Path("/pesquisarReceitas/{idPaciente:[0-9][0-9]*}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Receita> pesquisarReceitas(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
-    	
-    	Long idPaciente = mapper.readValue(objeto.get("idPaciente").toString(), Long.class);
+    public List<Receita> pesquisarReceitas(@PathParam("idPaciente") long idPaciente) throws JsonParseException, JsonMappingException, IOException {
     	
         return repository.recuperarReceitas(idPaciente);
     }
 
 
     @POST
+    @Path("/adicionar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response criarReceita(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
+
+    	Long idPaciente = mapper.readValue(objeto.get("idPaciente").toString(), Long.class);
+    	List<ItemReceita> itemReceita = mapper.readValue(objeto.get("itensReceita").toString(), mapper.getTypeFactory().constructCollectionType(List.class, ItemReceita.class));
     	
-    	Receita receita = mapper.readValue(objeto.get("receita").toString(), Receita.class);
+    	//Long idProfissional = mapper.readValue(objeto.get("idProfissional").toString(), Long.class);
+    	// TODO: Alterar quando recuperar o medico logado no sistema, retirar o valor fixo
+    	Long idProfissional = new Long(1);
+    	
+    	Receita receita = new Receita();
+    	receita.setAtivo(Boolean.TRUE);
+    	receita.setPaciente(new Paciente(idPaciente));
+    	receita.setProfissional(new Profissional(idProfissional));
+    	receita.setDataReceita(new Date());
 
         Response.ResponseBuilder builder = null;
 
         try {
 
-            registration.cadastrar(receita);
+            Receita receitaCriada = registration.cadastrar(receita);
+            
+            for (ItemReceita obj: itemReceita){
+            	obj.setReceita(receitaCriada);
+            	
+            	itemReceitaRegistration.cadastrar(receitaCriada, obj);
+            	
+            }
 
             // Create an "ok" response
             builder = Response.ok();
