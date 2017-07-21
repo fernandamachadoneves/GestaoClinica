@@ -8,6 +8,4 @@ export class Receita {
   paciente: Paciente;
   profissional: Profissional;
   ativo: boolean;
-  tipoDosagem: TipoDosagem;
-  quantidade: number;
 }

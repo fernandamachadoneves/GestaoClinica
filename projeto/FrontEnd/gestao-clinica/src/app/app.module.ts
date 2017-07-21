@@ -1,3 +1,4 @@
+import { ReceitaService } from './shared/service/receita.service';
 import { EnumService } from './shared/service/enum.service';
 import { MedicamentoListarService } from './medicamentos/medicamentoListar.service';
 import { MedicamentoService } from './shared/service/medicamento.service';
@@ -78,7 +79,8 @@ import { MedicamentoDetailComponent } from './medicamentos/medicamento-detail/me
     MarcacaoConsultaService,
     MedicamentoService,
     MedicamentoListarService,
-    EnumService
+    EnumService,
+    ReceitaService
   ],
   bootstrap: [AppComponent]
 })

@@ -9,6 +9,7 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class EnumService {
   private urlEnums: string = environment.domain + '/GestaoClinica-web/rest/enums/TipoDosagem';
+  private urlRecuperarTipoDosagemPorType: string = environment.domain + '/GestaoClinica-web/rest/enums/TipoDosagemPorType/:type';
 
   constructor(private http: Http) { }
 
@@ -20,6 +21,14 @@ export class EnumService {
     let options = new RequestOptions({ headers: headers });
     return this.http.get(url, options).map(this.extractData);
   }
+
+  recuperarTipoDosagemPorType(type: string){
+    let headers = new Headers();
+    let url = this.urlRecuperarTipoDosagemPorType.replace(':type', type.toString());
+    return this.http.get(url)
+                    .map(this.extractData);
+  }
+
 
   private extractData(res: Response) {
     let body = res.json();

@@ -1,4 +1,3 @@
-import { ReceitaCadastroComponent } from './receitas/receita-cadastro/receita-cadastro.component';
 import { MedicamentoDetailComponent } from './medicamentos/medicamento-detail/medicamento-detail.component';
 import { MedicamentoCadastroComponent } from './medicamentos/medicamento-cadastro/medicamento-cadastro.component';
 import { MedicamentosComponent } from './medicamentos/medicamentos.component';
@@ -46,7 +45,7 @@ const routes: Routes = [
   },
   { path: 'prontuario/:id', component: ProntuarioComponent,
     children: [
-    { path: 'receita', component: ReceitasComponent
+    { path: 'receita/:id', component: ReceitasComponent
   },
     { path: 'exame', component: ExamesComponent}
   ]},
