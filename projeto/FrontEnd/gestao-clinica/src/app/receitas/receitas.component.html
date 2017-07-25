@@ -6,6 +6,9 @@
       <tr>
           <th>Data Receita</th>
           <th>Médico Responsável</th>
+          <th></th>
+          <th></th>
+          <th></th>
       </tr>
     </thead>
 
@@ -13,6 +16,9 @@
       <tr>
         <td>{{item.dataReceita | date:"dd/MM/yyyy"}}</td>
         <td>{{item.profissional.nome}}</td>
+        <td><a class="waves-effect waves-light btn red" (click)="removerReceita()">Remover</a></td>
+        <td><a class="waves-effect waves-light btn" (click)="editarReceita()">Editar</a></td>
+        <td><i class="small material-icons" (click)="gerarReceita()">print</i></td>
       </tr>
     </tbody>
 </table>
@@ -63,8 +69,7 @@
 
     <div class="row">
       <div class="col s12">
-         <i class="material-icons"  (click)="adicionarItemReceita()">add_box</i>
-         <label for="icon_prefix">Adicionar Medicamento</label>
+        <a  (click)="adicionarItemReceita()"><i class="material-icons">add_box</i>Adicionar Medicamento</a>
       </div>
     </div>
 
