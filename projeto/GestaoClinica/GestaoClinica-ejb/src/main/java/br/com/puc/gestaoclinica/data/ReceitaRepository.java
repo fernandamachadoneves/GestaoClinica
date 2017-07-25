@@ -51,5 +51,21 @@ public class ReceitaRepository {
 			return null;
 		}
 	}
+    
+    public Receita recuperarReceitaPorId(Long idReceita){
+		StringBuilder hql = new StringBuilder("select obj ");
+		hql.append(" from Receita obj ");
+		hql.append(" where obj.id = :idReceita ");
+		
+		try{
+			Query query = em.createQuery(hql.toString());
+			query.setParameter("idReceita", idReceita);
+			
+			return (Receita) query.getSingleResult();
+			
+		}catch(Exception e){
+			return null;
+		}
+	}
 
 }

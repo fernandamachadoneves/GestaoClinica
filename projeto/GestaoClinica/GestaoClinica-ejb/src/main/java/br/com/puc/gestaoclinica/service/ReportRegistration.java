@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.com.puc.gestaoclinica.model.Receita;
 import br.com.puc.gestaoclinica.util.ReportUtil;
 
 @Stateless
@@ -45,13 +46,15 @@ public class ReportRegistration {
 		
 	}
 	
-	public Map<String, Object> gerarRelatorio(){
+	public Map<String, Object> gerarRelatorio(Receita receita){
 	
 		Map<String, Object> params = new HashMap<String, Object>();
 		
 		SimpleDateFormat dt = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy");
 		String dataImpressao = dt.format(new Date());
 		params.put("dataImpressao", dataImpressao);
+		params.put("paciente", receita.getPaciente().getNome());
+		params.put("medico", receita.getProfissional().getNome());
 		
 		return params;
 	}
