@@ -1,3 +1,4 @@
+import { RelatorioService } from './../shared/service/relatorio.service';
 import { MedicamentoService } from './../shared/service/medicamento.service';
 import { Medicamento } from './../shared/models/medicamento';
 import { ItemReceita } from './../shared/models/itemReceita';
@@ -34,7 +35,8 @@ export class ReceitasComponent implements OnInit {
   constructor(private _enumService: EnumService,
               private _receitaService: ReceitaService,
               private route: ActivatedRoute,
-              private _medicamentoService: MedicamentoService) { }
+              private _medicamentoService: MedicamentoService,
+              private _relatorioService: RelatorioService) { }
 
   getAutocompleteParams(){
     this.autoCompleteParams[0].data[""]=null;
@@ -149,6 +151,16 @@ export class ReceitasComponent implements OnInit {
 
       }
     );
+  }
 
+  gerarReceita() {
+    debugger
+    this._relatorioService.gerarRelatorio().subscribe(res => {
+      let link = document.createElement('a');
+      link.href = window.URL.createObjectURL(res);
+      let nomeArquivo = 'receitaMedica' + '.pdf';
+      link.download = nomeArquivo;
+      link.click();
+    });
   }
 }
