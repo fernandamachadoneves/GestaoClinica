@@ -17,6 +17,7 @@ export class ReceitaService {
   private urlPesquisarReceitas = environment.context + '/GestaoClinica-web/rest/receita/pesquisarReceitas/:idPaciente';
   private urlRecuperarItensPorIdReceita = environment.context + '/GestaoClinica-web/rest/receita/recuperarItensPorIdReceita/:idReceita';
   private urlEditarReceita = environment.context + '/GestaoClinica-web/rest/receita/editar';
+  private urlEditarItensReceita = environment.context + '/GestaoClinica-web/rest/receita/editarItens';
 
   constructor(private http: Http) { }
 
@@ -41,6 +42,17 @@ export class ReceitaService {
       headers.append('Content-Type', 'application/json');
       let options = new RequestOptions({ headers: headers });
       return this.http.post(this.urlEditarReceita, jsonPost,
+        options).map((res: Response) => res);
+  }
+
+  editarItensReceita(itensReceita: Array<ItemReceita>, idReceita: number){
+      let jsonPost = { "itensReceita": JSON.stringify(itensReceita),
+                       "idReceita": JSON.stringify(idReceita)
+      }
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      let options = new RequestOptions({ headers: headers });
+      return this.http.post(this.urlEditarItensReceita, jsonPost,
         options).map((res: Response) => res);
   }
 

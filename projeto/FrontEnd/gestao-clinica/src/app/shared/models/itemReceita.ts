@@ -9,4 +9,5 @@ export class ItemReceita {
   receita: Receita;
   medicamento: Medicamento;
   descricao: string;
+  ativo: boolean;
 }
