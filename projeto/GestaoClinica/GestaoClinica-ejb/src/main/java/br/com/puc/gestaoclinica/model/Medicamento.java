@@ -26,7 +26,7 @@ public class Medicamento implements Serializable {
 	private Long id;
 
 	@NotNull
-	private String nomeGenerico;
+	private String nomeGenerico; 
 
 	@NotNull
 	@NotEmpty
