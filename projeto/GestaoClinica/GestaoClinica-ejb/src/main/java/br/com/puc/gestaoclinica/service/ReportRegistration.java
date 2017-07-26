@@ -41,7 +41,7 @@ public class ReportRegistration {
 	
 	public void exportReport(Map<String, Object> parameters, HttpServletResponse response, HttpServletRequest request, String nomeRelatorio, Collection<?> list) throws Exception {
 		String jasperFile = request.getRealPath(REPORTS_DIR_PATH) + "\\" + nomeRelatorio;
-
+		response.addHeader("Access-Control-Allow-Origin", "*");
 		ReportUtil.execute(jasperFile, ReportUtil.TIPO_RELATORIO_PDF, parameters, list, nomeRelatorio, response);	
 		
 	}
@@ -51,10 +51,13 @@ public class ReportRegistration {
 		Map<String, Object> params = new HashMap<String, Object>();
 		
 		SimpleDateFormat dt = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy");
+		SimpleDateFormat formatar = new SimpleDateFormat("dd/MM/yyyy");
 		String dataImpressao = dt.format(new Date());
 		params.put("dataImpressao", dataImpressao);
 		params.put("paciente", receita.getPaciente().getNome());
 		params.put("medico", receita.getProfissional().getNome());
+		params.put("crm", receita.getProfissional().getCrm());
+		params.put("dataReceita", formatar.format(receita.getDataReceita()));
 		
 		return params;
 	}

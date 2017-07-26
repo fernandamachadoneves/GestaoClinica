@@ -1,7 +1,10 @@
 package br.com.puc.gestaoclinica.rest;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -18,9 +21,10 @@ import javax.ws.rs.core.Response;
 import org.json.simple.JSONObject;
 
 import br.com.puc.gestaoclinica.data.ReceitaRepository;
+import br.com.puc.gestaoclinica.model.ItemReceita;
 import br.com.puc.gestaoclinica.model.Receita;
-import br.com.puc.gestaoclinica.service.ReceitaRegistration;
 import br.com.puc.gestaoclinica.service.ReportRegistration;
+import br.com.puc.gestaoclinica.util.CORSResponseFilter;
 
 @Path("/relatorio")
 @RequestScoped
@@ -37,42 +41,23 @@ public class ReportRESTService {
     
     @Inject
     ReceitaRepository receitaRepository;
-
-    @POST
-    @Path("/gerarReceitaMedica")
-    @Produces("application/pdf")
-	public Response gerarAta(JSONObject objeto) throws Exception {
-		
-		Collection<?> list = null;
-//		
-//		Receita receita = receitaRepository.recuperarReceitaPorId(idReceita);
-//		
-//		Map<String, Object> param = registration.gerarRelatorio();
-//		
-	//	registration.RunReport(response, request, "receitaMedica.jasper", param, list);
-		
-		return Response.ok().header("Access-Control-Allow-Origin", "*")
-	            .header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization")
-	            .header("Access-Control-Allow-Credentials", "true")
-	            .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD")
-	            .header("Access-Control-Max-Age", "1209600").build();
-		
-	}
     
     @GET
-    @Path("/teste/{idReceita:[0-9][0-9]*}")
+    @Path("/gerarReceitaMedica/{idReceita:[0-9][0-9]*}")
     @Produces("application/pdf")
-	public Response teste(@PathParam("idReceita") long idReceita) throws Exception {
+	public Response gerarReceitaMedica(@PathParam("idReceita") long idReceita) throws Exception {
 		
-		Collection<?> list = null;
+		idReceita = 4;
 		
 		Receita receita = receitaRepository.recuperarReceitaPorId(idReceita);
 		
+		List<ItemReceita> itemReceita = receita.getItemReceita();
+	
 		Map<String, Object> param = registration.gerarRelatorio(receita);
+	
+		registration.RunReport(response, request, "receitaMedica.jasper", param, itemReceita);
 		
-		registration.RunReport(response, request, "receitaMedica.jasper", param, list);
-		
-		return Response.ok().header("Access-Control-Allow-Origin", "*").build();
+		return Response.ok().build();
 		
 	}
 }

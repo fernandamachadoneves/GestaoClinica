@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,18 +31,11 @@ public class ItemReceita implements Serializable {
 	@JoinColumn(name = "medicamento")
 	private Medicamento medicamento;
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "tipoDosagem")
-	private TipoDosagem tipoDosagem;
+	@Column(name = "descricao")
+	private String descricao;
 	
-	@Column(name = "quantidade")
-	private Integer quantidade;
-	
-	@Column(name = "dias")
-	private Integer dias;
-	
-	@Column(name = "frequencia")
-	private String frequencia;
+	@Column(name = "ativo")
+	private Boolean ativo;
 
 	public Long getId() {
 		return id;
@@ -52,38 +43,6 @@ public class ItemReceita implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public TipoDosagem getTipoDosagem() {
-		return tipoDosagem;
-	}
-
-	public void setTipoDosagem(TipoDosagem tipoDosagem) {
-		this.tipoDosagem = tipoDosagem;
-	}
-
-	public Integer getQuantidade() {
-		return quantidade;
-	}
-
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
-
-	public Integer getDias() {
-		return dias;
-	}
-
-	public void setDias(Integer dias) {
-		this.dias = dias;
-	}
-
-	public String getFrequencia() {
-		return frequencia;
-	}
-
-	public void setFrequencia(String frequencia) {
-		this.frequencia = frequencia;
 	}
 
 	public Medicamento getMedicamento() {
@@ -100,5 +59,21 @@ public class ItemReceita implements Serializable {
 
 	public void setReceita(Receita receita) {
 		this.receita = receita;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
 	}
 }

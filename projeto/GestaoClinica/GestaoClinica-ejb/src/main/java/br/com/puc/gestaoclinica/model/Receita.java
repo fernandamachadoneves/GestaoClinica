@@ -2,6 +2,7 @@ package br.com.puc.gestaoclinica.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @XmlRootElement
@@ -37,6 +41,10 @@ public class Receita implements Serializable {
 	
 	@Column(name = "ativo")
 	private Boolean ativo;
+	
+	@JsonBackReference
+	@OneToMany(mappedBy="receita")
+	private List<ItemReceita> itemReceita;
 	
 
 	public Long getId() {
@@ -79,4 +87,11 @@ public class Receita implements Serializable {
 		this.ativo = ativo;
 	}
 
+	public List<ItemReceita> getItemReceita() {
+		return itemReceita;
+	}
+
+	public void setItemReceita(List<ItemReceita> itemReceita) {
+		this.itemReceita = itemReceita;
+	}
 }

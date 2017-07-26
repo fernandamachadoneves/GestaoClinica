@@ -55,6 +55,7 @@ public class ReceitaRepository {
     public Receita recuperarReceitaPorId(Long idReceita){
 		StringBuilder hql = new StringBuilder("select obj ");
 		hql.append(" from Receita obj ");
+		hql.append(" join fetch obj.itemReceita itens");
 		hql.append(" where obj.id = :idReceita ");
 		
 		try{

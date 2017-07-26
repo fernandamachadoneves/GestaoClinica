@@ -16,33 +16,12 @@
  */
 package br.com.puc.gestaoclinica.rest;
 
-import java.util.Arrays;
-import java.util.List;
-
 import javax.enterprise.context.RequestScoped;
-import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-
-import br.com.puc.gestaoclinica.model.TipoDosagem;
 
 
 @Path("/enums")
 @RequestScoped
 public class EnumResourceRESTService {
 	
-	@GET
-	@Path("/TipoDosagem")
-	@Produces("application/json")
-	public List<TipoDosagem> categoria() throws Exception {
-		return Arrays.asList(TipoDosagem.values());
-	}
-	
-	@GET
-	@Path("/TipoDosagemPorType/{type}")
-	@Produces("application/json")
-	public TipoDosagem tipoDosagemPorType (@PathParam("type") String type) throws Exception {
-		return TipoDosagem.valueOf(type);
-	}
 }

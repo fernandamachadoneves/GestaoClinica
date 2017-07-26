@@ -47,7 +47,6 @@ import br.com.puc.gestaoclinica.model.MarcacaoConsulta;
 import br.com.puc.gestaoclinica.model.Paciente;
 import br.com.puc.gestaoclinica.model.Profissional;
 import br.com.puc.gestaoclinica.model.Receita;
-import br.com.puc.gestaoclinica.model.TipoDosagem;
 import br.com.puc.gestaoclinica.service.ItemReceitaRegistration;
 import br.com.puc.gestaoclinica.service.ReceitaRegistration;
 
