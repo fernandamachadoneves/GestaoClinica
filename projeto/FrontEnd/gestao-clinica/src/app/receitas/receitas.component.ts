@@ -119,8 +119,6 @@ export class ReceitasComponent implements OnInit {
                 this.itensReceita[i].medicamento = medicamentoSelecionado;
               }
             }
-          } else{
-            console.log('fdsfds');
           }
       },
       error => {

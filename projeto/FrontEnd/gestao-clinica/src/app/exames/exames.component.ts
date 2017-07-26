@@ -12,4 +12,10 @@ export class ExamesComponent implements OnInit {
   ngOnInit() {
   }
 
+  adicionarPedido(){
+    $('.modal').modal({
+       dismissible: true
+    });
+  }
+
 }

@@ -1,3 +1,20 @@
-<p>
-  exames works!
-</p>
+<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+  <a class="btn-floating btn-large waves-effect waves-light green" href="#modalPedidoExame" (click)="adicionarPedido()">
+    <i class="material-icons">add</i>
+  </a>
+</div>  
+
+<!-- Modal Pedido Exame -->
+
+  <div id="modalPedidoExame" class="modal">
+    <div class="row">
+      <div class="col s12">
+          <h5>Pedido Exame</h5>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <a class="modal-action waves-effect waves-green btn-flat" (click)="gravarPedido()">Gravar Pedido Exame</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+    </div>
+  </div>
