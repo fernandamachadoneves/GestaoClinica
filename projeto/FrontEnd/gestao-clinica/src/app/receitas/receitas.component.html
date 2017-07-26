@@ -41,12 +41,12 @@
       <div class="row">
           <div class="col s12">
             <div class="input-field col s3">
-              <input id="medGenerico" name="medGenerico" type="text" #med (change)="selecionouMedicamento($event, med.value, i)" [(ngModel)]="item.medicamento.nomeGenerico"
+              <input id="medGenerico" placeholder="Nome Medicamento" name="medGenerico" type="text" #med (change)="selecionouMedicamento($event, med.value, i)" [(ngModel)]="item.medicamento.nomeGenerico"
                 name="interestsAutoComplete" materialize="autocomplete" [materializeParams]="getAutocompleteParams()">
                 <label>Nome Genérico</label>  
             </div>
             <div class="input-field col s7">
-              <input id="descricao" type="text" class="validate" data-length="30" [(ngModel)]="item.descricao">
+              <input id="descricao" type="text" class="validate" data-length="30" [(ngModel)]="item.descricao" placeholder="Descrição">
               <label>Descrição</label>
             </div>
             <div class="input-field col s2">
