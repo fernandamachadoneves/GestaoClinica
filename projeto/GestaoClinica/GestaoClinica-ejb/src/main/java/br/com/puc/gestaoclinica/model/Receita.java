@@ -45,7 +45,6 @@ public class Receita implements Serializable {
 	@JsonBackReference
 	@OneToMany(mappedBy="receita")
 	private List<ItemReceita> itemReceita;
-	
 
 	public Long getId() {
 		return id;

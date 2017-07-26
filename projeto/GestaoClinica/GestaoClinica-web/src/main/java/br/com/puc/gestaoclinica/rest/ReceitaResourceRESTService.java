@@ -111,7 +111,7 @@ public class ReceitaResourceRESTService {
             for (ItemReceita obj: itemReceita){
             	obj.setReceita(receitaCriada);
             	
-            	itemReceitaRegistration.cadastrar(receitaCriada, obj);
+            	itemReceitaRegistration.cadastrar(obj, receita);
             	
             }
 
@@ -191,16 +191,20 @@ public class ReceitaResourceRESTService {
 
     	List<ItemReceita> itemReceita = mapper.readValue(objeto.get("itensReceita").toString(), mapper.getTypeFactory().constructCollectionType(List.class, ItemReceita.class));
     	
-    	Long idReceita = mapper.readValue(objeto.get("idReceita").toString(), Long.class);
+    	Receita receita = mapper.readValue(objeto.get("receita").toString(), Receita.class);
 
     	Response.ResponseBuilder builder = null;
     	
         try {
             for (ItemReceita obj: itemReceita){
-            	itemReceitaRegistration.editar(obj);
+            	if (obj.getId()==null) {            		
+            		itemReceitaRegistration.cadastrar(obj, receita);
+            	} else {
+            		itemReceitaRegistration.editar(obj, receita);
+            	}
             }
             
-            List<ItemReceita> listaBanco = repository.recuperarItensPorIdReceita(idReceita);
+            List<ItemReceita> listaBanco = repository.recuperarItensPorIdReceita(receita.getId());
             for (ItemReceita obj: listaBanco) {
             	Boolean continua = Boolean.FALSE;
             	for (ItemReceita obj2: itemReceita) {
@@ -210,7 +214,7 @@ public class ReceitaResourceRESTService {
             	}
             	if (!continua) {
             		obj.setAtivo(Boolean.FALSE);
-            		itemReceitaRegistration.editar(obj);
+            		itemReceitaRegistration.editar(obj, receita);
             	}
             }
 

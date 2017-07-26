@@ -39,12 +39,14 @@ public class ItemReceitaRegistration {
     @Inject
     private Event<ItemReceita> itemReceitaEventSrc;
 
-    public void cadastrar(Receita receita, ItemReceita itemReceita) throws Exception {
+    public void cadastrar(ItemReceita itemReceita, Receita receita) throws Exception {
+    	itemReceita.setReceita(receita);
     	em.persist(itemReceita);
     	itemReceitaEventSrc.fire(itemReceita);
     }
     
-    public void editar(ItemReceita itemReceita) throws Exception {
+    public void editar(ItemReceita itemReceita, Receita receita) throws Exception {
+    	itemReceita.setReceita(receita);
         em.merge(itemReceita);
         itemReceitaEventSrc.fire(itemReceita);
     }
