@@ -45,9 +45,9 @@ export class ReceitaService {
         options).map((res: Response) => res);
   }
 
-  editarItensReceita(itensReceita: Array<ItemReceita>, idReceita: number){
+  editarItensReceita(itensReceita: Array<ItemReceita>, receita: Receita){
       let jsonPost = { "itensReceita": JSON.stringify(itensReceita),
-                       "idReceita": JSON.stringify(idReceita)
+                       "receita": JSON.stringify(receita)
       }
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');

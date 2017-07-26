@@ -28,7 +28,7 @@ export class ReceitasComponent implements OnInit {
   listReceitas = new Array<Receita>();
   medicamentoItem;
   isNovo: boolean;
-  idReceita: number;
+  receita: Receita;
 
   private autoCompleteParams = [{'data': {}}];
 
@@ -107,35 +107,66 @@ export class ReceitasComponent implements OnInit {
   }
 
   selecionouMedicamento(event, medic, index){
+    debugger
     let medicamentoSelecionado: Medicamento;
     if (medic!==null && medic!== undefined){
       this._medicamentoService.recuperarMedicamentoPorNomeGenerico(medic).subscribe(
         result => {
           if (result!=null && result!=undefined){
             medicamentoSelecionado = result[0];
-          }
-          for (let i=0; i<this.itensReceita.length; i++){
-            if (i==index){
-              this.itensReceita[i].medicamento = medicamentoSelecionado;
+            for (let i=0; i<this.itensReceita.length; i++){
+              if (i==index){
+                this.itensReceita[i].medicamento = medicamentoSelecionado;
+              }
             }
+          } else{
+            console.log('fdsfds');
           }
-      });
+      },
+      error => {
+        medicamentoSelecionado = null;
+        for (let i=0; i<this.itensReceita.length; i++){
+          if (i==index){
+            this.itensReceita[i].medicamento = null;
+          }
+        }
+      }
+    );
+
     }
   }
 
   gravarReceita() {
     debugger
-    if (this.isNovo){
-      this._receitaService.addReceita(this.idPaciente, this.idProfissoinal, this.itensReceita).subscribe(
-        result=> {
-           this._receitaService.recuperarReceitaPorPaciente(this.idPaciente).subscribe(
-            lista => {
-              this.listReceitas = lista;
-            });
-      });
-    } else {
-      this._receitaService.editarItensReceita(this.itensReceita, this.idReceita).subscribe();
+    if (this.validarItens()){
+      if (this.isNovo){
+        this._receitaService.addReceita(this.idPaciente, this.idProfissoinal, this.itensReceita).subscribe(
+          result=> {
+            this._receitaService.recuperarReceitaPorPaciente(this.idPaciente).subscribe(
+              lista => {
+                this.listReceitas = lista;
+              });
+        });
+      } else {
+        this._receitaService.editarItensReceita(this.itensReceita, this.receita).subscribe();
+      }
+      $('.modal').modal('close');
     }
+  }
+
+  validarItens() {
+    debugger
+    let validacaoOk = true;
+    for (let i=0; i<this.itensReceita.length;i++){
+      if (this.itensReceita[i].medicamento==null || this.itensReceita[i].medicamento==undefined){
+        validacaoOk = false;
+         Materialize.toast('É obrigatório informar o medicamento do item ' + (i+1) , 4000, "");
+      } else if (this.itensReceita[i].descricao==null || this.itensReceita[i].descricao==undefined){
+        validacaoOk = false;
+         Materialize.toast('É obrigatório informar a descrição do item ' + (i+1) , 4000, "");
+      }
+    }
+    return validacaoOk;
   }
 
   gerarReceita(idReceita: number) {
@@ -148,11 +179,11 @@ export class ReceitasComponent implements OnInit {
     });
   }
 
-  editarReceita(idReceita: number){
-    this.idReceita = idReceita;
+  editarReceita(receita: Receita){
+    this.receita = receita;
     this.isNovo = false;
     $('.modal').modal({dismissible: true});
-    this._receitaService.recuperarItensPorIdReceita(idReceita).subscribe(
+    this._receitaService.recuperarItensPorIdReceita(receita.id).subscribe(
       result => {
         this.itensReceita = result;
         this.listMedicamentos = new Array();
