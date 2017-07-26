@@ -1,3 +1,4 @@
+import { Headers, RequestOptions } from '@angular/http';
 import { RelatorioService } from './../shared/service/relatorio.service';
 import { MedicamentoService } from './../shared/service/medicamento.service';
 import { Medicamento } from './../shared/models/medicamento';
@@ -25,6 +26,7 @@ export class ReceitasComponent implements OnInit {
   itensReceita: Array<ItemReceita>;
   listMedicamentos = new Array<Medicamento>();
   listReceitas = new Array<Receita>();
+  medicamentoItem;
 
   private autoCompleteParams = [{'data': {}}];
 
@@ -103,7 +105,6 @@ export class ReceitasComponent implements OnInit {
   }
 
   selecionouMedicamento(event, medic, index){
-    debugger
     let medicamentoSelecionado: Medicamento;
     if (medic!==null && medic!== undefined){
       this._medicamentoService.recuperarMedicamentoPorNomeGenerico(medic).subscribe(
@@ -121,7 +122,6 @@ export class ReceitasComponent implements OnInit {
   }
 
   gravarReceita(){
-    debugger
     this._receitaService.addReceita(this.idPaciente, this.idProfissoinal, this.itensReceita).subscribe(
       result => {
 
@@ -130,8 +130,6 @@ export class ReceitasComponent implements OnInit {
   }
 
   gerarReceita(idReceita: number) {
-    debugger
-    debugger
     this._relatorioService.gerarRelatorio(idReceita).subscribe(res => {
       let link = document.createElement('a');
       link.href = window.URL.createObjectURL(res);
@@ -139,5 +137,24 @@ export class ReceitasComponent implements OnInit {
       link.download = nomeArquivo;
       link.click();
     });
+  }
+
+  editarReceita(idReceita: number){
+    $('.modal').modal({dismissible: true});
+    this._receitaService.recuperarItensPorIdReceita(idReceita).subscribe(
+      result => {
+        this.itensReceita = result;
+        this.listMedicamentos = new Array();
+        this._medicamentoService.recuperarMedicamentos().then(
+          result => {
+              this.listMedicamentos = result;
+              $('select').material_select();
+          }
+        );
+    });
+  }
+
+  deletarReceita(receita: Receita){
+    this._receitaService.update(receita).subscribe();
   }
 }

@@ -15,11 +15,12 @@ export class ReceitaService {
 
   private urlAdicionarReceita = environment.context + '/GestaoClinica-web/rest/receita/adicionar';
   private urlPesquisarReceitas = environment.context + '/GestaoClinica-web/rest/receita/pesquisarReceitas/:idPaciente';
+  private urlRecuperarItensPorIdReceita = environment.context + '/GestaoClinica-web/rest/receita/recuperarItensPorIdReceita/:idReceita';
+  private urlEditarReceita = environment.context + '/GestaoClinica-web/rest/receita/editar';
 
   constructor(private http: Http) { }
 
   addReceita(idPaciente: number, idProfissional: number, itensReceita: Array<ItemReceita>) {
-    debugger
     let jsonPost = { "idPaciente": JSON.stringify(idPaciente),
             "idProfissional": JSON.stringify(idProfissional),
             "itensReceita": JSON.stringify(itensReceita)
@@ -29,6 +30,18 @@ export class ReceitaService {
     let options = new RequestOptions({ headers: headers });
     return this.http.post(this.urlAdicionarReceita, jsonPost,
       options).map((res: Response) => res);
+  }
+
+
+  update(receita: Receita){
+      receita.ativo = false;
+      let jsonPost = { "receita": JSON.stringify(receita)
+      }
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      let options = new RequestOptions({ headers: headers });
+      return this.http.post(this.urlEditarReceita, jsonPost,
+        options).map((res: Response) => res);
   }
 
   recuperarReceitaPorPaciente(idPaciente: number){
@@ -42,6 +55,13 @@ export class ReceitaService {
     let body = res.json();
 
     return body;
+  }
+
+  recuperarItensPorIdReceita(idReceita: number){
+    let headers = new Headers();
+    let url = this.urlRecuperarItensPorIdReceita.replace(':idReceita', idReceita.toString());
+    return this.http.get(url)
+                    .map(this.extractData);
   }
 
 }
