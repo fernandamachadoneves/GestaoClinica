@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import br.com.puc.gestaoclinica.model.ItemReceita;
 import br.com.puc.gestaoclinica.model.MarcacaoConsulta;
 import br.com.puc.gestaoclinica.model.Receita;
 
@@ -63,6 +64,22 @@ public class ReceitaRepository {
 			query.setParameter("idReceita", idReceita);
 			
 			return (Receita) query.getSingleResult();
+			
+		}catch(Exception e){
+			return null;
+		}
+	}
+    
+    public List<ItemReceita> recuperarItensPorIdReceita(Long idReceita){
+		StringBuilder hql = new StringBuilder("select obj ");
+		hql.append(" from ItemReceita obj ");
+		hql.append(" where obj.receita.id = :idReceita ");
+		
+		try{
+			Query query = em.createQuery(hql.toString());
+			query.setParameter("idReceita", idReceita);
+			
+			return (List<ItemReceita>) query.getResultList();
 			
 		}catch(Exception e){
 			return null;

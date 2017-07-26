@@ -186,4 +186,12 @@ public class ReceitaResourceRESTService {
 
         return builder.build();
     }
+    
+    @GET
+    @Path("/recuperarItensPorIdReceita/{idReceita:[0-9][0-9]*}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ItemReceita> recuperarItensPorIdReceita(@PathParam("idReceita") long idReceita) throws JsonParseException, JsonMappingException, IOException {
+    	
+        return repository.recuperarItensPorIdReceita(idReceita);
+    }
 }
