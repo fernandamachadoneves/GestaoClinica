@@ -35,6 +35,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.json.simple.ItemList;
 import org.json.simple.JSONObject;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -172,11 +173,49 @@ public class ReceitaResourceRESTService {
 
             // Create an "ok" response
             builder = Response.ok();
-        } catch (ValidationException e) {
-            // Handle the unique constrain violation
+        } catch (Exception e) {
+            // Handle generic exceptions
             Map<String, String> responseObj = new HashMap<>();
-            responseObj.put("email", "Email taken");
-            builder = Response.status(Response.Status.CONFLICT).entity(responseObj);
+            responseObj.put("error", e.getMessage());
+            builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
+        }
+
+        return builder.build();
+    }
+    
+    @POST
+    @Path("/editarItens")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editarItens(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
+
+    	List<ItemReceita> itemReceita = mapper.readValue(objeto.get("itensReceita").toString(), mapper.getTypeFactory().constructCollectionType(List.class, ItemReceita.class));
+    	
+    	Long idReceita = mapper.readValue(objeto.get("idReceita").toString(), Long.class);
+
+    	Response.ResponseBuilder builder = null;
+    	
+        try {
+            for (ItemReceita obj: itemReceita){
+            	itemReceitaRegistration.editar(obj);
+            }
+            
+            List<ItemReceita> listaBanco = repository.recuperarItensPorIdReceita(idReceita);
+            for (ItemReceita obj: listaBanco) {
+            	Boolean continua = Boolean.FALSE;
+            	for (ItemReceita obj2: itemReceita) {
+            		if (obj.getId().equals(obj2.getId())) {
+            			continua = Boolean.TRUE;
+            		}
+            	}
+            	if (!continua) {
+            		obj.setAtivo(Boolean.FALSE);
+            		itemReceitaRegistration.editar(obj);
+            	}
+            }
+
+            // Create an "ok" response
+            builder = Response.ok();
         } catch (Exception e) {
             // Handle generic exceptions
             Map<String, String> responseObj = new HashMap<>();

@@ -47,8 +47,6 @@ public class ReportRESTService {
     @Produces("application/pdf")
 	public Response gerarReceitaMedica(@PathParam("idReceita") long idReceita) throws Exception {
 		
-		idReceita = 4;
-		
 		Receita receita = receitaRepository.recuperarReceitaPorId(idReceita);
 		
 		List<ItemReceita> itemReceita = receita.getItemReceita();

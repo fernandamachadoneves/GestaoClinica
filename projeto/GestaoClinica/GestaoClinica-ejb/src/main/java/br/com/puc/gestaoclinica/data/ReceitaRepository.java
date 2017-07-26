@@ -74,10 +74,12 @@ public class ReceitaRepository {
 		StringBuilder hql = new StringBuilder("select obj ");
 		hql.append(" from ItemReceita obj ");
 		hql.append(" where obj.receita.id = :idReceita ");
+		hql.append(" and obj.ativo = :ativo");
 		
 		try{
 			Query query = em.createQuery(hql.toString());
 			query.setParameter("idReceita", idReceita);
+			query.setParameter("ativo", Boolean.TRUE);
 			
 			return (List<ItemReceita>) query.getResultList();
 			
