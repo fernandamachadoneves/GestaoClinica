@@ -9,18 +9,18 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class RelatorioService {
 
-  private urlGerarReceita = environment.context + '/GestaoClinica-web/rest/relatorio/gerarReceitaMedica';
+  private urlGerarReceita = environment.context + '/GestaoClinica-web/rest/relatorio/gerarReceitaMedica/:idReceita';
 
   constructor(private http: Http) { }
 
-  gerarRelatorio() {
-    let jsonPost = { }
-
+  gerarRelatorio(idReceita: number) {
+    debugger
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
+    let url = this.urlGerarReceita.replace(':idReceita', idReceita.toString());
 
     let options = new RequestOptions({ headers: headers, responseType: ResponseContentType.Blob});
-    return this.http.post(this.urlGerarReceita, jsonPost, options)
+    return this.http.get(url, options)
       .map((res) => {
         return new Blob([res.blob()], { type: 'application/pdf'})
       });

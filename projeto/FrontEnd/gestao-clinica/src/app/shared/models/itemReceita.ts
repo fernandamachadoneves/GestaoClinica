@@ -8,8 +8,5 @@ export class ItemReceita {
   id: number;
   receita: Receita;
   medicamento: Medicamento;
-  tipoDosagem: TipoDosagem;
-  quantidade: number;
-  dias: number;
-  frequencia: string;
+  descricao: string;
 }

@@ -18,7 +18,7 @@
         <td>{{item.profissional.nome}}</td>
         <td><a class="waves-effect waves-light btn red" (click)="removerReceita()">Remover</a></td>
         <td><a class="waves-effect waves-light btn" (click)="editarReceita()">Editar</a></td>
-        <td><i class="small material-icons" (click)="gerarReceita()">print</i></td>
+        <td><i class="small material-icons" (click)="gerarReceita(item.id)">print</i></td>
       </tr>
     </tbody>
 </table>
@@ -42,25 +42,12 @@
                 name="interestsAutoComplete" materialize="autocomplete" [materializeParams]="getAutocompleteParams()">
                 <label>Nome Genérico</label>  
             </div>
-
-            <div class="input-field col s3">
-              <select materialize="material_select" [materializeSelectOptions]="tipoDosagemOptions"
-                    #tipoDos (change)="selecionouTipoDosagem($event, tipoDos.value, i)">
-                    <option value="" disabled selected>Selecione a dosagem</option>
-                    <option *ngFor="let e of tipoDosagemOptions" [value]="e.type">{{e.descricao}}</option>
-              </select>
-             </div>
-            <div class="input-field col s2">
-              <input id="quantidade" type="text" class="validate" data-length="4" [(ngModel)]="item.quantidade">
-              <label>Quantidade</label>
+            <div class="input-field col s7">
+              <input id="descricao" type="text" class="validate" data-length="30" [(ngModel)]="item.descricao">
+              <label>Descrição</label>
             </div>
             <div class="input-field col s2">
-              <input id="dias" type="text" class="validate" data-length="3" [(ngModel)]="item.dias">
-              <label>Dias</label>
-            </div>
-            <div class="input-field col s2">
-              <input id="dias" type="text" class="validate" data-length="3" [(ngModel)]="item.frequencia">
-              <label>Frequência</label>
+              <i class="material-icons">delete</i>
             </div>
           </div>
       </div>

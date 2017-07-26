@@ -18,13 +18,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReceitasComponent implements OnInit {
  
-  tipoDosagemOptions = Array<TipoDosagem>();
-  dosagem: string;
-  quantidade: number;
-  dias: number;
   idPaciente: number;
   idProfissoinal: number;
-  frequencia: number;
+  descricao: number;
   private subscription: Subscription;
   itensReceita: Array<ItemReceita>;
   listMedicamentos = new Array<Medicamento>();
@@ -66,9 +62,6 @@ export class ReceitasComponent implements OnInit {
   adicionarReceita(){
     debugger
     this.itensReceita = new Array<ItemReceita>();
-    $('select').material_select();
-    this._enumService.getEnum('TipoDosagem').subscribe(tipos => this.tipoDosagemOptions = tipos);
-    debugger
      $('.modal').modal({
        dismissible: true
     }
@@ -100,9 +93,8 @@ export class ReceitasComponent implements OnInit {
         itemReceita = this.itensReceita[i];
       }
     }
-    if (itemReceita.dias==null || itemReceita.dias==undefined || itemReceita.frequencia==null || itemReceita.frequencia==undefined
-        || itemReceita.medicamento==null || itemReceita.medicamento==undefined || itemReceita.quantidade==null || itemReceita.quantidade==undefined
-        || itemReceita.tipoDosagem==null || itemReceita.tipoDosagem==undefined) {
+    if (itemReceita.descricao==null || itemReceita.descricao==undefined
+        || itemReceita.medicamento==null || itemReceita.medicamento==undefined) {
 
         Materialize.toast('É obrigatório informar os dados dos itens da receita para adicionar mais um', 4000, "");
     } else {
@@ -128,22 +120,6 @@ export class ReceitasComponent implements OnInit {
     }
   }
 
-  selecionouTipoDosagem(event, typeTipoDosagem, index){
-    debugger
-    if (typeTipoDosagem!==null && typeTipoDosagem!== undefined){
-      this._enumService.recuperarTipoDosagemPorType(typeTipoDosagem).subscribe(
-        result => {
-          for (let i=0; i<this.itensReceita.length; i++){
-            if (i==index){
-              this.itensReceita[i].tipoDosagem = result;
-            }
-          }
-        }
-      )
-
-    }
-  }
-
   gravarReceita(){
     debugger
     this._receitaService.addReceita(this.idPaciente, this.idProfissoinal, this.itensReceita).subscribe(
@@ -153,9 +129,10 @@ export class ReceitasComponent implements OnInit {
     );
   }
 
-  gerarReceita() {
+  gerarReceita(idReceita: number) {
     debugger
-    this._relatorioService.gerarRelatorio().subscribe(res => {
+    debugger
+    this._relatorioService.gerarRelatorio(idReceita).subscribe(res => {
       let link = document.createElement('a');
       link.href = window.URL.createObjectURL(res);
       let nomeArquivo = 'receitaMedica' + '.pdf';
