@@ -1,3 +1,4 @@
+import { Medicamento} from './../models/medicamento';
 import { Paciente } from './../models/paciente';
 import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
@@ -7,28 +8,33 @@ import 'rxjs/add/operator/toPromise';
 
 
 @Injectable()
-export class EnumService {
-  private urlEnums: string = environment.domain + '/GestaoClinica-web/rest/enums/TipoResultadoExame';
-  private urlRecuperarTipoResultadoPorType: string = environment.domain + '/GestaoClinica-web/rest/enums/TipoResultadoPorType/:type';
+export class ExameService {
+
+  private urlRecuperarExames = environment.context + '/GestaoClinica-web/rest/exame/';
+  private urlRecuperarExamePorNome = environment.context + '/GestaoClinica-web/rest/exame/pesquisar/:nome';
 
   constructor(private http: Http) { }
 
-  getEnum(name: string): Observable<any> {
-    debugger
-    let url = this.urlEnums;
+  recuperarExames(): Promise<any> {
+    debugger;
+    let url = this.urlRecuperarExames;
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     let options = new RequestOptions({ headers: headers });
-    return this.http.get(url, options).map(this.extractData);
+
+    return this.http.get(url, options)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
   }
 
-  recuperarTipoResultadoPorType(type: string){
+
+  recuperarExamePorNome(nome: string){
     let headers = new Headers();
-    let url = this.urlRecuperarTipoResultadoPorType.replace(':type', type.toString());
+    let url = this.urlRecuperarExamePorNome.replace(':nome', nome.toString());
     return this.http.get(url)
                     .map(this.extractData);
   }
-
 
   private extractData(res: Response) {
     let body = res.json();

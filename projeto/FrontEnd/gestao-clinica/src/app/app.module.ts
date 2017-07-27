@@ -1,3 +1,5 @@
+import { PedidoExameService } from './shared/service/pedidoExame.service.';
+import { ExameService } from './shared/service/exame.service';
 import { RelatorioService } from './shared/service/relatorio.service';
 import { ReceitaService } from './shared/service/receita.service';
 import { EnumService } from './shared/service/enum.service';
@@ -82,7 +84,9 @@ import { MedicamentoDetailComponent } from './medicamentos/medicamento-detail/me
     MedicamentoListarService,
     EnumService,
     ReceitaService,
-    RelatorioService
+    RelatorioService,
+    ExameService,
+    PedidoExameService
   ],
   bootstrap: [AppComponent]
 })

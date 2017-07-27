@@ -6,9 +6,11 @@ import { TipoDosagem } from './tipoDosagem';
 import { Paciente } from './paciente';
 import { Profissional } from './profissional';
 
-export class ItemReceita {
+export class ItemPedidoExame {
   id: number;
   pedidoExame: PedidoExame;
   exame: Exame;
+  ativo: boolean;
+  justificativa: string;
   resultado: string;
 }

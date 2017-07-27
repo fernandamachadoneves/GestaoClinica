@@ -45,9 +45,8 @@ const routes: Routes = [
   },
   { path: 'prontuario/:id', component: ProntuarioComponent,
     children: [
-    { path: 'receita/:id', component: ReceitasComponent
-  },
-    { path: 'exame', component: ExamesComponent}
+    { path: 'receita/:id', component: ReceitasComponent},
+    { path: 'exame/:id', component: ExamesComponent}
   ]},
   // otherwise redirect to home
   { path: '**', redirectTo: '' }
