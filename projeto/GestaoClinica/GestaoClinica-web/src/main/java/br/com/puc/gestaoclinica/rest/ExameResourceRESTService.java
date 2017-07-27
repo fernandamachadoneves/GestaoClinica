@@ -16,26 +16,45 @@
  */
 package br.com.puc.gestaoclinica.rest;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
-import br.com.puc.gestaoclinica.model.TipoResultadoExame;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.puc.gestaoclinica.data.ExameRepository;
+import br.com.puc.gestaoclinica.model.Exame;
+import br.com.puc.gestaoclinica.model.Medicamento;
 
-@Path("/enums")
+@Path("/exame")
 @RequestScoped
-public class EnumResourceRESTService {
-	
-	@GET
-	@Path("/TipoResultadoExame")
-	@Produces("application/json")
-	public List<TipoResultadoExame> tiposResultado() throws Exception {
-		return Arrays.asList(TipoResultadoExame.values());
-	}
-	
+public class ExameResourceRESTService {
+    @Inject
+    private Logger log;
+
+    @Inject
+    private ExameRepository repository;
+    
+    private static ObjectMapper mapper = new ObjectMapper();
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Exame> listarTodosExames() {
+        return repository.findAllOrderedByName();
+    }
+
+    
+    @GET
+    @Path("/pesquisar/{nome}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Medicamento> recuperarExamePorNome(@PathParam("nome") String nome) {
+        return repository.recuperarExamePorNome(nome);
+    }
 }

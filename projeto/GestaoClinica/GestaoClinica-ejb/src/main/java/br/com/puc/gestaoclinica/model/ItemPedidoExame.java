@@ -1,6 +1,7 @@
 package br.com.puc.gestaoclinica.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,8 +32,20 @@ public class ItemPedidoExame implements Serializable {
 	@JoinColumn(name = "exame")
 	private Exame exame;
 	
+	@Column(name = "justificativa")
+	private String justificativa;
+	
 	@Column(name = "resultado")
 	private String resultado;
+	
+	@Column(name = "dataRealizacao")
+	private Date dataRealizacao;
+	
+	@Column(name = "observacao")
+	private String observacao;
+	
+	@Column(name = "ativo")
+	private Boolean ativo;
 
 	public Long getId() {
 		return id;
@@ -65,6 +78,20 @@ public class ItemPedidoExame implements Serializable {
 	public void setResultado(String resultado) {
 		this.resultado = resultado;
 	}
-	
-	
+
+	public String getJustificativa() {
+		return justificativa;
+	}
+
+	public void setJustificativa(String justificativa) {
+		this.justificativa = justificativa;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
 }
