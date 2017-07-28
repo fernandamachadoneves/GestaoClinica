@@ -47,7 +47,7 @@ public class ReportRegistration {
 		
 	}
 	
-	public Map<String, Object> gerarRelatorio(Receita receita){
+	public Map<String, Object> gerarRelatorio(Receita receita){ 
 	
 		Map<String, Object> params = new HashMap<String, Object>();
 		
