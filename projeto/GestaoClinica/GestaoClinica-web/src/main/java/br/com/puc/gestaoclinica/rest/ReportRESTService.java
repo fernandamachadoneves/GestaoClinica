@@ -20,7 +20,9 @@ import javax.ws.rs.core.Response;
 
 import org.json.simple.JSONObject;
 
+import br.com.puc.gestaoclinica.data.PedidoExameRepository;
 import br.com.puc.gestaoclinica.data.ReceitaRepository;
+import br.com.puc.gestaoclinica.model.ItemPedidoExame;
 import br.com.puc.gestaoclinica.model.ItemReceita;
 import br.com.puc.gestaoclinica.model.Receita;
 import br.com.puc.gestaoclinica.service.ReportRegistration;
@@ -42,6 +44,9 @@ public class ReportRESTService {
     @Inject
     ReceitaRepository receitaRepository;
     
+    @Inject
+    PedidoExameRepository pedidoExameRepository;
+    
     @GET
     @Path("/gerarReceitaMedica/{idReceita:[0-9][0-9]*}")
     @Produces("application/pdf")
@@ -54,6 +59,21 @@ public class ReportRESTService {
 		Map<String, Object> param = registration.gerarRelatorio(receita);
 	
 		registration.RunReport(response, request, "receitaMedica.jasper", param, itemReceita);
+		
+		return Response.ok().build();
+		
+	}
+    
+    @GET
+    @Path("/gerarResultadoExame/{idItemPedidoExame:[0-9][0-9]*}")
+    @Produces("application/pdf")
+	public Response gerarResultadoExame(@PathParam("idItemPedidoExame") long idItemPedidoExame) throws Exception {
+		
+		ItemPedidoExame pedidoExame = pedidoExameRepository.recuperarItemPorIdPedidoExame(idItemPedidoExame);
+	
+		Map<String, Object> param = registration.gerarResultadoExame(pedidoExame);
+	
+		registration.RunReport(response, request, "resultadoExame.jasper", param, null);
 		
 		return Response.ok().build();
 		

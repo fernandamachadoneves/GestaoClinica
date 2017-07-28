@@ -86,5 +86,22 @@ public class PedidoExameRepository {
 			return null;
 		}
 	}
+    
+    public ItemPedidoExame recuperarItemPorIdPedidoExame(Long idItemPedido){
+		StringBuilder hql = new StringBuilder("select obj ");
+		hql.append(" from ItemPedidoExame obj ");
+		hql.append(" where obj.id = :idItemPedido ");
+		hql.append(" and obj.ativo = :ativo ");
+		try{
+			Query query = em.createQuery(hql.toString());
+			query.setParameter("idItemPedido", idItemPedido);
+			query.setParameter("ativo", Boolean.TRUE);
+			
+			return (ItemPedidoExame) query.getSingleResult();
+			
+		}catch(Exception e){
+			return null;
+		}
+	}
 
 }

@@ -77,6 +77,14 @@ public class PedidoExameResourceRESTService {
     	
         return repository.recuperarPedidos(idPaciente);
     }
+    
+    @GET
+    @Path("/recuperarItemPedidoExamePorId/{idItemPedido:[0-9][0-9]*}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ItemPedidoExame> recuperarItemPedidoExamePorId(@PathParam("idItemPedido") long idItemPedido) throws JsonParseException, JsonMappingException, IOException {
+    	
+        return repository.recuperarItensPorIdPedidoExame(idItemPedido);
+    }
 
 
     @POST
