@@ -93,7 +93,6 @@ public class PedidoExameResourceRESTService {
     	Long idProfissional = new Long(1);
     	
     	PedidoExame pedido = new PedidoExame();
-    	pedido.setAtivo(Boolean.TRUE);
     	pedido.setPaciente(new Paciente(idPaciente));
     	pedido.setProfissional(new Profissional(idProfissional));
     	pedido.setDataPedido(new Date());
@@ -131,14 +130,16 @@ public class PedidoExameResourceRESTService {
     @Path("/excluir")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response excluirPedidoExame(PedidoExame pedidoExame) {
+    public Response excluirItemPedidoExame(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
+    	
+    	ItemPedidoExame itemPedidoExame = mapper.readValue(objeto.get("itemPedidoExame").toString(), ItemPedidoExame.class);
 
-    	pedidoExame.setAtivo(Boolean.FALSE);
+    	itemPedidoExame.setAtivo(Boolean.FALSE);
 
     	Response.ResponseBuilder builder = null;
     	
         try {
-            registration.editar(pedidoExame);
+            itemPedidoRegistration.editarResultadoExame(itemPedidoExame);
 
             // Create an "ok" response
             builder = Response.ok();
@@ -157,14 +158,14 @@ public class PedidoExameResourceRESTService {
     @Path("/editar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response editarReceita(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
+    public Response editarPedidoExame(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
 
-        PedidoExame pedidoExame = mapper.readValue(objeto.get("pedidoExame").toString(), PedidoExame.class);
+        ItemPedidoExame itemPedidoExame = mapper.readValue(objeto.get("itemPedidoExame").toString(), ItemPedidoExame.class);
 
     	Response.ResponseBuilder builder = null;
     	
         try {
-            registration.editar(pedidoExame);
+            itemPedidoRegistration.editarResultadoExame(itemPedidoExame);
 
             // Create an "ok" response
             builder = Response.ok();
@@ -231,5 +232,31 @@ public class PedidoExameResourceRESTService {
     public List<ItemPedidoExame> recuperarItensPorIdReceita(@PathParam("idPedidoExame") long idPedidoExame) throws JsonParseException, JsonMappingException, IOException {
     	
         return repository.recuperarItensPorIdPedidoExame(idPedidoExame);
+    }
+    
+    @POST
+    @Path("/lancarResultadoExame")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response lancarResultadoExame(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
+    	
+    	ItemPedidoExame itemPedidoExame = mapper.readValue(objeto.get("itemPedidoExame").toString(), ItemPedidoExame.class);
+
+    	Response.ResponseBuilder builder = null;
+    	
+        try {
+            
+        	itemPedidoRegistration.editarResultadoExame(itemPedidoExame);
+
+            // Create an "ok" response
+            builder = Response.ok();
+        } catch (Exception e) {
+            // Handle generic exceptions
+            Map<String, String> responseObj = new HashMap<>();
+            responseObj.put("error", e.getMessage());
+            builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
+        }
+
+        return builder.build();
     }
 }

@@ -39,9 +39,6 @@ public class PedidoExame implements Serializable {
 	@JoinColumn(name = "profissional")
 	private Profissional profissional;
 	
-	@Column(name = "ativo")
-	private Boolean ativo;
-	
 	@JsonBackReference
 	@OneToMany(mappedBy="pedidoExame")
 	private List<ItemPedidoExame> itemPedidoExame;
@@ -68,14 +65,6 @@ public class PedidoExame implements Serializable {
 
 	public void setProfissional(Profissional profissional) {
 		this.profissional = profissional;
-	}
-
-	public Boolean getAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(Boolean ativo) {
-		this.ativo = ativo;
 	}
 
 	public Date getDataPedido() {

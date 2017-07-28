@@ -49,4 +49,9 @@ public class ItemPedidoRegistration {
         em.merge(itemPedido);
         itemPedidoEventSrc.fire(itemPedido);
     }
+    
+    public void editarResultadoExame(ItemPedidoExame itemPedido) throws Exception {
+        em.merge(itemPedido);
+        itemPedidoEventSrc.fire(itemPedido);
+    }
 }

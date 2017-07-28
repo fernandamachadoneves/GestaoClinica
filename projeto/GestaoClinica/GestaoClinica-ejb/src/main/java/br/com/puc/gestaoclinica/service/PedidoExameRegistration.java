@@ -38,7 +38,6 @@ public class PedidoExameRegistration {
     private Event<PedidoExame> pedidoExameEventSrc;
 
     public PedidoExame cadastrar(PedidoExame pedidoExame) throws Exception {
-    	pedidoExame.setAtivo(Boolean.TRUE);
         em.persist(pedidoExame);
         pedidoExameEventSrc.fire(pedidoExame);
         return pedidoExame;

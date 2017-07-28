@@ -22,6 +22,7 @@ import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 import br.com.puc.gestaoclinica.model.TipoResultadoExame;
@@ -36,6 +37,13 @@ public class EnumResourceRESTService {
 	@Produces("application/json")
 	public List<TipoResultadoExame> tiposResultado() throws Exception {
 		return Arrays.asList(TipoResultadoExame.values());
+	}
+	
+	@GET
+	@Path("/TipoResultadoPorType/{type}")
+	@Produces("application/json")
+	public TipoResultadoExame recuperarTipoResultadoPorTipo(@PathParam("type") String type) throws Exception {
+		return TipoResultadoExame.valueOf(type);
 	}
 	
 }

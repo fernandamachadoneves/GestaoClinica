@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,14 +37,15 @@ public class ItemPedidoExame implements Serializable {
 	@Column(name = "justificativa")
 	private String justificativa;
 	
-	@Column(name = "resultado")
-	private String resultado;
+	@Column(name = "resultadoObs")
+	private String resultadoObs;
 	
 	@Column(name = "dataRealizacao")
 	private Date dataRealizacao;
 	
-	@Column(name = "observacao")
-	private String observacao;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "tipoResultado")
+	private TipoResultadoExame tipoResultado;
 	
 	@Column(name = "ativo")
 	private Boolean ativo;
@@ -71,12 +74,12 @@ public class ItemPedidoExame implements Serializable {
 		this.exame = exame;
 	}
 
-	public String getResultado() {
-		return resultado;
+	public String getResultadoObs() {
+		return resultadoObs;
 	}
 
-	public void setResultado(String resultado) {
-		this.resultado = resultado;
+	public void setResultadoObs(String resultadoObs) {
+		this.resultadoObs = resultadoObs;
 	}
 
 	public String getJustificativa() {
@@ -93,5 +96,21 @@ public class ItemPedidoExame implements Serializable {
 
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
+	}
+
+	public Date getDataRealizacao() {
+		return dataRealizacao;
+	}
+
+	public void setDataRealizacao(Date dataRealizacao) {
+		this.dataRealizacao = dataRealizacao;
+	}
+	
+	public TipoResultadoExame getTipoResultado() {
+		return tipoResultado;
+	}
+
+	public void setTipoResultado(TipoResultadoExame tipoResultado) {
+		this.tipoResultado = tipoResultado;
 	}
 }
