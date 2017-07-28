@@ -16,10 +16,12 @@ import 'rxjs/add/operator/toPromise';
 export class PedidoExameService {
 
   private urlAdicionarPedidoExame = environment.context + '/GestaoClinica-web/rest/pedidoExame/adicionar';
-  private urlEditarPedidoExame = environment.context + '/GestaoClinica-web/rest/pedidoExame/editar';
+  private urlEditarItemPedidoExame = environment.context + '/GestaoClinica-web/rest/pedidoExame/editar';
   private urlEditarItensPedido = environment.context + '/GestaoClinica-web/rest/pedidoExame/editarItens';
   private urlPesquisarPedidos = environment.context + '/GestaoClinica-web/rest/pedidoExame/pesquisarPedidos/:idPaciente';
   private urlRecuperarItensPorIdPedido = environment.context + '/GestaoClinica-web/rest/pedidoExame/recuperarItensPorIdPedidoExame/:idPedidoExame';
+  private urlLancarResultadoExame = environment.context + '/GestaoClinica-web/rest/pedidoExame/lancarResultadoExame';
+  private urlExcluirItemPedidoExame = environment.context + '/GestaoClinica-web/rest/pedidoExame/excluir';
 
   constructor(private http: Http) { }
 
@@ -36,14 +38,13 @@ export class PedidoExameService {
   }
 
 
-  update(pedidoExame: PedidoExame){
-      pedidoExame.ativo = false;
-      let jsonPost = { "pedidoExame": JSON.stringify(pedidoExame)
+  update(itemPedidoExame: ItemPedidoExame){
+      let jsonPost = { "itemPedidoExame": JSON.stringify(itemPedidoExame)
       }
       let headers = new Headers();
       headers.append('Content-Type', 'application/json');
       let options = new RequestOptions({ headers: headers });
-      return this.http.post(this.urlEditarPedidoExame, jsonPost,
+      return this.http.post(this.urlEditarItemPedidoExame, jsonPost,
         options).map((res: Response) => res);
   }
 
@@ -70,6 +71,26 @@ export class PedidoExameService {
     let url = this.urlRecuperarItensPorIdPedido.replace(':idPedidoExame', idPedidoExame.toString());
     return this.http.get(url)
                     .map(this.extractData);
+  }
+
+  lancarResultadoExame(itemPedidoExame: ItemPedidoExame){
+      let jsonPost = { "itemPedidoExame": JSON.stringify(itemPedidoExame)
+      }
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      let options = new RequestOptions({ headers: headers });
+      return this.http.post(this.urlLancarResultadoExame, jsonPost,
+        options).map((res: Response) => res);
+  }
+
+  excluirItemPedidoExame(itemPedidoExame: ItemPedidoExame){
+      let jsonPost = { "itemPedidoExame": JSON.stringify(itemPedidoExame)
+      }
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      let options = new RequestOptions({ headers: headers });
+      return this.http.post(this.urlExcluirItemPedidoExame, jsonPost,
+        options).map((res: Response) => res);
   }
 
   private extractData(res: Response) {

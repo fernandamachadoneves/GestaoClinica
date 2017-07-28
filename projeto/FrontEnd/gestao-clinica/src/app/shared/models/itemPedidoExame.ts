@@ -1,3 +1,4 @@
+import { TipoResultadoExame } from './tipoResultadoExame';
 import { Exame } from './exame';
 import { PedidoExame } from './PedidoExame';
 import { Medicamento } from './medicamento';
@@ -12,5 +13,7 @@ export class ItemPedidoExame {
   exame: Exame;
   ativo: boolean;
   justificativa: string;
-  resultado: string;
+  resultadoObs: string;
+  dataRealizacao: Date;
+  tipoResultado: TipoResultadoExame;
 }

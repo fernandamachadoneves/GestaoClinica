@@ -9,5 +9,4 @@ export class PedidoExame {
   dataPedido: Date;
   paciente: Paciente;
   profissional: Profissional;
-  ativo: boolean;
 }

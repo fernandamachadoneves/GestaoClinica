@@ -1,9 +1,10 @@
-<table class="responsive-table" *ngIf="listPedidosPaciente.length > 0" >
+<table class="responsive-table" *ngIf="listPedidosPaciente && listPedidosPaciente.length > 0" >
     <thead>
       <tr>
           <th>Data Pedido</th>
           <th>Médico Responsável</th>
           <th>Exame</th>
+          <th></th>
           <th></th>
           <th></th>
           <th></th>
@@ -16,15 +17,18 @@
         <td>{{item.pedidoExame.profissional.nome}}</td>
         <td>{{item.exame.nomeExame}}</td>
         <td title="Lançar Resultado Exame"><a href="#modalResultado" (click)="lancarResultado(item)"><i class="small material-icons">keyboard_hide</i></a></td>
-        <td title="Imprimir Pedido Exame"><i class="small material-icons">description</i></td>
-        <td title="Imprimir Resultado"><i class="small material-icons" (click)="gerarPedidoExame(item.id)">print</i></td>
+        <td title="Lançar Resultado Exame"><a href="#modalEditItemPedidoExame" (click)="editarItemPedidoExame(item)"><i class="small material-icons orangeIcon">edit</i></a></td>
+        <td title="Lançar Resultado Exame"><a (click)="deletarItemPedidoExame(item)"><i class="small material-icons redIcon">delete</i></a></td>
+        <td title="Imprimir Resultado"><a (click)="gerarPedidoExame(item.id)"><i class="small material-icons blackIcon">print</i></a></td>
       </tr>
     </tbody>
 </table>
-
 <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
   <a class="btn-floating btn-large waves-effect waves-light green" href="#modalPedidoExame" (click)="adicionarPedido()">
     <i class="material-icons">add</i>
+  </a>
+  <a title="Imprimir Pedido de exame" class="btn-floating btn-large waves-effect waves-light">
+    <i class="material-icons">description</i>
   </a>
 </div>  
 
@@ -77,7 +81,19 @@
       <div class="col s12">
           <h5>Lançar Resultado Exame</h5>
           <br/>
-          <b>Exame: </b> {{exameLancarResultado.nomeExame}}
+          <b>Exame: </b> {{exameLancarResultado?.nomeExame}}
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col s12">
+        <div class="input-field col s9">
+          <label>Data Realização</label>
+          <br/>
+          <br/>
+          <calendario (alterouData)="alterarData($event)"></calendario>
+        </div>
       </div>
     </div>
 
@@ -85,9 +101,9 @@
       <div class="col s12">
         <div class="input-field col s3">
               <select materialize="material_select" [materializeSelectOptions]="tipoResultadoExameOptions"
-                #tipo (change)="selecionouTipo($event, tipo.value)">
+                #tipo (change)="selecionouTipoResultado($event, tipo.value)">
                 <option value="" disabled selected>Selecione o resultado</option>
-                <option *ngFor="let e of tipoResultadoExameOptions" [value]="e.id">{{e.descricao}}</option>
+                <option *ngFor="let e of tipoResultadoExameOptions" [value]="e.type">{{e.descricao}}</option>
               </select>
         </div>
       </div>
@@ -97,11 +113,46 @@
       <div class="col s12">
           <div class="row">
             <div class="input-field col s12">
-              <textarea id="obs" class="materialize-textarea"></textarea>
+              <textarea id="obs" class="materialize-textarea" [(ngModel)]="resultadoObs"></textarea>
               <label for="obs">Observação</label>
             </div>
           </div>
       </div>
     </div>
 
+    <div class="modal-footer">
+      <a class="modal-action waves-effect waves-green btn-flat" (click)="gravarResultadoExame()">Gravar Resultado</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+    </div>
+
+  </div>
+
+
+  <!-- Modal Editar item Pedido Exame -->
+
+  <div id="modalEditItemPedidoExame" class="modal">
+    <div class="row">
+      <div class="col s12">
+          <h5>Pedido Exame</h5>
+      </div>
+    </div>
+
+      <div class="row">
+          <div class="col s12">
+            <div class="input-field col s5">
+              <input id="nomeExame" placeholder="Nome Exame" name="nomeExame" type="text" #exame (change)="selecionouExameEdicao(exame.value)" [(ngModel)]="itemEditarPedido?.exame.nomeExame"
+                name="interestsAutoComplete" materialize="autocomplete" [materializeParams]="getAutocompleteParams()">
+                <label>Nome Exame</label>  
+            </div>
+            <div class="input-field col s6">
+              <input id="justificativa" type="text" class="validate" data-length="30" [(ngModel)]="itemEditarPedido.justificativa" placeholder="Observação">
+              <label>Observação</label>
+            </div>
+          </div>
+      </div>
+
+    <div class="modal-footer">
+      <a class="modal-action waves-effect waves-green btn-flat" (click)="salvarEdicaoItemPedido()">Gravar Alteração</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+    </div>
   </div>

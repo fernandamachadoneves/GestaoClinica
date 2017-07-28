@@ -19,6 +19,8 @@
           </div>  
     </div>
     <div class="col s12" *ngIf="selecionouProfissional">
+          <label>Data</label>
+          <br/>
           <calendario [idProfissional]="idProfissional" (alterouData)="alterarData($event)"></calendario>
       </div>
  </div>

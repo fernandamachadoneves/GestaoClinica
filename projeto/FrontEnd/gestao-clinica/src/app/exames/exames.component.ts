@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Rx';
 import { ItemPedidoExame } from './../shared/models/itemPedidoExame';
 import { ExameService } from './../shared/service/exame.service';
 import { Exame } from './../shared/models/exame';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-exames',
@@ -15,6 +15,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./exames.component.css']
 })
 export class ExamesComponent implements OnInit {
+
+  @ViewChild('tipo') tipo; 
 
   listExames = new Array<Exame>();
   listPedidosPaciente: Array<ItemPedidoExame>;
@@ -26,6 +28,11 @@ export class ExamesComponent implements OnInit {
   pedidoExame: PedidoExame;
   tipoResultadoExameOptions = Array<TipoResultadoExame>();
   exameLancarResultado: Exame;
+  dataResulado: Date;
+  tipoResultado: TipoResultadoExame;
+  resultadoObs: string;
+  itemLancarResultado: ItemPedidoExame;
+  itemEditarPedido: ItemPedidoExame;
 
   private autoCompleteParams = [{'data': {}}];
 
@@ -43,7 +50,8 @@ export class ExamesComponent implements OnInit {
   }
 
   ngOnInit() {
-    debugger
+    this.itemEditarPedido = new ItemPedidoExame();
+    this.itemEditarPedido.exame = new Exame();
     this.subscription = this.route.params.subscribe(
       (params: any) => {
         this.idPaciente = params['id'];
@@ -78,11 +86,25 @@ export class ExamesComponent implements OnInit {
 
   lancarResultado(item: ItemPedidoExame){
     this.exameLancarResultado = item.exame;
+    this.itemLancarResultado = item;
      $('.modal').modal({
        dismissible: true
     });
     $('select').material_select();
     this._enumService.getEnum('TipoResultadoExame').subscribe(tipos => this.tipoResultadoExameOptions = tipos);
+  }
+
+  alterarData(event) {
+    this.dataResulado = event.dataJson;
+  }
+
+  selecionouTipoResultado($event, tipo) {
+    if (tipo !== null && tipo !== undefined) {
+      this._enumService.recuperarTipoResultadoPorType(tipo).subscribe(
+        result => {
+            this.tipoResultado = result;
+      });
+    }
   }
 
     
@@ -120,9 +142,14 @@ export class ExamesComponent implements OnInit {
         result => {
           if (result!=null && result!=undefined){
             exameSelecionado = result[0];
-            for (let i=0; i<this.itensPedidoExame.length; i++){
-              if (i==index){
-                this.itensPedidoExame[i].exame = exameSelecionado;
+            if (result.length==0){
+               Materialize.toast('Exame não encontrado' , 4000, "");
+               this.itensPedidoExame[index].exame = null;
+            } else {
+              for (let i=0; i<this.itensPedidoExame.length; i++){
+                if (i==index){
+                  this.itensPedidoExame[i].exame = exameSelecionado;
+                }
               }
             }
           }
@@ -190,6 +217,15 @@ export class ExamesComponent implements OnInit {
     });
   }
 
+  deletarItemPedidoExame(itemPedidoExame: ItemPedidoExame){
+    this._pedidoExame.excluirItemPedidoExame(itemPedidoExame).subscribe(
+      result => {
+        this.recuperarPedidos(); 
+      }
+    )
+
+  }
+
   removeItemPedidoExame(itemPedidoExame: ItemPedidoExame, index){
     if (itemPedidoExame.id!=null){
       for (let i=0; i<this.itensPedidoExame.length; i++){
@@ -203,4 +239,82 @@ export class ExamesComponent implements OnInit {
     }
   }
 
+  gravarResultadoExame(){
+    debugger
+    this.itemLancarResultado.resultadoObs = this.resultadoObs;
+    this.itemLancarResultado.dataRealizacao = this.dataResulado;
+    this.itemLancarResultado.tipoResultado = this.tipoResultado;
+    if (this.validarResultados()){
+      this._pedidoExame.lancarResultadoExame(this.itemLancarResultado).subscribe();
+      $('.modal').modal('close');
+    }
+  }
+
+  validarResultados() {
+    let validacaoOk = true;
+      if (this.itemLancarResultado.dataRealizacao==null || this.itemLancarResultado.dataRealizacao==undefined){
+        validacaoOk = false;
+         Materialize.toast('É obrigatório informar a data de realização do exame', 4000, "");
+      } else if (this.itemLancarResultado.tipoResultado==null || this.itemLancarResultado.tipoResultado==undefined){
+        validacaoOk = false;
+         Materialize.toast('É obrigatório informar o resultado ', 4000, "");
+      }
+    
+    return validacaoOk;
+  }
+
+  editarItemPedidoExame(item: ItemPedidoExame){
+    this.itemEditarPedido = item;
+    $('.modal').modal({dismissible: true});
+    this._exameService.recuperarExames().then(
+          result => {
+              this.listExames = result;
+              $('select').material_select();
+      });
+  }
+
+  salvarEdicaoItemPedido(){
+    if (this.validarItensEdicao()){
+      this._pedidoExame.update(this.itemEditarPedido).subscribe();
+      $('.modal').modal('close');
+    }
+  }
+
+  validarItensEdicao() {
+    debugger
+    let validacaoOk = true;
+      if (this.itemEditarPedido.exame==null || this.itemEditarPedido.exame==undefined){
+         validacaoOk = false;
+         Materialize.toast('É obrigatório informar o exame', 4000, "");
+      } else if (this.itemEditarPedido.justificativa==null || this.itemEditarPedido.justificativa==undefined){
+         validacaoOk = false;
+         Materialize.toast('É obrigatório informar a observação' , 4000, "");
+      }
+    
+    return validacaoOk;
+  }
+
+  selecionouExameEdicao(exame){
+      debugger
+      let exameSelecionado: Exame;
+      if (exame!==null && exame!== undefined){
+        this._exameService.recuperarExamePorNome(exame).subscribe(
+          result => {
+            if (result!=null && result!=undefined){
+              exameSelecionado = result[0];
+              this.itemEditarPedido.exame = exameSelecionado;
+              if (result.length==0){
+               Materialize.toast('Exame não encontrado' , 4000, "");
+              }
+            }
+        },
+        error => {
+          exameSelecionado = null;
+          this.itemEditarPedido.exame = null;
+           Materialize.toast('Exame inválido' , 4000, "");
+        }
+      );
+
+      }
+    }
 }
