@@ -25,7 +25,7 @@ public class ItemPedidoExame implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "pedidoExame")
 	private PedidoExame pedidoExame;
