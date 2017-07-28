@@ -22,11 +22,13 @@ export class EnumService {
     return this.http.get(url, options).map(this.extractData);
   }
 
-  recuperarTipoResultadoPorType(type: string){
+  recuperarTipoResultadoPorType(type: string): Promise<any>{
     let headers = new Headers();
     let url = this.urlRecuperarTipoResultadoPorType.replace(':type', type.toString());
     return this.http.get(url)
-                    .map(this.extractData);
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
   }
 
 

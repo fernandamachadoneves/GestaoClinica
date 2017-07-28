@@ -11,6 +11,8 @@ export class RelatorioService {
 
   private urlGerarReceita = environment.context + '/GestaoClinica-web/rest/relatorio/gerarReceitaMedica/:idReceita';
 
+  private urlGerarRelatorioResultadoExame = environment.context + '/GestaoClinica-web/rest/relatorio/gerarResultadoExame/:idItemPedidoExame';
+
   constructor(private http: Http) { }
 
   gerarRelatorio(idReceita: number) {
@@ -18,6 +20,19 @@ export class RelatorioService {
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
     let url = this.urlGerarReceita.replace(':idReceita', idReceita.toString());
+
+    let options = new RequestOptions({ headers: headers, responseType: ResponseContentType.Blob});
+    return this.http.get(url, options)
+      .map((res) => {
+        return new Blob([res.blob()], { type: 'application/pdf'})
+      });
+  }
+
+  gerarRelatorioResultadoExame(idItemPedidoExame: number) {
+    debugger
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let url = this.urlGerarRelatorioResultadoExame.replace(':idItemPedidoExame', idItemPedidoExame.toString());
 
     let options = new RequestOptions({ headers: headers, responseType: ResponseContentType.Blob});
     return this.http.get(url, options)

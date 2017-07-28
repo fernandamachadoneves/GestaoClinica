@@ -22,6 +22,7 @@ export class PedidoExameService {
   private urlRecuperarItensPorIdPedido = environment.context + '/GestaoClinica-web/rest/pedidoExame/recuperarItensPorIdPedidoExame/:idPedidoExame';
   private urlLancarResultadoExame = environment.context + '/GestaoClinica-web/rest/pedidoExame/lancarResultadoExame';
   private urlExcluirItemPedidoExame = environment.context + '/GestaoClinica-web/rest/pedidoExame/excluir';
+  private urlRecuperarItemPorId = environment.context + '/GestaoClinica-web/rest/pedidoExame/recuperarItemPedidoExamePorId/:idItemPedido';
 
   constructor(private http: Http) { }
 
@@ -69,6 +70,13 @@ export class PedidoExameService {
   recuperarItensPorIdPedidoExame(idPedidoExame: number){
     let headers = new Headers();
     let url = this.urlRecuperarItensPorIdPedido.replace(':idPedidoExame', idPedidoExame.toString());
+    return this.http.get(url)
+                    .map(this.extractData);
+  }
+
+  recuperarItemPorId(idItemPedido: number){
+    let headers = new Headers();
+    let url = this.urlRecuperarItemPorId.replace(':idItemPedido', idItemPedido.toString());
     return this.http.get(url)
                     .map(this.extractData);
   }

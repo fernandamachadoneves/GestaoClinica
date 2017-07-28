@@ -1,3 +1,5 @@
+import { RelatorioService } from './../shared/service/relatorio.service';
+import { IMyOptions } from 'mydatepicker';
 import { TipoResultadoExame } from './../shared/models/tipoResultadoExame';
 import { EnumService } from './../shared/service/enum.service';
 import { PedidoExame } from './../shared/models/PedidoExame';
@@ -18,6 +20,8 @@ export class ExamesComponent implements OnInit {
 
   @ViewChild('tipo') tipo; 
 
+  private model: Object;
+
   listExames = new Array<Exame>();
   listPedidosPaciente: Array<ItemPedidoExame>;
   itensPedidoExame: Array<ItemPedidoExame>;
@@ -36,10 +40,26 @@ export class ExamesComponent implements OnInit {
 
   private autoCompleteParams = [{'data': {}}];
 
+  myDatePickerOptions: IMyOptions  = {
+    dateFormat: 'dd/mm/yyyy',
+    firstDayOfWeek: 'mo',
+    dayLabels: {su: 'Dom', mo: 'Seg', tu: 'Ter', we: 'Qua', th: 'Qui', fr: 'Sex', sa: 'Sab'},
+    monthLabels: { 1: 'Jan', 2: 'Fev', 3: 'Mar', 4: 'Abr', 5: 'Mai', 6: 'Jun', 7: 'Jul', 8: 'Ago', 9: 'Set', 10: 'Out', 11: 'Nov', 12: 'Dez' },
+    todayBtnTxt: 'Hoje',
+    width: '135px',
+    height: '24px',
+    selectionTxtFontSize: '14px',
+    inline: false,
+    editableDateField: false,
+    openSelectorOnInputClick: true,
+    showClearDateBtn: false
+  };
+
   constructor(private _exameService: ExameService,
               private route: ActivatedRoute,
               private _pedidoExame: PedidoExameService,
-              private _enumService: EnumService) { }
+              private _enumService: EnumService,
+              private _relatorioService: RelatorioService) { }
 
   getAutocompleteParams(){
     this.autoCompleteParams[0].data[""]=null;
@@ -85,6 +105,7 @@ export class ExamesComponent implements OnInit {
   }
 
   lancarResultado(item: ItemPedidoExame){
+    debugger
     this.exameLancarResultado = item.exame;
     this.itemLancarResultado = item;
      $('.modal').modal({
@@ -92,15 +113,24 @@ export class ExamesComponent implements OnInit {
     });
     $('select').material_select();
     this._enumService.getEnum('TipoResultadoExame').subscribe(tipos => this.tipoResultadoExameOptions = tipos);
+    let data = new Date();
+    if (item.dataRealizacao != null && item.dataRealizacao !== undefined){
+      data = new Date(item.dataRealizacao);
+    }
+    this.model = { date: { year: data.getFullYear(), month: data.getMonth() + 1, day: data.getDate() } }
+    this.resultadoObs = item.resultadoObs;
+    if (item.tipoResultado != null && item.tipoResultado !== undefined) {
+       this.tipoResultado = this.tipoResultadoExameOptions.find(resultado => resultado.descricao === this.tipoResultado.descricao);
+    } 
   }
 
-  alterarData(event) {
+  onDateChanged(event) {
     this.dataResulado = event.dataJson;
   }
 
   selecionouTipoResultado($event, tipo) {
     if (tipo !== null && tipo !== undefined) {
-      this._enumService.recuperarTipoResultadoPorType(tipo).subscribe(
+      this._enumService.recuperarTipoResultadoPorType(tipo).then(
         result => {
             this.tipoResultado = result;
       });
@@ -317,4 +347,14 @@ export class ExamesComponent implements OnInit {
 
       }
     }
+
+  gerarRelatorioResultadoExame(idItem: number) {
+    this._relatorioService.gerarRelatorioResultadoExame(idItem).subscribe(res => {
+      let link = document.createElement('a');
+      link.href = window.URL.createObjectURL(res);
+      let nomeArquivo = 'resultadoExame' + '.pdf';
+      link.download = nomeArquivo;
+      link.click();
+    });
+  }  
 }

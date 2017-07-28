@@ -16,15 +16,16 @@
         <td>{{item.pedidoExame.dataPedido | date:"dd/MM/yyyy"}}</td>
         <td>{{item.pedidoExame.profissional.nome}}</td>
         <td>{{item.exame.nomeExame}}</td>
-        <td title="Lançar Resultado Exame"><a href="#modalResultado" (click)="lancarResultado(item)"><i class="small material-icons">keyboard_hide</i></a></td>
-        <td title="Lançar Resultado Exame"><a href="#modalEditItemPedidoExame" (click)="editarItemPedidoExame(item)"><i class="small material-icons orangeIcon">edit</i></a></td>
-        <td title="Lançar Resultado Exame"><a (click)="deletarItemPedidoExame(item)"><i class="small material-icons redIcon">delete</i></a></td>
-        <td title="Imprimir Resultado"><a (click)="gerarPedidoExame(item.id)"><i class="small material-icons blackIcon">print</i></a></td>
+        <td *ngIf="item.tipoResultado==null"  title="Editar Resultado Exame"><a href="#modalResultado" (click)="lancarResultado(item)"><i class="small material-icons">keyboard_hide</i></a></td>
+        <td *ngIf="item.tipoResultado!=null" title="Lançar Resultado Exame"><a href="#modalResultado" (click)="lancarResultado(item)"><i class="small material-icons greenIcon">keyboard_hide</i></a></td>
+        <td title="Editar Pedido"><a href="#modalEditItemPedidoExame" (click)="editarItemPedidoExame(item)"><i class="small material-icons orangeIcon">edit</i></a></td>
+        <td title="Deletar Pedido"><a (click)="deletarItemPedidoExame(item)"><i class="small material-icons redIcon">delete</i></a></td>
+        <td title="Imprimir Resultado"><a (click)="gerarRelatorioResultadoExame(item.id)"><i class="small material-icons blackIcon">print</i></a></td>
       </tr>
     </tbody>
 </table>
 <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-  <a class="btn-floating btn-large waves-effect waves-light green" href="#modalPedidoExame" (click)="adicionarPedido()">
+  <a title="Solicitar exames" class="btn-floating btn-large waves-effect waves-light green" href="#modalPedidoExame" (click)="adicionarPedido()">
     <i class="material-icons">add</i>
   </a>
   <a title="Imprimir Pedido de exame" class="btn-floating btn-large waves-effect waves-light">
@@ -92,7 +93,8 @@
           <label>Data Realização</label>
           <br/>
           <br/>
-          <calendario (alterouData)="alterarData($event)"></calendario>
+            <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="model"
+              (dateChanged)="onDateChanged($event)"></my-date-picker>
         </div>
       </div>
     </div>
@@ -100,7 +102,7 @@
     <div class="row">
       <div class="col s12">
         <div class="input-field col s3">
-              <select materialize="material_select" [materializeSelectOptions]="tipoResultadoExameOptions"
+              <select materialize="material_select" [materializeSelectOptions]="tipoResultadoExameOptions" [(ngModel)]="tipoResultado"
                 #tipo (change)="selecionouTipoResultado($event, tipo.value)">
                 <option value="" disabled selected>Selecione o resultado</option>
                 <option *ngFor="let e of tipoResultadoExameOptions" [value]="e.type">{{e.descricao}}</option>
@@ -113,7 +115,7 @@
       <div class="col s12">
           <div class="row">
             <div class="input-field col s12">
-              <textarea id="obs" class="materialize-textarea" [(ngModel)]="resultadoObs"></textarea>
+              <textarea id="obs" class="materialize-textarea" [(ngModel)]="resultadoObs" placeholder="Observação"></textarea>
               <label for="obs">Observação</label>
             </div>
           </div>
