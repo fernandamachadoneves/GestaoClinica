@@ -365,10 +365,19 @@ export class ExamesComponent implements OnInit {
   }
 
   checkExamePedido(event, exame){
+    debugger
     for (let i=0; i<this.listPedidosPaciente.length; i++){
       if (exame.id == this.listPedidosPaciente[i].id){
-        this.listPedidosPaciente[i].selecionado = true;
+        if (this.listPedidosPaciente[i].selecionado){
+          this.listPedidosPaciente[i].selecionado = false;
+        } else {
+          this.listPedidosPaciente[i].selecionado = true;
+        }
       }
     }
+  }
+
+  imprimirPedido(){
+    
   }
 }
