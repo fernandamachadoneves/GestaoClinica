@@ -357,4 +357,10 @@ export class ExamesComponent implements OnInit {
       link.click();
     });
   }  
+
+  selecionarExamesPedido(){
+    debugger
+    this.itensPedidoExame;
+    $('.modal').modal({dismissible: true});
+  }
 }

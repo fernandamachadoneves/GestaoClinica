@@ -1,11 +1,11 @@
 <table class="responsive-table" *ngIf="listPedidosPaciente && listPedidosPaciente.length > 0" >
     <thead>
       <tr>
+          <th></th>
+          <th></th>
           <th>Data Pedido</th>
           <th>Médico Responsável</th>
           <th>Exame</th>
-          <th></th>
-          <th></th>
           <th></th>
           <th></th>
       </tr>
@@ -13,14 +13,14 @@
 
     <tbody *ngFor="let item of listPedidosPaciente">
       <tr>
+        <td title="Deletar Pedido"><a class="cursor" (click)="deletarItemPedidoExame(item)"><i class="small material-icons redIcon">delete</i></a></td>
+        <td><a title="Editar Pedido" *ngIf="item.tipoResultado!=null" href="#modalEditItemPedidoExame" (click)="editarItemPedidoExame(item)"><i class="small material-icons orangeIcon">edit</i></a></td>
         <td>{{item.pedidoExame.dataPedido | date:"dd/MM/yyyy"}}</td>
         <td>{{item.pedidoExame.profissional.nome}}</td>
         <td>{{item.exame.nomeExame}}</td>
         <td *ngIf="item.tipoResultado==null"  title="Editar Resultado Exame"><a href="#modalResultado" (click)="lancarResultado(item)"><i class="small material-icons">keyboard_hide</i></a></td>
         <td *ngIf="item.tipoResultado!=null" title="Lançar Resultado Exame"><a href="#modalResultado" (click)="lancarResultado(item)"><i class="small material-icons greenIcon">keyboard_hide</i></a></td>
-        <td title="Editar Pedido"><a href="#modalEditItemPedidoExame" (click)="editarItemPedidoExame(item)"><i class="small material-icons orangeIcon">edit</i></a></td>
-        <td title="Deletar Pedido"><a (click)="deletarItemPedidoExame(item)"><i class="small material-icons redIcon">delete</i></a></td>
-        <td title="Imprimir Resultado"><a (click)="gerarRelatorioResultadoExame(item.id)"><i class="small material-icons blackIcon">print</i></a></td>
+        <td *ngIf="item.tipoResultado!=null"><a  title="Imprimir Resultado" class="cursor" (click)="gerarRelatorioResultadoExame(item.id)"><i class="small material-icons blackIcon">print</i></a></td>
       </tr>
     </tbody>
 </table>
@@ -28,7 +28,7 @@
   <a title="Solicitar exames" class="btn-floating btn-large waves-effect waves-light green" href="#modalPedidoExame" (click)="adicionarPedido()">
     <i class="material-icons">add</i>
   </a>
-  <a title="Imprimir Pedido de exame" class="btn-floating btn-large waves-effect waves-light">
+  <a title="Imprimir Pedido de exame" class="btn-floating btn-large waves-effect waves-light" href="#modalImprimirPedido" (click)="selecionarExamesPedido()">
     <i class="material-icons">description</i>
   </a>
 </div>  
@@ -158,3 +158,31 @@
       <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
     </div>
   </div>
+
+
+  <!-- Modal Selecionar exames pedido -->
+   <div id="modalImprimirPedido" class="modal">
+    <div class="row">
+      <div class="col s12">
+          <h5>Imprimir Pedido Exame</h5>
+          <br/>
+          Selecione os exames que deseja agrupar para impressão:
+          <br/>
+          <br/>
+          <div *ngFor="let item of listPedidosPaciente; let i=index" >
+            <div class="row">
+              <div class="col s12">
+                <input type="checkbox" class="filled-in" id="filled-in-box"/>
+                <label for="filled-in-box"> {{item.exame.nomeExame}}</label>
+              </div>  
+            </div>
+          </div>  
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <a class="modal-action waves-effect waves-green btn-flat" (click)="imprimirPedido()">Imprimir Pedido</a>
+      <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+    </div>
+
+   </div>
