@@ -363,4 +363,12 @@ export class ExamesComponent implements OnInit {
     this.itensPedidoExame;
     $('.modal').modal({dismissible: true});
   }
+
+  checkExamePedido(event, exame){
+    for (let i=0; i<this.listPedidosPaciente.length; i++){
+      if (exame.id == this.listPedidosPaciente[i].id){
+        this.listPedidosPaciente[i].selecionado = true;
+      }
+    }
+  }
 }

@@ -16,4 +16,5 @@ export class ItemPedidoExame {
   resultadoObs: string;
   dataRealizacao: Date;
   tipoResultado: TipoResultadoExame;
+  selecionado: boolean;
 }
