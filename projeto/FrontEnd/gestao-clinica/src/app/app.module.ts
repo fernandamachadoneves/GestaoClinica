@@ -1,3 +1,5 @@
+import { AuthGuard } from './guards/auth.guard';
+import { AuthService } from './shared/auth.service';
 import { PedidoExameService } from './shared/service/pedidoExame.service.';
 import { ExameService } from './shared/service/exame.service';
 import { RelatorioService } from './shared/service/relatorio.service';
@@ -40,6 +42,7 @@ import { ReceitasComponent } from './receitas/receitas.component';
 import { MedicamentosComponent } from './medicamentos/medicamentos.component';
 import { MedicamentoCadastroComponent } from './medicamentos/medicamento-cadastro/medicamento-cadastro.component';
 import { MedicamentoDetailComponent } from './medicamentos/medicamento-detail/medicamento-detail.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +64,8 @@ import { MedicamentoDetailComponent } from './medicamentos/medicamento-detail/me
     ReceitasComponent,
     MedicamentosComponent,
     MedicamentoCadastroComponent,
-    MedicamentoDetailComponent
+    MedicamentoDetailComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -86,7 +90,9 @@ import { MedicamentoDetailComponent } from './medicamentos/medicamento-detail/me
     ReceitaService,
     RelatorioService,
     ExameService,
-    PedidoExameService
+    PedidoExameService,
+    AuthService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })
