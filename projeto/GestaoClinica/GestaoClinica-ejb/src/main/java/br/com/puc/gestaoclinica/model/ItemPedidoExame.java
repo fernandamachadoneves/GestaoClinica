@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
@@ -49,6 +50,9 @@ public class ItemPedidoExame implements Serializable {
 	
 	@Column(name = "ativo")
 	private Boolean ativo;
+	
+	@Transient
+	private boolean selecionado;
 
 	public Long getId() {
 		return id;
@@ -112,5 +116,13 @@ public class ItemPedidoExame implements Serializable {
 
 	public void setTipoResultado(TipoResultadoExame tipoResultado) {
 		this.tipoResultado = tipoResultado;
+	}
+
+	public boolean isSelecionado() {
+		return selecionado;
+	}
+
+	public void setSelecionado(boolean selecionado) {
+		this.selecionado = selecionado;
 	}
 }

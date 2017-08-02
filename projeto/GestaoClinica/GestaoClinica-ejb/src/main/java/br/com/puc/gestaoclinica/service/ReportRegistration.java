@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.com.puc.gestaoclinica.model.ItemPedidoExame;
+import br.com.puc.gestaoclinica.model.Paciente;
+import br.com.puc.gestaoclinica.model.Profissional;
 import br.com.puc.gestaoclinica.model.Receita;
 import br.com.puc.gestaoclinica.util.ReportUtil;
 
@@ -80,6 +83,22 @@ public class ReportRegistration {
 		params.put("nomeExame", itemPedidoExame.getExame().getNomeExame());
 		params.put("resultado", itemPedidoExame.getTipoResultado().getDescricao());
 		params.put("resultadoObs", itemPedidoExame.getResultadoObs());
+		
+		return params;
+	}
+	
+	public Map<String, Object> gerarPedidoExame(List<ItemPedidoExame> listaPedidos, Paciente paciente, Profissional profissional) {
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		
+		SimpleDateFormat dt = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy");
+		SimpleDateFormat formatar = new SimpleDateFormat("dd/MM/yyyy");
+		String dataImpressao = dt.format(new Date());
+		params.put("dataImpressao", dataImpressao);
+		params.put("paciente", paciente.getNome());
+		params.put("medico", profissional.getNome());
+		params.put("crm", profissional.getCrm());
+		params.put("dataPedido", formatar.format(new Date()));
 		
 		return params;
 	}

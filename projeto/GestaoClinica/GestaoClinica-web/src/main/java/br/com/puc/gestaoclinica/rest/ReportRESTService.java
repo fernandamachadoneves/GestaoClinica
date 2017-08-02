@@ -1,5 +1,6 @@
 package br.com.puc.gestaoclinica.rest;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -20,10 +21,16 @@ import javax.ws.rs.core.Response;
 
 import org.json.simple.JSONObject;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.com.puc.gestaoclinica.data.PacienteRepository;
 import br.com.puc.gestaoclinica.data.PedidoExameRepository;
+import br.com.puc.gestaoclinica.data.ProfissionalRepository;
 import br.com.puc.gestaoclinica.data.ReceitaRepository;
 import br.com.puc.gestaoclinica.model.ItemPedidoExame;
 import br.com.puc.gestaoclinica.model.ItemReceita;
+import br.com.puc.gestaoclinica.model.Paciente;
+import br.com.puc.gestaoclinica.model.Profissional;
 import br.com.puc.gestaoclinica.model.Receita;
 import br.com.puc.gestaoclinica.service.ReportRegistration;
 import br.com.puc.gestaoclinica.util.CORSResponseFilter;
@@ -46,6 +53,14 @@ public class ReportRESTService {
     
     @Inject
     PedidoExameRepository pedidoExameRepository;
+    
+    @Inject
+    ProfissionalRepository profissionalRepository;
+    
+    @Inject
+    PacienteRepository pacienteRepository;
+    
+    private static ObjectMapper mapper = new ObjectMapper();
     
     @GET
     @Path("/gerarReceitaMedica/{idReceita:[0-9][0-9]*}")
@@ -74,6 +89,36 @@ public class ReportRESTService {
 		Map<String, Object> param = registration.gerarResultadoExame(pedidoExame);
 	
 		registration.RunReport(response, request, "resultadoExame.jasper", param, null);
+		
+		return Response.ok().build();
+		
+	}
+    
+    @POST
+    @Path("/gerarPedidoExame/")
+    @Produces("application/pdf")
+	public Response gerarPedidoExame(JSONObject objeto) throws Exception {
+    	
+    	List<ItemPedidoExame> listaPedidos = mapper.readValue(objeto.get("listaPedidos").toString(), mapper.getTypeFactory().constructCollectionType(List.class, ItemPedidoExame.class));
+    	    
+    	Long idPaciente = mapper.readValue(objeto.get("idPaciente").toString(), Long.class);
+    	Paciente paciente = pacienteRepository.findById(idPaciente);
+    	
+    	Long idProfissionalLogado = mapper.readValue(objeto.get("idProfissionalLogado").toString(), Long.class);
+    	Profissional profissional = profissionalRepository.findById(idProfissionalLogado);    	
+    	
+    	List<ItemPedidoExame> listaExamesSeleciados = new ArrayList<>();
+    	
+    	for (ItemPedidoExame obj: listaPedidos){
+    		if (obj.isSelecionado()){
+    			listaExamesSeleciados.add(obj);
+    		}
+    	}
+    	
+	
+		Map<String, Object> param = registration.gerarPedidoExame(listaPedidos, paciente, profissional);
+	
+		registration.RunReport(response, request, "pedidoMedico.jasper", param, listaExamesSeleciados);
 		
 		return Response.ok().build();
 		
