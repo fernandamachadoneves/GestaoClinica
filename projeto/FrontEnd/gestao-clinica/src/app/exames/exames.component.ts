@@ -359,8 +359,9 @@ export class ExamesComponent implements OnInit {
   }  
 
   selecionarExamesPedido(){
-    debugger
-    this.itensPedidoExame;
+    for (let i=0; i<this.listPedidosPaciente.length; i++){
+      this.listPedidosPaciente[i].selecionado = false;
+    }
     $('.modal').modal({dismissible: true});
   }
 
@@ -378,6 +379,26 @@ export class ExamesComponent implements OnInit {
   }
 
   imprimirPedido(){
-    
+     let selecionou = false;
+     for (let i=0; i<this.listPedidosPaciente.length; i++){
+        if (this.listPedidosPaciente[i].selecionado){
+          selecionou = true;
+          break;
+        }  
+     }
+
+     if (selecionou){
+      this._relatorioService.gerarPedidoExame(this.listPedidosPaciente, this.idPaciente, 3).subscribe(res => {
+        $('.modal').modal('close');
+        let link = document.createElement('a');
+        link.href = window.URL.createObjectURL(res);
+        let nomeArquivo = 'pedidoExame' + '.pdf';
+        link.download = nomeArquivo;
+        link.click();
+      });
+     } else {
+       Materialize.toast('É necessário selecionar ao menos um exame para impressão do pedido' , 4000, "");
+     }
+
   }
 }

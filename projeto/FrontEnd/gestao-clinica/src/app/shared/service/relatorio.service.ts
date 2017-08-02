@@ -1,3 +1,5 @@
+import { element } from 'protractor';
+import { ItemPedidoExame } from './../models/itemPedidoExame';
 import { Paciente } from './../models/paciente';
 import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
@@ -12,6 +14,8 @@ export class RelatorioService {
   private urlGerarReceita = environment.context + '/GestaoClinica-web/rest/relatorio/gerarReceitaMedica/:idReceita';
 
   private urlGerarRelatorioResultadoExame = environment.context + '/GestaoClinica-web/rest/relatorio/gerarResultadoExame/:idItemPedidoExame';
+
+  private urlGerarPedidoExame = environment.context + '/GestaoClinica-web/rest/relatorio/gerarPedidoExame/';
 
   constructor(private http: Http) { }
 
@@ -37,6 +41,21 @@ export class RelatorioService {
     let options = new RequestOptions({ headers: headers, responseType: ResponseContentType.Blob});
     return this.http.get(url, options)
       .map((res) => {
+        return new Blob([res.blob()], { type: 'application/pdf'})
+      });
+  }
+
+  gerarPedidoExame(listaPedidos: Array<ItemPedidoExame>, idPaciente: number, idProfissionalLogado: number) {
+
+      let jsonPost = { "listaPedidos": JSON.stringify(listaPedidos),
+              "idPaciente": JSON.stringify(idPaciente),
+              "idProfissionalLogado": JSON.stringify(idProfissionalLogado),
+      }
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      let options = new RequestOptions({ headers: headers, responseType: ResponseContentType.Blob});
+      return this.http.post(this.urlGerarPedidoExame, jsonPost, options)
+        .map((res) => {
         return new Blob([res.blob()], { type: 'application/pdf'})
       });
   }
