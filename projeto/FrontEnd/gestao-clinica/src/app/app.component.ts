@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { AuthService } from './shared/auth.service';
 import { Component } from '@angular/core';
 
@@ -11,7 +12,8 @@ export class AppComponent {
 
   mostrarMenu: boolean = false;
 
-  constructor(private _autService: AuthService){
+  constructor(private _autService: AuthService,
+              private _router: Router){
 
   }
 
@@ -19,5 +21,10 @@ export class AppComponent {
     this._autService.mostrarMenuEmitter.subscribe(
       mostrar =>  this.mostrarMenu = mostrar
     );
+  }
+
+  onLogout(){
+    this._autService.mostrarMenuEmitter.emit(false);
+     this._router.navigate(['/login']);
   }
 }
