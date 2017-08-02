@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @XmlRootElement
-@Table(name = "Usuario")
+@Table(name = "Usuario") 
 public class Usuario implements Serializable {
 
 	private static final long serialVersionUID = 1L;
