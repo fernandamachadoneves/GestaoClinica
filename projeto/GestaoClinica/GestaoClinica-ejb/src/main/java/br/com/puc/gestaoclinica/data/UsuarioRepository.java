@@ -51,6 +51,25 @@ public class UsuarioRepository {
         return em.createQuery(criteria).getResultList();
     }
     
+    public Boolean recuperarUsuarioPorLogin(String login){
+ 		StringBuilder hql = new StringBuilder("select obj ");
+ 		hql.append(" from Usuario obj ");
+ 		hql.append(" where obj.login = :login ");
+ 		hql.append(" and obj.ativo = :ativo ");
+ 		
+ 		try{
+ 			Query query = em.createQuery(hql.toString());
+ 			query.setParameter("login", login);
+ 			query.setParameter("ativo", Boolean.TRUE);
+
+ 			query.getSingleResult();
+ 			return Boolean.TRUE;
+ 			
+ 		}catch(NoResultException e){
+ 			return Boolean.FALSE;
+ 		}
+ 	}
+    
     public Usuario recuperarUsuarioPorLoginEsenha(String login, String senha){
  		StringBuilder hql = new StringBuilder("select obj ");
  		hql.append(" from Usuario obj ");

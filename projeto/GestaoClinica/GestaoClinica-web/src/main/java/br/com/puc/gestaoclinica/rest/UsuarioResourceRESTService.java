@@ -82,6 +82,13 @@ public class UsuarioResourceRESTService {
         }
         return usuario;
     }
+    
+    @GET
+    @Path("recuperarUsuarioPorLogin/{login}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Boolean recuperarUsuarioPorEmail(@PathParam("login") String login) {
+    	return repository.recuperarUsuarioPorLogin(login);
+    }
 
     @POST
     @Path("/cadastrar")
