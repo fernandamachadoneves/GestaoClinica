@@ -84,7 +84,7 @@ public class UsuarioResourceRESTService {
     }
     
     @GET
-    @Path("recuperarUsuarioPorLogin/{login}")
+    @Path("recuperarUsuarioPorLogin/{login}") 
     @Produces(MediaType.APPLICATION_JSON)
     public Boolean recuperarUsuarioPorEmail(@PathParam("login") String login) {
     	return repository.recuperarUsuarioPorLogin(login);
