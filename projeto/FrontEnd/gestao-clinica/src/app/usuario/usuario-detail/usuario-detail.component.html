@@ -2,19 +2,17 @@
     <h5>{{ title }}</h5>
 
       <form materialize [formGroup]="form" (ngSubmit)="save()">
-
-
         <div class="row">
           <div class="input-field col s6">
             <i class="material-icons prefix">group</i>
-            <select materialize="material_select" [materializeSelectOptions]="perfilOptions" [(ngModel)]="usuario.perfil" formControlName="perfil">
+            <select materialize="material_select" [materializeSelectOptions]="perfilOptions" [(ngModel)]="usuario.perfil.descricao" formControlName="perfil"  (change)="selecionarPerfil($event)">
                 <option value="" disabled selected>Selecione o perfil</option>
                 <option *ngFor="let e of perfilOptions" [value]="e.type">{{e.descricao}}</option>
             </select>
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" *ngIf="selecionouPerfil && !perfilMedico" >
           <div class="input-field col s6">
             <i class="material-icons prefix">account_circle</i>
             <input id="login" type="text" class="validate"
@@ -27,7 +25,18 @@
             </label>
           </div>
         </div>
-        <div class="row">
+
+        <div class="row" *ngIf="selecionouPerfil && perfilMedico">
+          <div class="input-field col s6">
+            <i class="material-icons prefix">group</i>
+            <select materialize="material_select" [materializeSelectOptions]="profCadastrados" [(ngModel)]="profissional.email" formControlName="profissional"  (change)="selecionarPerfil($event)">
+                <option value="" disabled selected>Selecione o email do profissional</option>
+                <option *ngFor="let e of profCadastrados" [value]="e.email">{{e.email}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="selecionouPerfil">
           <div class="input-field col s6">
             <i class="material-icons prefix">lock</i>
             <input id="senha" type="password" class="validate"

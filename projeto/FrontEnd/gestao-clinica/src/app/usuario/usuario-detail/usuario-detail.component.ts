@@ -1,3 +1,5 @@
+import { ProfissionalService } from './../../shared/profissional.service';
+import { Profissional } from './../../shared/models/profissional';
 import { Perfil } from './../../shared/models/perfil';
 import { EnumService } from './../../shared/service/enum.service';
 import { UsuarioService } from './../../shared/service/usuario.service';
@@ -18,28 +20,34 @@ export class UsuarioDetailComponent implements OnInit {
   usuario: Usuario = new Usuario();
   perfilOptions = Array<Perfil>();
   descBotao;
+  selecionouPerfil: boolean = false;
+  profCadastrados = Array<Profissional>();
+  perfilMedico: boolean = false;
+  profissional: Profissional;
 
   constructor(formBuilder: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private usuarioService: UsuarioService,
-    private enumService: EnumService) { 
+    private enumService: EnumService,
+    private profissionalService: ProfissionalService) { 
 
-    this.form = formBuilder.group({
+   this.form = formBuilder.group({
       login: ['', [
-        Validators.required,
-        Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+        //Validators.required,
+        //Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
       ]],
       perfil: [],
       senha: ['', [
         Validators.required,
         Validators.minLength(3)
       ]]
-    });  
-
+    });
  }
 
   ngOnInit() {
+    this.profissional = new Profissional();
+    this.usuario.perfil = new Perfil();
     $('select').material_select();
     this.enumService.recuperarPerfis().subscribe(tipos => this.perfilOptions = tipos);
     var id = this.route.params.subscribe(params => {
@@ -59,18 +67,41 @@ export class UsuarioDetailComponent implements OnInit {
     });
   }
 
+  selecionarPerfil(event){
+    debugger
+    this.selecionouPerfil = true;
+    if (this.usuario.perfil.descricao == 'MEDICO'){
+      this.perfilMedico = true;
+      this.profissionalService.recuperarProfissionais().then(
+        result => {
+          this.profCadastrados = result;
+        }
+      )
+    } else{
+      this.perfilMedico = false;
+    }
+  }
+
   save() {
     debugger
-      var result,
-      usuarioValor = this.form.value;
+    this.usuarioService.recuperarUsuarioPorLogin(this.usuario.login).then(
+      result =>{
+        if (result){
+          Materialize.toast('Email já cadastrado', 4000, "");
+          
+        } else {
+            var result,
+            usuarioValor = this.form.value;
 
-      if (this.usuario.id){
-        result = this.usuarioService.update(usuarioValor, this.usuario.id);
-      } else {
-        result = this.usuarioService.add(usuarioValor);
-      }
+            if (this.usuario.id){
+              result = this.usuarioService.update(usuarioValor, this.usuario.id);
+            } else {
+              result = this.usuarioService.add(usuarioValor);
+            }
 
-      result.subscribe(data => this.router.navigate(['usuario']));
+            result.subscribe(data => this.router.navigate(['usuario']));
+        }
+      });
   }
 
   onCancel(){

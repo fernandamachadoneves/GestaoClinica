@@ -18,6 +18,7 @@ export class UsuarioService {
   private urlEditarUsuario = environment.context + '/GestaoClinica-web/rest/usuario/editar';
   private urlExcluirUsuario = environment.context + '/GestaoClinica-web/rest/usuario/excluir';
   private urlrecuperarUsuarioPorEmailSenha= environment.context + '/GestaoClinica-web/rest/usuario/recuperarUsuarioPorEmailSenha';
+  private urlRecuperarUsuarioPorLogin = environment.context + '/GestaoClinica-web/rest/usuario/recuperarUsuarioPorLogin/:login';
 
   constructor(private http: Http) { }
 
@@ -33,6 +34,16 @@ export class UsuarioService {
     let url = this.urlRecuperarUsuarioPorId.replace(':id', id.toString());
     return this.http.get(url)
                     .map(this.extractData);
+  }
+
+  recuperarUsuarioPorLogin(login: string) : Promise<any>{
+    debugger
+    let headers = new Headers();
+    let url = this.urlRecuperarUsuarioPorLogin.replace(':login', login.toString());
+     return this.http.get(url)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
   }
 
   recuperarUsuarioPorEmailSenha(login: string, senha: string){
