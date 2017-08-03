@@ -25,6 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import br.com.puc.gestaoclinica.model.Perfil;
 import br.com.puc.gestaoclinica.model.TipoResultadoExame;
 
 
@@ -44,6 +45,20 @@ public class EnumResourceRESTService {
 	@Produces("application/json")
 	public TipoResultadoExame recuperarTipoResultadoPorTipo(@PathParam("type") String type) throws Exception {
 		return TipoResultadoExame.valueOf(type);
+	}
+	
+	@GET
+	@Path("/Perfil")
+	@Produces("application/json")
+	public List<Perfil> perfis() throws Exception {
+		return Arrays.asList(Perfil.values());
+	}
+	
+	@GET
+	@Path("/PerfilPorType/{type}")
+	@Produces("application/json")
+	public Perfil recuperarPerfilPorTipo(@PathParam("type") String type) throws Exception {
+		return Perfil.valueOf(type);
 	}
 	
 }

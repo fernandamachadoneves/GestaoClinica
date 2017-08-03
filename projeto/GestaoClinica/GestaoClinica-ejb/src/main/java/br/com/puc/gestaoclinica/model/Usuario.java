@@ -2,7 +2,10 @@ package br.com.puc.gestaoclinica.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,6 +34,12 @@ public class Usuario implements Serializable {
 	@NotNull
 	@NotEmpty
 	private String senha;
+	
+	private Boolean ativo;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "perfil")
+	private Perfil perfil;
 
 	public Long getId() {
 		return id;
@@ -54,5 +63,21 @@ public class Usuario implements Serializable {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+
+	public Perfil getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(Perfil perfil) {
+		this.perfil = perfil;
 	}
 }
