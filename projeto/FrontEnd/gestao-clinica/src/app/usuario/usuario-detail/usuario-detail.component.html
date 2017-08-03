@@ -1,0 +1,55 @@
+<div class="container">
+    <h5>{{ title }}</h5>
+
+      <form materialize [formGroup]="form" (ngSubmit)="save()">
+
+
+        <div class="row">
+          <div class="input-field col s6">
+            <i class="material-icons prefix">group</i>
+            <select materialize="material_select" [materializeSelectOptions]="perfilOptions" [(ngModel)]="usuario.perfil" formControlName="perfil">
+                <option value="" disabled selected>Selecione o perfil</option>
+                <option *ngFor="let e of perfilOptions" [value]="e.type">{{e.descricao}}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s6">
+            <i class="material-icons prefix">account_circle</i>
+            <input id="login" type="text" class="validate"
+                  [(ngModel)]="usuario.login" formControlName="login"
+                  [class.invalid]="form.controls['login'].touched && !form.controls['login'].valid">
+            <label for="login"
+                  [class.active]="usuario.login"
+                  data-error="Email inválido">
+              Login
+            </label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <i class="material-icons prefix">lock</i>
+            <input id="senha" type="password" class="validate"
+                  [(ngModel)]="usuario.senha" formControlName="senha"
+                  [class.invalid]="form.controls['senha'].touched && !form.controls['senha'].valid">
+            <label for="senha"
+                  [class.active]="usuario.senha"
+                  data-error="Senha inválida">
+              Senha
+            </label>
+          </div>
+        </div>
+        
+    
+        <button class="btn waves-effect waves-light" type="submit" [disabled]="!form.valid">
+          {{descBotao}}<i class="material-icons right">send</i>
+        </button>
+
+        <a class="waves-effect waves-light btn red"
+        (click)="onCancel()">Cancelar</a>
+
+      </form>
+
+
+</div>

@@ -1,3 +1,4 @@
+import { AuthService } from './../shared/auth.service';
 import { RelatorioService } from './../shared/service/relatorio.service';
 import { IMyOptions } from 'mydatepicker';
 import { TipoResultadoExame } from './../shared/models/tipoResultadoExame';
@@ -59,7 +60,8 @@ export class ExamesComponent implements OnInit {
               private route: ActivatedRoute,
               private _pedidoExame: PedidoExameService,
               private _enumService: EnumService,
-              private _relatorioService: RelatorioService) { }
+              private _relatorioService: RelatorioService,
+              private _autService: AuthService) { }
 
   getAutocompleteParams(){
     this.autoCompleteParams[0].data[""]=null;

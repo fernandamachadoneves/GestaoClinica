@@ -1,3 +1,5 @@
+import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.component';
+import { UsuarioComponent } from './usuario/usuario.component';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './login/login.component';
@@ -21,10 +23,11 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-   { path: '', component: AppComponent, canActivate: [AuthGuard]
-   }, 
-   { path: 'login', component: LoginComponent,
-   },
+  { path: '', component: AppComponent, canActivate: [AuthGuard]}, 
+  { path: 'login', component: LoginComponent},
+  { path: 'usuario', component: UsuarioComponent, canActivate: [AuthGuard]},
+  { path: 'usuario/novo', component: UsuarioDetailComponent, canActivate: [AuthGuard]},
+  { path: 'usuario/:id', component: UsuarioDetailComponent, canActivate: [AuthGuard]},
   { path: 'profissional', component: ProfissionalComponent,
     canActivate: [AuthGuard],
     children: [

@@ -8,8 +8,11 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class EnumService {
+
   private urlEnums: string = environment.domain + '/GestaoClinica-web/rest/enums/TipoResultadoExame';
+  private urlEnumsPerfil: string = environment.domain + '/GestaoClinica-web/rest/enums/Perfil';
   private urlRecuperarTipoResultadoPorType: string = environment.domain + '/GestaoClinica-web/rest/enums/TipoResultadoPorType/:type';
+  private urlRecuperarPerfilPorType: string = environment.domain + '/GestaoClinica-web/rest/enums/PerfilPorType/:type';
 
   constructor(private http: Http) { }
 
@@ -22,9 +25,27 @@ export class EnumService {
     return this.http.get(url, options).map(this.extractData);
   }
 
+  recuperarPerfis(): Observable<any> {
+    debugger
+    let url = this.urlEnumsPerfil;
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+    return this.http.get(url, options).map(this.extractData);
+  }
+
   recuperarTipoResultadoPorType(type: string): Promise<any>{
     let headers = new Headers();
     let url = this.urlRecuperarTipoResultadoPorType.replace(':type', type.toString());
+    return this.http.get(url)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
+  }
+
+  recuperarPerfilPorType(type: string): Promise<any>{
+    let headers = new Headers();
+    let url = this.urlRecuperarPerfilPorType.replace(':type', type.toString());
     return this.http.get(url)
       .toPromise()
       .then(this.extractData)

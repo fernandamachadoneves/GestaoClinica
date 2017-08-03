@@ -1,3 +1,4 @@
+import { Perfil } from './shared/models/perfil';
 import { Router } from '@angular/router';
 import { AuthService } from './shared/auth.service';
 import { Component } from '@angular/core';
@@ -11,6 +12,7 @@ export class AppComponent {
   title = 'app';
 
   mostrarMenu: boolean = false;
+  perfil: Perfil;
 
   constructor(private _autService: AuthService,
               private _router: Router){
@@ -18,9 +20,16 @@ export class AppComponent {
   }
 
   ngOnInit(){
+    console.log('fdsafsda');
+    debugger
     this._autService.mostrarMenuEmitter.subscribe(
       mostrar =>  this.mostrarMenu = mostrar
     );
+    this._autService.verificarPerfilUsuario.subscribe(
+      result => {
+        this.perfil = result;
+      }
+    )
   }
 
   onLogout(){

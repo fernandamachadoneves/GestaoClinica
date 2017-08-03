@@ -1,0 +1,40 @@
+<div class="container">
+  <h5>Usuários cadastrados:</h5>
+  <div class="row">
+  <table>
+    <thead>
+    <tr>
+      <th data-field="name">Login</th>
+      <th data-field="name">Perfil</th>
+      <th data-field="name">Edit</th>
+      <th data-field="name">Delete</th>
+    </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let usuario of usuarios">
+        <td>{{ usuario.login }}</td>
+        <td>{{ usuario.perfil.descricao }}</td>
+        <td>
+          <a [routerLink]="['/usuario', usuario.id]">
+            <i class="material-icons">mode_edit</i>
+          </a>
+        </td>
+        <td>
+          <a class="cursor" (click)="deletarUsuario(usuario)">
+            <i class="material-icons">delete</i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+ </div>
+</div>
+
+<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+  <a class="btn-floating btn-large waves-effect waves-light green"
+     routerLink="/usuario/novo">
+    <i class="material-icons">add</i>
+  </a>
+</div>
+
