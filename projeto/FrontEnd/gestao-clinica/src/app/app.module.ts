@@ -1,3 +1,6 @@
+import { RecepcionistaGuard } from './guards/recepcionista.guard';
+import { AdmGuard } from './guards/adm.guard';
+import { MedicoGuard } from './guards/medico.guard';
 import { UsuarioService } from './shared/service/usuario.service';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthService } from './shared/auth.service';
@@ -46,6 +49,7 @@ import { MedicamentoDetailComponent } from './medicamentos/medicamento-detail/me
 import { LoginComponent } from './login/login.component';
 import { UsuarioComponent } from './usuario/usuario.component';
 import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.component';
+import { SemPermissaoComponent } from './sem-permissao/sem-permissao.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +74,8 @@ import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.
     MedicamentoDetailComponent,
     LoginComponent,
     UsuarioComponent,
-    UsuarioDetailComponent
+    UsuarioDetailComponent,
+    SemPermissaoComponent
   ],
   imports: [
     BrowserModule,
@@ -98,7 +103,10 @@ import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.
     PedidoExameService,
     AuthService,
     AuthGuard,
-    UsuarioService
+    UsuarioService,
+    MedicoGuard,
+    AdmGuard,
+    RecepcionistaGuard
   ],
   bootstrap: [AppComponent]
 })

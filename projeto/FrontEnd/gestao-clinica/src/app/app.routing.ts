@@ -1,3 +1,7 @@
+import { RecepcionistaGuard } from './guards/recepcionista.guard';
+import { AdmGuard } from './guards/adm.guard';
+import { SemPermissaoComponent } from './sem-permissao/sem-permissao.component';
+import { MedicoGuard } from './guards/medico.guard';
 import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.component';
 import { UsuarioComponent } from './usuario/usuario.component';
 import { AppComponent } from './app.component';
@@ -25,41 +29,42 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   { path: '', component: AppComponent, canActivate: [AuthGuard]}, 
   { path: 'login', component: LoginComponent},
-  { path: 'usuario', component: UsuarioComponent, canActivate: [AuthGuard]},
-  { path: 'usuario/novo', component: UsuarioDetailComponent, canActivate: [AuthGuard]},
-  { path: 'usuario/:id', component: UsuarioDetailComponent, canActivate: [AuthGuard]},
+  { path: 'semPermissao', component: SemPermissaoComponent}, 
+  { path: 'usuario', component: UsuarioComponent, canActivate: [AdmGuard]},
+  { path: 'usuario/novo', component: UsuarioDetailComponent, canActivate: [AdmGuard]},
+  { path: 'usuario/:id', component: UsuarioDetailComponent, canActivate: [AdmGuard]},
   { path: 'profissional', component: ProfissionalComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AdmGuard],
     children: [
       { path: 'novo', component: ProfissionalCadastroComponent },
       { path: ':id', component: ProfissionalDetailComponent },
       { path: ':id/edit', component: ProfissionalCadastroComponent }
   ]},
   { path: 'paciente', component: PacienteComponent,
-  canActivate: [AuthGuard],
+  canActivate: [AdmGuard],
   children: [
       { path: 'novo', component: PacienteCadastroComponent },
       { path: ':id', component: PacienteDetailComponent },
       { path: ':id/edit', component: PacienteCadastroComponent }
   ]},
   { path: 'medicamento', component: MedicamentosComponent,
-    canActivate: [AuthGuard],
+    canActivate: [AdmGuard],
     children: [
       { path: 'novo', component: MedicamentoCadastroComponent },
       { path: ':id', component: MedicamentoDetailComponent },
       { path: ':id/edit', component: MedicamentoCadastroComponent }
   ]},
   { path: 'controleAgenda', component: ControleAgendaComponent,
-    canActivate: [AuthGuard],
+    canActivate: [RecepcionistaGuard],
     children: [
       { path: 'agendaProfissinal', component: AgendaProfissionalComponent},
       { path: 'agendaPaciente', component: AgendaPacienteComponent}
     ]},
   { path: 'atendimento', component: AtendimentoComponent,
-    canActivate: [AuthGuard],
+    canActivate: [MedicoGuard],
   },
   { path: 'prontuario/:id', component: ProntuarioComponent,
-    canActivate: [AuthGuard],
+    canActivate: [MedicoGuard],
     children: [
     { path: 'receita/:id', component: ReceitasComponent},
     { path: 'exame/:id', component: ExamesComponent}

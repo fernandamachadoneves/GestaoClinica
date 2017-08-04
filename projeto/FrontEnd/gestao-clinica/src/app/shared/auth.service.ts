@@ -22,7 +22,7 @@ export class AuthService {
 
   fazerLogin(usuario: Usuario){
     debugger
-    if (usuario.login == 'teste@gmail.com' && usuario.senha == '123123'){
+    if (usuario.login == 'adm@gestaoclinica.com' && usuario.senha == '123123'){
         this.usuarioAutenticado = true;
         this.usuarioLogado = usuario;
         this.mostrarMenuEmitter.emit(true);
@@ -39,6 +39,7 @@ export class AuthService {
             if (result != null && result !== undefined){
               this.usuarioAutenticado = true;
               this.usuarioLogado = usuario;
+              this.usuarioLogado.perfil = result.perfil;
               this.mostrarMenuEmitter.emit(true);
               this.verificarPerfilUsuario.emit(result.perfil);
               this._router.navigate(['/']);

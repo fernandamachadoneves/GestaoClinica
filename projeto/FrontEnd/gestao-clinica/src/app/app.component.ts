@@ -20,7 +20,6 @@ export class AppComponent {
   }
 
   ngOnInit(){
-    console.log('fdsafsda');
     debugger
     this._autService.mostrarMenuEmitter.subscribe(
       mostrar =>  this.mostrarMenu = mostrar
