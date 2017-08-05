@@ -15,7 +15,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UsuarioDetailComponent implements OnInit {
 
-  form: FormGroup;
   title: string;
   usuario: Usuario = new Usuario();
   perfilOptions = Array<Perfil>();
@@ -31,21 +30,10 @@ export class UsuarioDetailComponent implements OnInit {
     private usuarioService: UsuarioService,
     private enumService: EnumService,
     private profissionalService: ProfissionalService) { 
-
-   this.form = formBuilder.group({
-      login: ['', [
-        //Validators.required,
-        //Validators.pattern("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
-      ]],
-      perfil: [],
-      senha: ['', [
-        Validators.required,
-        Validators.minLength(3)
-      ]]
-    });
  }
 
   ngOnInit() {
+    debugger
     this.profissional = new Profissional();
     this.usuario.perfil = new Perfil();
     $('select').material_select();
@@ -58,19 +46,20 @@ export class UsuarioDetailComponent implements OnInit {
 
       if (!id)
         return;
-
+      
       this.usuarioService.recuperarUsuarioPorId(id)
         .subscribe(
           user => {
-            this.usuario = user
+            this.usuario = user;
+            this.selecionouPerfil = true;
       });
     });
   }
 
-  selecionarPerfil(event){
+  selecionarPerfil(event, perfil){
     debugger
     this.selecionouPerfil = true;
-    if (this.usuario.perfil.descricao == 'MEDICO'){
+    if (perfil == 'MEDICO'){
       this.perfilMedico = true;
       this.profissionalService.recuperarProfissionais().then(
         result => {
@@ -82,26 +71,51 @@ export class UsuarioDetailComponent implements OnInit {
     }
   }
 
+  selecionarEmail(event, profEmail){
+    this.usuario.login = profEmail;
+  }
+
   save() {
+    if (this.validarCampos()) {
+      this.usuarioService.recuperarUsuarioPorLogin(this.usuario.login).then(
+        result =>{
+          if (result){
+            Materialize.toast('Email já cadastrado', 4000, "");
+            
+          } else {
+
+              if (this.usuario.id){
+                result = this.usuarioService.update(this.usuario);
+              } else {
+                result = this.usuarioService.add(this.usuario);
+              }
+
+              result.subscribe(data => this.router.navigate(['usuario']));
+          }
+        });
+    }
+  }
+
+  validarCampos(){
     debugger
-    this.usuarioService.recuperarUsuarioPorLogin(this.usuario.login).then(
-      result =>{
-        if (result){
-          Materialize.toast('Email já cadastrado', 4000, "");
-          
-        } else {
-            var result,
-            usuarioValor = this.form.value;
+    let resultado = true;
 
-            if (this.usuario.id){
-              result = this.usuarioService.update(usuarioValor, this.usuario.id);
-            } else {
-              result = this.usuarioService.add(usuarioValor);
-            }
+    if (!this.selecionouPerfil){
+      Materialize.toast('É obrigatório informar o perfil do usuário', 4000, "");
+      return false;
+    }
 
-            result.subscribe(data => this.router.navigate(['usuario']));
-        }
-      });
+    if (this.usuario.login == null || this.usuario.login == undefined || this.usuario.login == ''){
+      Materialize.toast('É obrigatório informar o login', 4000, "");
+      return false;
+    }
+
+     if (this.usuario.senha == null || this.usuario.senha == undefined || this.usuario.senha == ''){
+      Materialize.toast('É obrigatório informar a senha do usuário', 4000, "");
+      return false;
+    }
+
+    return resultado;
   }
 
   onCancel(){

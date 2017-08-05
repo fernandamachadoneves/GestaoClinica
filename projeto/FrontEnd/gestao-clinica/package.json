@@ -21,6 +21,7 @@
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
+    "angular-cookies": "^1.6.5",
     "angular-in-memory-web-api": "^0.3.0",
     "angular2-materialize": "^15.0.4",
     "angular2-text-mask": "^8.0.2",
@@ -28,6 +29,7 @@
     "jquery": "^2.2.4",
     "materialize-css": "^0.99.0",
     "mydatepicker": "^2.0.25",
+    "ng2-cookies": "^1.0.12",
     "ng2-materialize": "^1.4.2",
     "rxjs": "^5.1.0",
     "zone.js": "^0.8.4"

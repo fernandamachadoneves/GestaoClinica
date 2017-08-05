@@ -82,6 +82,7 @@ export class PedidoExameService {
   }
 
   lancarResultadoExame(itemPedidoExame: ItemPedidoExame){
+    debugger
       let jsonPost = { "itemPedidoExame": JSON.stringify(itemPedidoExame)
       }
       let headers = new Headers();

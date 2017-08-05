@@ -1,3 +1,4 @@
+import { MedicoGuard } from './../guards/medico.guard';
 import { Headers, RequestOptions } from '@angular/http';
 import { RelatorioService } from './../shared/service/relatorio.service';
 import { MedicamentoService } from './../shared/service/medicamento.service';
@@ -36,7 +37,8 @@ export class ReceitasComponent implements OnInit {
               private _receitaService: ReceitaService,
               private route: ActivatedRoute,
               private _medicamentoService: MedicamentoService,
-              private _relatorioService: RelatorioService) { }
+              private _relatorioService: RelatorioService,
+              private _medAut: MedicoGuard) { }
 
   getAutocompleteParams(){
     this.autoCompleteParams[0].data[""]=null;
@@ -138,7 +140,7 @@ export class ReceitasComponent implements OnInit {
     debugger
     if (this.validarItens()){
       if (this.isNovo){
-        this._receitaService.addReceita(this.idPaciente, this.idProfissoinal, this.itensReceita).subscribe(
+        this._receitaService.addReceita(this.idPaciente, this._medAut.profissional.id, this.itensReceita).subscribe(
           result=> {
             this._receitaService.recuperarReceitaPorPaciente(this.idPaciente).subscribe(
               lista => {

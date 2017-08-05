@@ -68,8 +68,7 @@ export class UsuarioService {
       options).map((res: Response) => res);
   }
 
-  update(usuario: Usuario, idUsuario: number){
-    usuario.id = idUsuario;
+  update(usuario: Usuario){
     usuario.ativo = true;
     let jsonPost = { "usuario": JSON.stringify(usuario)
     }

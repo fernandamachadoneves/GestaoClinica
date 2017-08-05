@@ -16,6 +16,7 @@ export class ProfissionalService {
   private urlExcluirProfissional = environment.context + '/GestaoClinica-web/rest/profissional/excluir';
   private urlRecuperarProfissionalPorNome = environment.context + '/GestaoClinica-web/rest/profissional/pesquisar/:nome';
   private urlRecuperarConfigProfPorId = environment.context + '/GestaoClinica-web/rest/profissional/pesquisarConfiguracao/:idProfissional';
+  private urlRecuperarProfissionalPorEmail = environment.context + '/GestaoClinica-web/rest/profissional/recuperarPorEmail/:email';
 
   profissionais = new Array<Profissional>();
 
@@ -43,6 +44,13 @@ export class ProfissionalService {
   recuperarProfissionalPorId(id: number){
     let headers = new Headers();
     let url = this.urlRecuperarProfissionalPorId.replace(':id', id.toString());
+    return this.http.get(url)
+                    .map(this.extractData);
+  }
+
+  recuperarProfissionalPorEmail(email: string){
+    let headers = new Headers();
+    let url = this.urlRecuperarProfissionalPorEmail.replace(':email', email.toString());
     return this.http.get(url)
                     .map(this.extractData);
   }

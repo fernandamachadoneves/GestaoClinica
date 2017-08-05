@@ -1,3 +1,4 @@
+import { MedicoGuard } from './../guards/medico.guard';
 import { AuthService } from './../shared/auth.service';
 import { RelatorioService } from './../shared/service/relatorio.service';
 import { IMyOptions } from 'mydatepicker';
@@ -61,7 +62,8 @@ export class ExamesComponent implements OnInit {
               private _pedidoExame: PedidoExameService,
               private _enumService: EnumService,
               private _relatorioService: RelatorioService,
-              private _autService: AuthService) { }
+              private _autService: AuthService,
+              private _medAut: MedicoGuard) { }
 
   getAutocompleteParams(){
     this.autoCompleteParams[0].data[""]=null;
@@ -72,6 +74,8 @@ export class ExamesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.exameLancarResultado = new Exame();
+    this.itemLancarResultado = new ItemPedidoExame();
     this.itemEditarPedido = new ItemPedidoExame();
     this.itemEditarPedido.exame = new Exame();
     this.subscription = this.route.params.subscribe(
@@ -127,14 +131,16 @@ export class ExamesComponent implements OnInit {
   }
 
   onDateChanged(event) {
-    this.dataResulado = event.dataJson;
+    debugger
+    this.dataResulado = event.jsdate;
   }
 
   selecionouTipoResultado($event, tipo) {
+    debugger
     if (tipo !== null && tipo !== undefined) {
       this._enumService.recuperarTipoResultadoPorType(tipo).then(
         result => {
-            this.tipoResultado = result;
+           this.tipoResultado = result;
       });
     }
   }
@@ -203,7 +209,7 @@ export class ExamesComponent implements OnInit {
     debugger
     if (this.validarItens()){
       if (this.isNovo){
-        this._pedidoExame.addPedidoExame(this.idPaciente, this.idProfissoinal, this.itensPedidoExame).subscribe(
+        this._pedidoExame.addPedidoExame(this.idPaciente, this._medAut.profissional.id, this.itensPedidoExame).subscribe(
           result=> {
             this._pedidoExame.recuperarPedidosPorPaciente(this.idPaciente).subscribe(
               lista => {
@@ -390,7 +396,7 @@ export class ExamesComponent implements OnInit {
      }
 
      if (selecionou){
-      this._relatorioService.gerarPedidoExame(this.listPedidosPaciente, this.idPaciente, 3).subscribe(res => {
+      this._relatorioService.gerarPedidoExame(this.listPedidosPaciente, this.idPaciente, this._medAut.profissional.id).subscribe(res => {
         $('.modal').modal('close');
         let link = document.createElement('a');
         link.href = window.URL.createObjectURL(res);

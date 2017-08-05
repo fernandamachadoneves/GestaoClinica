@@ -20,7 +20,7 @@ export class AppComponent {
   }
 
   ngOnInit(){
-    debugger
+    this.perfil = new Perfil();
     this._autService.mostrarMenuEmitter.subscribe(
       mostrar =>  this.mostrarMenu = mostrar
     );

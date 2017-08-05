@@ -1,11 +1,11 @@
 <div class="container">
     <h5>{{ title }}</h5>
 
-      <form materialize [formGroup]="form" (ngSubmit)="save()">
+      <form materialize #formCtrl="ngForm">
         <div class="row">
           <div class="input-field col s6">
             <i class="material-icons prefix">group</i>
-            <select materialize="material_select" [materializeSelectOptions]="perfilOptions" [(ngModel)]="usuario.perfil.descricao" formControlName="perfil"  (change)="selecionarPerfil($event)">
+            <select id="selectPerfil" name="selectPerfil" materialize="material_select" [materializeSelectOptions]="perfilOptions" [(ngModel)]="usuario.perfil" #perfil (change)="selecionarPerfil($event, perfil.value)">
                 <option value="" disabled selected>Selecione o perfil</option>
                 <option *ngFor="let e of perfilOptions" [value]="e.type">{{e.descricao}}</option>
             </select>
@@ -15,12 +15,9 @@
         <div class="row" *ngIf="selecionouPerfil && !perfilMedico" >
           <div class="input-field col s6">
             <i class="material-icons prefix">account_circle</i>
-            <input id="login" type="text" class="validate"
-                  [(ngModel)]="usuario.login" formControlName="login"
-                  [class.invalid]="form.controls['login'].touched && !form.controls['login'].valid">
-            <label for="login"
-                  [class.active]="usuario.login"
-                  data-error="Email inválido">
+            <input id="login" type="text" name="login"
+                  [(ngModel)]="usuario.login">
+            <label>
               Login
             </label>
           </div>
@@ -29,7 +26,7 @@
         <div class="row" *ngIf="selecionouPerfil && perfilMedico">
           <div class="input-field col s6">
             <i class="material-icons prefix">group</i>
-            <select materialize="material_select" [materializeSelectOptions]="profCadastrados" [(ngModel)]="profissional.email" formControlName="profissional"  (change)="selecionarPerfil($event)">
+            <select id="selectEmailProf" name="selectEmailProf" materialize="material_select" [materializeSelectOptions]="profCadastrados" [(ngModel)]="profissional.email" #emailProf (change)="selecionarEmail($event, emailProf.value)">
                 <option value="" disabled selected>Selecione o email do profissional</option>
                 <option *ngFor="let e of profCadastrados" [value]="e.email">{{e.email}}</option>
             </select>
@@ -39,19 +36,16 @@
         <div class="row" *ngIf="selecionouPerfil">
           <div class="input-field col s6">
             <i class="material-icons prefix">lock</i>
-            <input id="senha" type="password" class="validate"
-                  [(ngModel)]="usuario.senha" formControlName="senha"
-                  [class.invalid]="form.controls['senha'].touched && !form.controls['senha'].valid">
-            <label for="senha"
-                  [class.active]="usuario.senha"
-                  data-error="Senha inválida">
+            <input id="senha" type="password" name="senha"
+                  [(ngModel)]="usuario.senha">
+            <label>
               Senha
             </label>
           </div>
         </div>
         
     
-        <button class="btn waves-effect waves-light" type="submit" [disabled]="!form.valid">
+        <button class="btn waves-effect waves-light" [disabled]="!formCtrl.form.valid" (click)="save()">
           {{descBotao}}<i class="material-icons right">send</i>
         </button>
 
