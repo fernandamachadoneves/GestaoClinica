@@ -39,6 +39,25 @@ public class ProfissionalRepository {
         return em.find(Profissional.class, id);
     }
     
+    public Profissional recuperarProfissionalPorEmail(String email){
+		StringBuilder hql = new StringBuilder("select obj ");
+		hql.append(" from Profissional obj ");
+		hql.append(" where obj.email = :email ");
+		hql.append(" and obj.ativo = :ativo ");
+		
+		
+		try{
+			Query query = em.createQuery(hql.toString());
+			query.setParameter("email", email);
+			query.setParameter("ativo", Boolean.TRUE);
+			
+			return (Profissional) query.getSingleResult();
+			
+		}catch(Exception e){
+			return null;
+		}
+    }
+    
     public List<Profissional> recuperarProfissionalPorNome(String nome){
 		StringBuilder hql = new StringBuilder("select obj ");
 		hql.append(" from Profissional obj ");

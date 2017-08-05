@@ -92,9 +92,7 @@ public class ReceitaResourceRESTService {
     	Long idPaciente = mapper.readValue(objeto.get("idPaciente").toString(), Long.class);
     	List<ItemReceita> itemReceita = mapper.readValue(objeto.get("itensReceita").toString(), mapper.getTypeFactory().constructCollectionType(List.class, ItemReceita.class));
     	
-    	//Long idProfissional = mapper.readValue(objeto.get("idProfissional").toString(), Long.class);
-    	// TODO: Alterar quando recuperar o medico logado no sistema, retirar o valor fixo
-    	Long idProfissional = new Long(1);
+    	Long idProfissional = mapper.readValue(objeto.get("idProfissional").toString(), Long.class);
     	
     	Receita receita = new Receita();
     	receita.setAtivo(Boolean.TRUE);

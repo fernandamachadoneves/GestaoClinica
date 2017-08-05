@@ -96,10 +96,8 @@ public class PedidoExameResourceRESTService {
     	Long idPaciente = mapper.readValue(objeto.get("idPaciente").toString(), Long.class);
     	List<ItemPedidoExame> itemPedido = mapper.readValue(objeto.get("itensPedidoExame").toString(), mapper.getTypeFactory().constructCollectionType(List.class, ItemPedidoExame.class));
     	
-    	//Long idProfissional = mapper.readValue(objeto.get("idProfissional").toString(), Long.class);
-    	// TODO: Alterar quando recuperar o medico logado no sistema, retirar o valor fixo
-    	Long idProfissional = new Long(1);
-    	
+    	Long idProfissional = mapper.readValue(objeto.get("idProfissional").toString(), Long.class);
+
     	PedidoExame pedido = new PedidoExame();
     	pedido.setPaciente(new Paciente(idPaciente));
     	pedido.setProfissional(new Profissional(idProfissional));
