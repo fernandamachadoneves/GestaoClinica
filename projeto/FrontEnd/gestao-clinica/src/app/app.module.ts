@@ -50,6 +50,7 @@ import { LoginComponent } from './login/login.component';
 import { UsuarioComponent } from './usuario/usuario.component';
 import { UsuarioDetailComponent } from './usuario/usuario-detail/usuario-detail.component';
 import { SemPermissaoComponent } from './sem-permissao/sem-permissao.component';
+import {CookieService} from 'angular2-cookie/core';
 
 @NgModule({
   declarations: [
@@ -106,7 +107,8 @@ import { SemPermissaoComponent } from './sem-permissao/sem-permissao.component';
     UsuarioService,
     MedicoGuard,
     AdmGuard,
-    RecepcionistaGuard
+    RecepcionistaGuard,
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

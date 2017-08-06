@@ -1,3 +1,4 @@
+import { CookieService } from 'angular2-cookie/core';
 import { EnumService } from './service/enum.service';
 import { UsuarioService } from './service/usuario.service';
 import { Perfil } from './models/perfil';
@@ -18,7 +19,9 @@ export class AuthService {
 
   constructor(private _router: Router,
               private _usuarioService: UsuarioService,
-              private _enumService: EnumService) { }
+              private _enumService: EnumService,
+              private _cookie:CookieService
+            ) { }
 
   fazerLogin(usuario: Usuario){
     debugger
@@ -30,6 +33,8 @@ export class AuthService {
           perfil => {
             this.usuarioLogado.perfil = perfil;
             this.verificarPerfilUsuario.emit(perfil);
+            this._cookie.put('perfil', perfil.type);
+            this._cookie.put('login', usuario.login);
           }
         );
         this._router.navigate(['/']);
@@ -40,6 +45,8 @@ export class AuthService {
               this.usuarioAutenticado = true;
               this.usuarioLogado = usuario;
               this.usuarioLogado.perfil = result.perfil;
+              this._cookie.put('perfil', this.usuarioLogado.perfil.type);
+              this._cookie.put('login', usuario.login);
               this.mostrarMenuEmitter.emit(true);
               this.verificarPerfilUsuario.emit(result.perfil);
               this._router.navigate(['/']);

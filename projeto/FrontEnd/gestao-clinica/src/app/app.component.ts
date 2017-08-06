@@ -1,3 +1,4 @@
+import { CookieService } from 'angular2-cookie/core';
 import { Perfil } from './shared/models/perfil';
 import { Router } from '@angular/router';
 import { AuthService } from './shared/auth.service';
@@ -15,7 +16,8 @@ export class AppComponent {
   perfil: Perfil;
 
   constructor(private _autService: AuthService,
-              private _router: Router){
+              private _router: Router,
+              private _cookie: CookieService){
 
   }
 
@@ -33,6 +35,7 @@ export class AppComponent {
 
   onLogout(){
     this._autService.mostrarMenuEmitter.emit(false);
-     this._router.navigate(['/login']);
+    this._cookie.removeAll();
+    this._router.navigate(['/login']);
   }
 }
