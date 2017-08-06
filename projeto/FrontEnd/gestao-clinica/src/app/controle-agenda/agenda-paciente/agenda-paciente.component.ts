@@ -55,6 +55,22 @@ export class AgendaPacienteComponent implements OnInit {
     }
   }
 
+  desmarcar(item: MarcacaoConsulta){
+    this._marcacoesConsultaService.desmarcar(item.id).subscribe(
+      result => {
+        this._marcacoesConsultaService.pesquisarAgendamentosPaciente(this.pacienteSelecionado.id).subscribe(
+            marcacoes => {
+              if (marcacoes!==null && marcacoes!=undefined && marcacoes.length > 0){
+                this.listConsultas = marcacoes;
+              } else {
+                //Materialize.toast('Paciente não possui nenhuma consulta agendada', 3000, "");
+                alert('Paciente não possui nenhuma consulta agendada');
+              }
+          });
+      }
+    );
+  }
+
   pesquisar(){
     debugger
      this._marcacoesConsultaService.pesquisarAgendamentosPaciente(this.pacienteSelecionado.id).subscribe(

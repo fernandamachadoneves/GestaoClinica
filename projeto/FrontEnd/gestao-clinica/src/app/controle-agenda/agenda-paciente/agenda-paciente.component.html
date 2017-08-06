@@ -24,7 +24,7 @@
         <td>{{item.dataConsulta | date:"dd/MM/yyyy"}}</td>
         <td>{{item.horario}}</td>
         <td>{{item.profissional.nome}}</td>
-        <td><a class="waves-effect waves-light btn red" (click)="desmarcar()">Desmarcar</a></td>
+        <td><a class="waves-effect waves-light btn red" (click)="desmarcar(item)">Desmarcar</a></td>
       </tr>
     </tbody>
   </table>
