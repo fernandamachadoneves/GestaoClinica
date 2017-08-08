@@ -46,6 +46,7 @@ import br.com.puc.gestaoclinica.data.PacienteRepository;
 import br.com.puc.gestaoclinica.data.UsuarioRepository;
 import br.com.puc.gestaoclinica.model.Medicamento;
 import br.com.puc.gestaoclinica.model.Paciente;
+import br.com.puc.gestaoclinica.model.Perfil;
 import br.com.puc.gestaoclinica.model.Usuario;
 import br.com.puc.gestaoclinica.service.MedicamentoRegistration;
 import br.com.puc.gestaoclinica.service.PacienteRegistration;
@@ -97,11 +98,13 @@ public class UsuarioResourceRESTService {
     public Response criarUsuario(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
     	
     	Usuario usuario = mapper.readValue(objeto.get("usuario").toString(), Usuario.class);
+    	String perfil = mapper.readValue(objeto.get("perfil").toString(), String.class);
 
         Response.ResponseBuilder builder = null;
 
         try {
-
+        	
+        	usuario.setPerfil(Perfil.valueOf(perfil));
             registration.cadastrar(usuario);
 
             // Create an "ok" response
@@ -153,10 +156,12 @@ public class UsuarioResourceRESTService {
     public Response editarUsuario(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
 
         Usuario usuario = mapper.readValue(objeto.get("usuario").toString(), Usuario.class);
+        String perfil = mapper.readValue(objeto.get("perfil").toString(), String.class);
 
     	Response.ResponseBuilder builder = null;
     	
         try {
+        	usuario.setPerfil(Perfil.valueOf(perfil));
             registration.editar(usuario);
 
             // Create an "ok" response
