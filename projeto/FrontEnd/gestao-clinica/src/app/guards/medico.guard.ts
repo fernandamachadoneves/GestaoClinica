@@ -23,6 +23,7 @@ export class MedicoGuard implements CanActivate {
   ) : Observable<boolean> | boolean {
     debugger
     if (this._authService.usuarioEstaAutenticado()){
+      this._authService.mostrarMenuEmitter.emit(true);
       if (this._cookie.get('perfil') == 'MEDICO'){
         this._profissional.recuperarProfissionalPorEmail(this._cookie.get('login')).subscribe(
           result => {

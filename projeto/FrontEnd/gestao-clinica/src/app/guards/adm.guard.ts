@@ -20,6 +20,7 @@ export class AdmGuard implements CanActivate {
   ) : Observable<boolean> | boolean {
     debugger
     if (this._authService.usuarioEstaAutenticado()){
+      this._authService.mostrarMenuEmitter.emit(true);
       if (this._cookie.get('perfil') == 'ADMINISTRADOR'
           || (this._cookie.get('perfil') == 'RECEPCIONISTA' && state.url.split('/')[1] == 'paciente')){
         return true;

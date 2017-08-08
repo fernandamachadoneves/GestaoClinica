@@ -20,6 +20,7 @@ export class RecepcionistaGuard implements CanActivate {
   ) : Observable<boolean> | boolean {
     debugger
     if (this._authService.usuarioEstaAutenticado()){
+      this._authService.mostrarMenuEmitter.emit(true);
       if (this._cookie.get('perfil') == 'RECEPCIONISTA'){
         return true;
       } else {
