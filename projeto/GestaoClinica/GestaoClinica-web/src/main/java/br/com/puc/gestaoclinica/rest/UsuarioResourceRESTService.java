@@ -98,6 +98,7 @@ public class UsuarioResourceRESTService {
     public Response criarUsuario(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
     	
     	Usuario usuario = mapper.readValue(objeto.get("usuario").toString(), Usuario.class);
+    	
 
         Response.ResponseBuilder builder = null;
 
