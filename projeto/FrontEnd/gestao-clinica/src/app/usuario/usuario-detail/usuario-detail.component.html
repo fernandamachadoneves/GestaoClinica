@@ -27,16 +27,15 @@
         </div>
 
         <div class="row" *ngIf="selecionouPerfil && perfilMedico">
-          <div class="input-field col s6">
+          <div class="input-field col s3">
             <i class="material-icons prefix">group</i>
             <label *ngIf="!selecionouEmail">
               <a title="Selecionar Email Profissional" href="#modal" (click)="selecionarEmailProfissional()">Selecionar Email</a>
             </label>
+          </div>
+          <div *ngIf="selecionouEmail" class="input-field col s6">
             <output *ngIf="selecionouEmail">{{this.usuario.login}}</output>
             <a href="#modal" (click)="selecionarEmailProfissional()"><i class="material-icons">mode_edit</i></a>
-            <label *ngIf="selecionouEmail" class="active">
-                Login
-            </label>
           </div>
         </div>
         <br/>
