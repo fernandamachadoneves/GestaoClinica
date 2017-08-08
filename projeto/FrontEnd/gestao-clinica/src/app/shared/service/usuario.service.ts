@@ -29,11 +29,14 @@ export class UsuarioService {
                     .map(this.extractData);
   }
 
-  recuperarUsuarioPorId(id: number){
+   recuperarUsuarioPorId(id: number): Promise<any> {
     let headers = new Headers();
     let url = this.urlRecuperarUsuarioPorId.replace(':id', id.toString());
+
     return this.http.get(url)
-                    .map(this.extractData);
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
   }
 
   recuperarUsuarioPorLogin(login: string) : Promise<any>{
@@ -57,8 +60,9 @@ export class UsuarioService {
       options).map(this.extractData);
   }
 
-  add(usuario: Usuario){
-    let jsonPost = { "usuario": JSON.stringify(usuario)
+  add(usuario: Usuario, perfil: string){
+    let jsonPost = { "usuario": JSON.stringify(usuario),
+                     "perfil": JSON.stringify(perfil)
     }
     usuario.ativo = true;
     let headers = new Headers();
@@ -68,9 +72,10 @@ export class UsuarioService {
       options).map((res: Response) => res);
   }
 
-  update(usuario: Usuario){
+  update(usuario: Usuario, perfil: string){
     usuario.ativo = true;
-    let jsonPost = { "usuario": JSON.stringify(usuario)
+    let jsonPost = { "usuario": JSON.stringify(usuario),
+                     "perfil": JSON.stringify(perfil)
     }
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');

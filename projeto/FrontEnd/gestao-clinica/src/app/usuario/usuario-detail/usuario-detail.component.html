@@ -5,10 +5,13 @@
         <div class="row">
           <div class="input-field col s6">
             <i class="material-icons prefix">group</i>
-            <select id="selectPerfil" name="selectPerfil" materialize="material_select" [materializeSelectOptions]="perfilOptions" [(ngModel)]="usuario.perfil" #perfil (change)="selecionarPerfil($event, perfil.value)">
+             <select materialize="material_select" id="selectPerfil" name="selectPerfil" [(ngModel)]="perfil" (change)="selecionarPerfil()">
                 <option value="" disabled selected>Selecione o perfil</option>
-                <option *ngFor="let e of perfilOptions" [value]="e.type">{{e.descricao}}</option>
+                <option value="RECEPCIONISTA">Recepcionista</option>
+                <option value="MEDICO">Médico</option>
+                <option value="ADMINISTRADOR">Administrador</option>
             </select>
+            <label>Perfil</label>
           </div>
         </div>
 

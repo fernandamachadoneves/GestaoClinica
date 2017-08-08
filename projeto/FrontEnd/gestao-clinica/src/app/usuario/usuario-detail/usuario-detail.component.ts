@@ -23,6 +23,7 @@ export class UsuarioDetailComponent implements OnInit {
   profCadastrados = Array<Profissional>();
   perfilMedico: boolean = false;
   profissional: Profissional;
+  perfil: string;
 
   constructor(formBuilder: FormBuilder,
     private router: Router,
@@ -48,18 +49,19 @@ export class UsuarioDetailComponent implements OnInit {
         return;
       
       this.usuarioService.recuperarUsuarioPorId(id)
-        .subscribe(
+        .then(
           user => {
             this.usuario = user;
-            this.selecionouPerfil = true;
+            this.perfil = this.usuario.perfil.type;
+            this.selecionarPerfil();
+            $('select').material_select();
       });
     });
   }
 
-  selecionarPerfil(event, perfil){
-    debugger
+  selecionarPerfil(){
     this.selecionouPerfil = true;
-    if (perfil == 'MEDICO'){
+    if (this.perfil == 'MEDICO'){
       this.perfilMedico = true;
       this.profissionalService.recuperarProfissionais().then(
         result => {
@@ -85,9 +87,9 @@ export class UsuarioDetailComponent implements OnInit {
           } else {
 
               if (this.usuario.id){
-                result = this.usuarioService.update(this.usuario);
+                result = this.usuarioService.update(this.usuario, this.perfil);
               } else {
-                result = this.usuarioService.add(this.usuario);
+                result = this.usuarioService.add(this.usuario, this.perfil);
               }
 
               result.subscribe(data => this.router.navigate(['usuario']));
