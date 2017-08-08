@@ -13,7 +13,7 @@ export class AppComponent {
   title = 'app';
 
   mostrarMenu: boolean = false;
-  perfil: Perfil;
+  perfil: string;
 
   constructor(private _autService: AuthService,
               private _router: Router,
@@ -22,19 +22,19 @@ export class AppComponent {
   }
 
   ngOnInit(){
-    this.perfil = new Perfil();
+    debugger
     this._autService.mostrarMenuEmitter.subscribe(
-      mostrar =>  this.mostrarMenu = mostrar
-    );
-    this._autService.verificarPerfilUsuario.subscribe(
-      result => {
-        this.perfil = result;
-      }
-    )
+      mostrar =>  {
+        if (!this.mostrarMenu){
+          this.mostrarMenu = mostrar
+        }
+        this.perfil = this._cookie.get('perfil');
+    });
   }
 
+
   onLogout(){
-    this._autService.mostrarMenuEmitter.emit(false);
+   this.mostrarMenu = false;
     this._cookie.removeAll();
     this._router.navigate(['/login']);
   }

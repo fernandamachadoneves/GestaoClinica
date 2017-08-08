@@ -26,7 +26,7 @@ export class PedidoExameService {
 
   constructor(private http: Http) { }
 
-  addPedidoExame(idPaciente: number, idProfissional: number, itensPedidoExame: Array<ItemPedidoExame>) {
+  addPedidoExame(idPaciente: number, idProfissional: string, itensPedidoExame: Array<ItemPedidoExame>) {
     let jsonPost = { "idPaciente": JSON.stringify(idPaciente),
             "idProfissional": JSON.stringify(idProfissional),
             "itensPedidoExame": JSON.stringify(itensPedidoExame)

@@ -9,13 +9,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 @Injectable()
 export class AuthService {
 
-  private usuarioAutenticado: boolean = false;
-
-  usuarioLogado: Usuario;
-
   mostrarMenuEmitter = new EventEmitter<boolean>();
-
-  verificarPerfilUsuario = new EventEmitter<Perfil>();
 
   constructor(private _router: Router,
               private _usuarioService: UsuarioService,
@@ -26,32 +20,20 @@ export class AuthService {
   fazerLogin(usuario: Usuario){
     debugger
     if (usuario.login == 'adm@gestaoclinica.com' && usuario.senha == '123123'){
-        this.usuarioAutenticado = true;
-        this.usuarioLogado = usuario;
+        this._cookie.put('login', usuario.login);
+        this._cookie.put('perfil', 'ADMINISTRADOR');
         this.mostrarMenuEmitter.emit(true);
-        this._enumService.recuperarPerfilPorType('ADMINISTRADOR').then(
-          perfil => {
-            this.usuarioLogado.perfil = perfil;
-            this.verificarPerfilUsuario.emit(perfil);
-            this._cookie.put('perfil', perfil.type);
-            this._cookie.put('login', usuario.login);
-          }
-        );
         this._router.navigate(['/']);
     } else {
       this._usuarioService.recuperarUsuarioPorEmailSenha(usuario.login, usuario.senha).subscribe(
         result => {
             if (result != null && result !== undefined){
-              this.usuarioAutenticado = true;
-              this.usuarioLogado = usuario;
-              this.usuarioLogado.perfil = result.perfil;
-              this._cookie.put('perfil', this.usuarioLogado.perfil.type);
+              this._cookie.put('perfil', result.perfil.type);
               this._cookie.put('login', usuario.login);
               this.mostrarMenuEmitter.emit(true);
-              this.verificarPerfilUsuario.emit(result.perfil);
               this._router.navigate(['/']);
             } else{
-              this.usuarioAutenticado = false;
+              this._cookie.removeAll();
               this.mostrarMenuEmitter.emit(false);
               $('.modal').modal('open');
               //Materialize.toast('Usuário ou senha inválidos', 4000, "");
@@ -63,7 +45,11 @@ export class AuthService {
   }
 
   usuarioEstaAutenticado(){
-    return this.usuarioAutenticado;
+    if (this._cookie.get('login')){
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

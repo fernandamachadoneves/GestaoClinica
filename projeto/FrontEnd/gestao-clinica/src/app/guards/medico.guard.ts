@@ -1,3 +1,4 @@
+import { CookieService } from 'angular2-cookie/core';
 import { ProfissionalService } from './../shared/profissional.service';
 import { Profissional } from './../shared/models/profissional';
 import { AuthService } from './../shared/auth.service';
@@ -9,12 +10,11 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class MedicoGuard implements CanActivate {
 
-  profissional = new Profissional();
-
   constructor(
     private _authService: AuthService,
     private _router: Router,
-    private _profissional: ProfissionalService
+    private _profissional: ProfissionalService,
+    private _cookie: CookieService
   ) { }
 
   canActivate (
@@ -23,10 +23,10 @@ export class MedicoGuard implements CanActivate {
   ) : Observable<boolean> | boolean {
     debugger
     if (this._authService.usuarioEstaAutenticado()){
-      if (this._authService.usuarioLogado.perfil.type == 'MEDICO'){
-        this._profissional.recuperarProfissionalPorEmail(this._authService.usuarioLogado.login).subscribe(
+      if (this._cookie.get('perfil') == 'MEDICO'){
+        this._profissional.recuperarProfissionalPorEmail(this._cookie.get('login')).subscribe(
           result => {
-            this.profissional = result;
+            this._cookie.put('idProfissional', result.id);
           }
         )
         return true;

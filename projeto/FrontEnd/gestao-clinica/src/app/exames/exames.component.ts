@@ -1,3 +1,4 @@
+import { CookieService } from 'angular2-cookie/core';
 import { MedicoGuard } from './../guards/medico.guard';
 import { AuthService } from './../shared/auth.service';
 import { RelatorioService } from './../shared/service/relatorio.service';
@@ -63,7 +64,8 @@ export class ExamesComponent implements OnInit {
               private _enumService: EnumService,
               private _relatorioService: RelatorioService,
               private _autService: AuthService,
-              private _medAut: MedicoGuard) { }
+              private _medAut: MedicoGuard,
+              private _cookie: CookieService) { }
 
   getAutocompleteParams(){
     this.autoCompleteParams[0].data[""]=null;
@@ -209,7 +211,7 @@ export class ExamesComponent implements OnInit {
     debugger
     if (this.validarItens()){
       if (this.isNovo){
-        this._pedidoExame.addPedidoExame(this.idPaciente, this._medAut.profissional.id, this.itensPedidoExame).subscribe(
+        this._pedidoExame.addPedidoExame(this.idPaciente, this._cookie.get('idProfissional'), this.itensPedidoExame).subscribe(
           result=> {
             this._pedidoExame.recuperarPedidosPorPaciente(this.idPaciente).subscribe(
               lista => {
@@ -396,7 +398,7 @@ export class ExamesComponent implements OnInit {
      }
 
      if (selecionou){
-      this._relatorioService.gerarPedidoExame(this.listPedidosPaciente, this.idPaciente, this._medAut.profissional.id).subscribe(res => {
+      this._relatorioService.gerarPedidoExame(this.listPedidosPaciente, this.idPaciente, this._cookie.get('idProfissional')).subscribe(res => {
         $('.modal').modal('close');
         let link = document.createElement('a');
         link.href = window.URL.createObjectURL(res);

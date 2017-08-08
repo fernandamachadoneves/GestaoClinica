@@ -5,28 +5,29 @@
       Gestão Clínica
     </a>
     <ul id="nav-mobile" class="left">
-      <li routerLinkActive="active" *ngIf="perfil?.type == 'ADMINISTRADOR'">
+      <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
         <a routerLink="/usuario">Cadastrar Usuário</a>
       </li>
-      <li routerLinkActive="active" *ngIf="perfil?.type == 'ADMINISTRADOR'">
+      <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
         <a routerLink="/profissional">Cadastro Profissionais</a>
       </li>
-      <li routerLinkActive="active" *ngIf="perfil?.type == 'ADMINISTRADOR' || perfil.type == 'RECEPCIONISTA'">
+      <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR' || perfil.type == 'RECEPCIONISTA'">
         <a routerLink="/paciente">Cadastro Paciente</a>
       </li>
-      <li routerLinkActive="active" *ngIf="perfil?.type == 'ADMINISTRADOR'">
+      <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
         <a routerLink="/medicamento">Medicamentos</a>
       </li>
-      <li routerLinkActive="active" *ngIf="perfil?.type == 'RECEPCIONISTA'" >
+      <li routerLinkActive="active" *ngIf="perfil == 'RECEPCIONISTA'" >
         <a routerLink="/controleAgenda">Agenda</a>
       </li>
-      <li routerLinkActive="active" *ngIf="perfil?.type == 'MEDICO'" >
+      <li routerLinkActive="active" *ngIf="perfil == 'MEDICO'" >
         <a routerLink="/atendimento">Prontuário Paciente</a>
       </li>
       <li routerLinkActive="active">
         <a (click)="onLogout()">Logout</a>
       </li>
     </ul>
+          {{perfil}}
     </div>
 </nav>
 

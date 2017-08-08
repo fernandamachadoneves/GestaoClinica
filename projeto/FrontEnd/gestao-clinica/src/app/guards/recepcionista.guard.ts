@@ -1,3 +1,4 @@
+import { CookieService } from 'angular2-cookie/core';
 import { AuthService } from './../shared/auth.service';
 import { Observable } from 'rxjs/Rx';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
@@ -9,7 +10,8 @@ export class RecepcionistaGuard implements CanActivate {
 
   constructor(
     private _authService: AuthService,
-    private _router: Router
+    private _router: Router,
+    private _cookie: CookieService
   ) { }
 
   canActivate (
@@ -18,7 +20,7 @@ export class RecepcionistaGuard implements CanActivate {
   ) : Observable<boolean> | boolean {
     debugger
     if (this._authService.usuarioEstaAutenticado()){
-      if (this._authService.usuarioLogado.perfil.type == 'RECEPCIONISTA'){
+      if (this._cookie.get('perfil') == 'RECEPCIONISTA'){
         return true;
       } else {
         this._router.navigate(['/semPermissao']);

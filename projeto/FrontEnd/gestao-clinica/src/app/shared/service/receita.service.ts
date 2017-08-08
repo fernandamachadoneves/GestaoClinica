@@ -21,7 +21,7 @@ export class ReceitaService {
 
   constructor(private http: Http) { }
 
-  addReceita(idPaciente: number, idProfissional: number, itensReceita: Array<ItemReceita>) {
+  addReceita(idPaciente: number, idProfissional: string, itensReceita: Array<ItemReceita>) {
     let jsonPost = { "idPaciente": JSON.stringify(idPaciente),
             "idProfissional": JSON.stringify(idProfissional),
             "itensReceita": JSON.stringify(itensReceita)

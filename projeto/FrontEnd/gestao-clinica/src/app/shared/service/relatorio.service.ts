@@ -45,7 +45,7 @@ export class RelatorioService {
       });
   }
 
-  gerarPedidoExame(listaPedidos: Array<ItemPedidoExame>, idPaciente: number, idProfissionalLogado: number) {
+  gerarPedidoExame(listaPedidos: Array<ItemPedidoExame>, idPaciente: number, idProfissionalLogado: string) {
 
       let jsonPost = { "listaPedidos": JSON.stringify(listaPedidos),
               "idPaciente": JSON.stringify(idPaciente),
