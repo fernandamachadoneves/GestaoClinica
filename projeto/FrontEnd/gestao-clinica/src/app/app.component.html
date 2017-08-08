@@ -1,5 +1,6 @@
 <nav class="light-green" *ngIf="mostrarMenu" >
     <div class="nav-wrapper">
+      <a class="blue-text text-darken-2">{{perfil}}</a>
       <a class="brand-logo right" style="padding-left: 15px"
       routerLink="">
       Gestão Clínica
@@ -27,7 +28,6 @@
         <a (click)="onLogout()">Logout</a>
       </li>
     </ul>
-          {{perfil}}
     </div>
 </nav>
 
