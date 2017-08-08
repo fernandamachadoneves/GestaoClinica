@@ -98,13 +98,10 @@ public class UsuarioResourceRESTService {
     public Response criarUsuario(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
     	
     	Usuario usuario = mapper.readValue(objeto.get("usuario").toString(), Usuario.class);
-    	String perfil = mapper.readValue(objeto.get("perfil").toString(), String.class);
 
         Response.ResponseBuilder builder = null;
 
         try {
-        	
-        	usuario.setPerfil(Perfil.valueOf(perfil));
             registration.cadastrar(usuario);
 
             // Create an "ok" response
@@ -156,12 +153,10 @@ public class UsuarioResourceRESTService {
     public Response editarUsuario(JSONObject objeto) throws JsonParseException, JsonMappingException, IOException {
 
         Usuario usuario = mapper.readValue(objeto.get("usuario").toString(), Usuario.class);
-        String perfil = mapper.readValue(objeto.get("perfil").toString(), String.class);
 
     	Response.ResponseBuilder builder = null;
     	
         try {
-        	usuario.setPerfil(Perfil.valueOf(perfil));
             registration.editar(usuario);
 
             // Create an "ok" response
