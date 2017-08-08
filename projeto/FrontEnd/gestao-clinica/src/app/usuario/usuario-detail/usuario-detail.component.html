@@ -20,7 +20,7 @@
             <i class="material-icons prefix">account_circle</i>
             <input id="login" type="text" name="login"
                   [(ngModel)]="usuario.login">
-            <label>
+            <label class="active">
               Login
             </label>
           </div>
@@ -29,19 +29,24 @@
         <div class="row" *ngIf="selecionouPerfil && perfilMedico">
           <div class="input-field col s6">
             <i class="material-icons prefix">group</i>
-            <select id="selectEmailProf" name="selectEmailProf" materialize="material_select" [materializeSelectOptions]="profCadastrados" [(ngModel)]="profissional.email" #emailProf (change)="selecionarEmail($event, emailProf.value)">
-                <option value="" disabled selected>Selecione o email do profissional</option>
-                <option *ngFor="let e of profCadastrados" [value]="e.email">{{e.email}}</option>
-            </select>
+            <label *ngIf="!selecionouEmail">
+              <a title="Selecionar Email Profissional" href="#modal" (click)="selecionarEmailProfissional()">Selecionar Email</a>
+            </label>
+            <output *ngIf="selecionouEmail">{{this.usuario.login}}</output>
+            <a href="#modal" (click)="selecionarEmailProfissional()"><i class="material-icons">mode_edit</i></a>
+            <label *ngIf="selecionouEmail" class="active">
+                Login
+            </label>
           </div>
         </div>
+        <br/>
 
         <div class="row" *ngIf="selecionouPerfil">
           <div class="input-field col s6">
             <i class="material-icons prefix">lock</i>
             <input id="senha" type="password" name="senha"
                   [(ngModel)]="usuario.senha">
-            <label>
+            <label class="active">
               Senha
             </label>
           </div>
@@ -56,6 +61,26 @@
         (click)="onCancel()">Cancelar</a>
 
       </form>
-
-
 </div>
+
+
+ <!-- Modal Structure -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h5>Selecione o profissional:</h5>
+          <div>
+            <div class="row">
+              <div class="col s12">
+                <div class="row">
+                  <div class="input-field col s6">
+                      <div class="collection" *ngFor="let item of profCadastrados">
+                        <a class="collection-item" (click)="selecionarEmail(item.email)">{{item?.nome}} - {{item?.email}}</a>
+                      </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+    </div>
+  </div>
+

@@ -24,6 +24,7 @@ export class UsuarioDetailComponent implements OnInit {
   perfilMedico: boolean = false;
   profissional: Profissional;
   perfil: string;
+  selecionouEmail: boolean = false;
 
   constructor(formBuilder: FormBuilder,
     private router: Router,
@@ -54,30 +55,46 @@ export class UsuarioDetailComponent implements OnInit {
             this.usuario = user;
             this.perfil = this.usuario.perfil.type;
             this.selecionarPerfil();
+             Materialize.updateTextFields();
             $('select').material_select();
+            if (this.perfil == 'MEDICO'){
+              this.perfilMedico = true;
+              this.selecionouEmail = true;
+            } else{
+              this.perfilMedico = false;
+            }
       });
     });
   }
 
   selecionarPerfil(){
+    debugger
     this.selecionouPerfil = true;
     if (this.perfil == 'MEDICO'){
       this.perfilMedico = true;
-      this.profissionalService.recuperarProfissionais().then(
-        result => {
-          this.profCadastrados = result;
-        }
-      )
     } else{
       this.perfilMedico = false;
     }
   }
 
-  selecionarEmail(event, profEmail){
-    this.usuario.login = profEmail;
+  selecionarEmail(email){
+    $('.modal').modal('close');
+    this.usuario.login = email;
+    this.selecionouEmail = true;
+  }
+
+  selecionarEmailProfissional(){
+    debugger
+    $('.modal').modal({dismissible: false});
+    this.profissionalService.recuperarProfissionais().then(
+      result => {
+        this.profCadastrados = result;
+      }
+    )
   }
 
   save() {
+    debugger
     if (this.validarCampos()) {
       this.usuarioService.recuperarUsuarioPorLogin(this.usuario.login).then(
         result =>{
@@ -85,14 +102,19 @@ export class UsuarioDetailComponent implements OnInit {
             Materialize.toast('Email já cadastrado', 4000, "");
             
           } else {
+              this.enumService.recuperarPerfilPorType(this.perfil).then(
+                resultEnum => {
+                  this.usuario.perfil = resultEnum;
+                  if (this.usuario.id){
+                    result = this.usuarioService.update(this.usuario);
+                  } else {
+                    result = this.usuarioService.add(this.usuario);
+                  }
 
-              if (this.usuario.id){
-                result = this.usuarioService.update(this.usuario, this.perfil);
-              } else {
-                result = this.usuarioService.add(this.usuario, this.perfil);
-              }
-
-              result.subscribe(data => this.router.navigate(['usuario']));
+                  result.subscribe(data => this.router.navigate(['usuario']));
+                }
+                
+              );
           }
         });
     }

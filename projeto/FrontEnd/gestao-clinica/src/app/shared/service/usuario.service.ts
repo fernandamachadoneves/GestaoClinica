@@ -60,9 +60,8 @@ export class UsuarioService {
       options).map(this.extractData);
   }
 
-  add(usuario: Usuario, perfil: string){
-    let jsonPost = { "usuario": JSON.stringify(usuario),
-                     "perfil": JSON.stringify(perfil)
+  add(usuario: Usuario){
+    let jsonPost = { "usuario": JSON.stringify(usuario)
     }
     usuario.ativo = true;
     let headers = new Headers();
@@ -72,10 +71,9 @@ export class UsuarioService {
       options).map((res: Response) => res);
   }
 
-  update(usuario: Usuario, perfil: string){
+  update(usuario: Usuario){
     usuario.ativo = true;
-    let jsonPost = { "usuario": JSON.stringify(usuario),
-                     "perfil": JSON.stringify(perfil)
+    let jsonPost = { "usuario": JSON.stringify(usuario)
     }
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
