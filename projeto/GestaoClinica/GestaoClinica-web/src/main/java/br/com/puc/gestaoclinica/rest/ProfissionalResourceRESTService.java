@@ -97,7 +97,7 @@ public class ProfissionalResourceRESTService {
     @GET
     @Path("recuperarPorEmail/{email}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Profissional recuperarProfissionalPorEmail(@PathParam("email") String email) {
+    public Profissional recuperarProfissionalPorEmail(@PathParam("email") String email){
         Profissional profissional = repository.recuperarProfissionalPorEmail(email);
         if (profissional == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
