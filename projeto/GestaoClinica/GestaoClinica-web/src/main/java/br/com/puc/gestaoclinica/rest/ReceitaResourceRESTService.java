@@ -92,12 +92,12 @@ public class ReceitaResourceRESTService {
     	Long idPaciente = mapper.readValue(objeto.get("idPaciente").toString(), Long.class);
     	List<ItemReceita> itemReceita = mapper.readValue(objeto.get("itensReceita").toString(), mapper.getTypeFactory().constructCollectionType(List.class, ItemReceita.class));
     	
-    	Long idProfissional = mapper.readValue(objeto.get("idProfissional").toString(), Long.class);
+    	String idProfissional = mapper.readValue(objeto.get("idProfissional").toString(), String.class);
     	
     	Receita receita = new Receita();
     	receita.setAtivo(Boolean.TRUE);
     	receita.setPaciente(new Paciente(idPaciente));
-    	receita.setProfissional(new Profissional(idProfissional));
+    	receita.setProfissional(new Profissional(Long.valueOf(idProfissional)));
     	receita.setDataReceita(new Date());
 
         Response.ResponseBuilder builder = null;

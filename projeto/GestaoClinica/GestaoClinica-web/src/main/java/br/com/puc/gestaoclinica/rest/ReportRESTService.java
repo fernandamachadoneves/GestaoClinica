@@ -104,8 +104,8 @@ public class ReportRESTService {
     	Long idPaciente = mapper.readValue(objeto.get("idPaciente").toString(), Long.class);
     	Paciente paciente = pacienteRepository.findById(idPaciente);
     	
-    	Long idProfissionalLogado = mapper.readValue(objeto.get("idProfissionalLogado").toString(), Long.class);
-    	Profissional profissional = profissionalRepository.findById(idProfissionalLogado);    	
+    	String idProfissionalLogado = mapper.readValue(objeto.get("idProfissionalLogado").toString(), String.class);
+    	Profissional profissional = profissionalRepository.findById(Long.valueOf(idProfissionalLogado));    	
     	
     	List<ItemPedidoExame> listaExamesSeleciados = new ArrayList<>();
     	

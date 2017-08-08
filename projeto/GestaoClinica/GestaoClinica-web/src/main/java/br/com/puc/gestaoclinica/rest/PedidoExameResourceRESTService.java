@@ -96,11 +96,11 @@ public class PedidoExameResourceRESTService {
     	Long idPaciente = mapper.readValue(objeto.get("idPaciente").toString(), Long.class);
     	List<ItemPedidoExame> itemPedido = mapper.readValue(objeto.get("itensPedidoExame").toString(), mapper.getTypeFactory().constructCollectionType(List.class, ItemPedidoExame.class));
     	
-    	Long idProfissional = mapper.readValue(objeto.get("idProfissional").toString(), Long.class);
+    	String idProfissional = mapper.readValue(objeto.get("idProfissional").toString(), String.class);
 
     	PedidoExame pedido = new PedidoExame();
     	pedido.setPaciente(new Paciente(idPaciente));
-    	pedido.setProfissional(new Profissional(idProfissional));
+    	pedido.setProfissional(new Profissional(Long.valueOf(idProfissional)));
     	pedido.setDataPedido(new Date());
 
         Response.ResponseBuilder builder = null;
