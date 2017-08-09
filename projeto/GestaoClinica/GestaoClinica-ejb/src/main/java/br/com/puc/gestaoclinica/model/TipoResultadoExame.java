@@ -7,9 +7,10 @@ import com.fasterxml.jackson.databind.node.JsonNodeType;
 
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum TipoResultadoExame implements EnumType {
+	
 	NORMAL("Normal"),
 	ALTERADO("Alterado"),
-	SUSPEITO("Suspeito");
+	SUSPEITO("Suspeito"); 
 
 	private String descricao;
 

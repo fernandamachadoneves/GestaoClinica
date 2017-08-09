@@ -60,6 +60,7 @@ import br.com.puc.gestaoclinica.service.ProfissionalRegistration;
 @Path("/profissional")
 @RequestScoped
 public class ProfissionalResourceRESTService {
+	
     @Inject
     private Logger log;
 

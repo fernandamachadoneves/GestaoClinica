@@ -102,9 +102,11 @@
     <div class="row">
       <div class="col s12">
         <div class="input-field col s3">
-            <select id="selectTipoResultado" name="selectTipoResultado" materialize="material_select" [materializeSelectOptions]="tipoResultadoExameOptions" [(ngModel)]="itemLancarResultado.tipoResultado" #tipo (change)="selecionouTipoResultado($event, tipo.value)">
+            <select materialize="material_select" id="selectTipoResult" name="selectTipoResult" [(ngModel)]="tipoResultado">
                 <option value="" disabled selected>Selecione o resultado</option>
-                <option *ngFor="let e of tipoResultadoExameOptions" [value]="e.type">{{e.descricao}}</option>
+                <option value="NORMAL">Normal</option>
+                <option value="ALTERADO">Alterado</option>
+                <option value="SUSPEITO">Suspeito</option>
             </select>
         </div>
       </div>

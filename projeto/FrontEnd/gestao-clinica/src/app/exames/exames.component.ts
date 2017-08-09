@@ -33,13 +33,12 @@ export class ExamesComponent implements OnInit {
   idPaciente: number;
   idProfissoinal: number;
   pedidoExame: PedidoExame;
-  tipoResultadoExameOptions = Array<TipoResultadoExame>();
   exameLancarResultado: Exame;
   dataResulado: Date;
-  tipoResultado: TipoResultadoExame;
   resultadoObs: string;
   itemLancarResultado: ItemPedidoExame;
   itemEditarPedido: ItemPedidoExame;
+  tipoResultado: string;
 
   private autoCompleteParams = [{'data': {}}];
 
@@ -114,22 +113,24 @@ export class ExamesComponent implements OnInit {
 
   lancarResultado(item: ItemPedidoExame){
     debugger
+    this.tipoResultado = null;
     this.exameLancarResultado = item.exame;
     this.itemLancarResultado = item;
      $('.modal').modal({
        dismissible: true
     });
-    $('select').material_select();
-    this._enumService.getEnum('TipoResultadoExame').subscribe(tipos => this.tipoResultadoExameOptions = tipos);
     let data = new Date();
     if (item.dataRealizacao != null && item.dataRealizacao !== undefined){
       data = new Date(item.dataRealizacao);
     }
     this.model = { date: { year: data.getFullYear(), month: data.getMonth() + 1, day: data.getDate() } }
+    this.dataResulado = data;
     this.resultadoObs = item.resultadoObs;
     if (item.tipoResultado != null && item.tipoResultado !== undefined) {
-       this.tipoResultado = this.tipoResultadoExameOptions.find(resultado => resultado.descricao === this.tipoResultado.descricao);
+       Materialize.updateTextFields();
+       this.tipoResultado = item.tipoResultado.type;
     } 
+    $('select').material_select();
   }
 
   onDateChanged(event) {
@@ -283,8 +284,12 @@ export class ExamesComponent implements OnInit {
     debugger
     this.itemLancarResultado.resultadoObs = this.resultadoObs;
     this.itemLancarResultado.dataRealizacao = this.dataResulado;
-    this.itemLancarResultado.tipoResultado = this.tipoResultado;
     if (this.validarResultados()){
+      this._enumService.recuperarTipoResultadoPorType(this.tipoResultado).then(
+        resultEnum => {
+          this.itemLancarResultado.tipoResultado = resultEnum;
+        }
+      );
       this._pedidoExame.lancarResultadoExame(this.itemLancarResultado).subscribe();
       $('.modal').modal('close');
     }
@@ -294,10 +299,10 @@ export class ExamesComponent implements OnInit {
     let validacaoOk = true;
       if (this.itemLancarResultado.dataRealizacao==null || this.itemLancarResultado.dataRealizacao==undefined){
         validacaoOk = false;
-         Materialize.toast('É obrigatório informar a data de realização do exame', 4000, "");
-      } else if (this.itemLancarResultado.tipoResultado==null || this.itemLancarResultado.tipoResultado==undefined){
+        Materialize.toast('É obrigatório informar a data de realização do exame', 4000, "");
+      } else if (this.tipoResultado==null || this.tipoResultado==undefined || this.tipoResultado ==''){
         validacaoOk = false;
-         Materialize.toast('É obrigatório informar o resultado ', 4000, "");
+        Materialize.toast('É obrigatório informar o resultado ', 4000, "");
       }
     
     return validacaoOk;

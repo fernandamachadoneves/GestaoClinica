@@ -174,7 +174,7 @@ export class AgendaProfissionalComponent implements OnInit {
   marcaConsulta() {
     debugger
     if (this.pacienteAgendar==null || this.pacienteAgendar == undefined || this.pacienteAgendar.id == null){
-      alert('É necessário informar o paciente para agendar');
+      Materialize.toast('É necessário informar o paciente para agendar', 4000, "");
     } else {
       let consulta = this.marcarHorario(this.dataAgenda, this.horarioAgendar);
       this._marcacaoConsultaService.marcar(consulta, this.pacienteAgendar, this.profissional).subscribe(
@@ -182,6 +182,7 @@ export class AgendaProfissionalComponent implements OnInit {
           this.pesquisar();
         }
       );
+      $('.modal').modal('close');
     }
   }
 
