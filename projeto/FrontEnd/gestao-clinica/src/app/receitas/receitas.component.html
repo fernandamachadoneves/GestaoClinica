@@ -15,7 +15,7 @@
         <td>{{item.profissional.nome}}</td>
         <td><a class="waves-effect waves-light btn red" (click)="deletarReceita(item)">Remover</a></td>
         <td><a href="#modalReceita" class="waves-effect waves-light btn" (click)="editarReceita(item)">Editar</a></td>
-        <td><i class="small material-icons cursor" (click)="gerarReceita(item.id)">print</i></td>
+        <td id="impReceita"><i class="small material-icons cursor" (click)="gerarReceita(item.id)">print</i></td>
       </tr>
     </tbody>
 </table>

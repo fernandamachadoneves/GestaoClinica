@@ -179,7 +179,6 @@ export class ReceitasComponent implements OnInit {
       let nomeArquivo = 'receitaMedica' + '.pdf';
       link.download = nomeArquivo;
       link.click();
-
     });
   }
 

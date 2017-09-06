@@ -366,6 +366,7 @@ export class ExamesComponent implements OnInit {
   gerarRelatorioResultadoExame(idItem: number) {
     this._relatorioService.gerarRelatorioResultadoExame(idItem).subscribe(res => {
       let link = document.createElement('a');
+      document.body.appendChild(link);
       link.href = window.URL.createObjectURL(res);
       let nomeArquivo = 'resultadoExame' + '.pdf';
       link.download = nomeArquivo;
@@ -406,10 +407,12 @@ export class ExamesComponent implements OnInit {
       this._relatorioService.gerarPedidoExame(this.listPedidosPaciente, this.idPaciente, this._cookie.get('idProfissional')).subscribe(res => {
         $('.modal').modal('close');
         let link = document.createElement('a');
+        document.body.appendChild(link);
         link.href = window.URL.createObjectURL(res);
         let nomeArquivo = 'pedidoExame' + '.pdf';
         link.download = nomeArquivo;
         link.click();
+        
       });
      } else {
        Materialize.toast('É necessário selecionar ao menos um exame para impressão do pedido' , 4000, "");
