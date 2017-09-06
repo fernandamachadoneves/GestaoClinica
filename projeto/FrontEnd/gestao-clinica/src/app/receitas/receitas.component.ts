@@ -173,11 +173,13 @@ export class ReceitasComponent implements OnInit {
 
   gerarReceita(idReceita: number) {
     this._relatorioService.gerarRelatorio(idReceita).subscribe(res => {
-      let link = document.createElement('a');
+     	let link = document.createElement('a');
+      document.body.appendChild(link);
       link.href = window.URL.createObjectURL(res);
       let nomeArquivo = 'receitaMedica' + '.pdf';
       link.download = nomeArquivo;
       link.click();
+
     });
   }
 
