@@ -39,7 +39,7 @@ public class ExameRepository {
         return em.find(Exame.class, id);
     }
     
-    public List<Medicamento> recuperarExamePorNome(String nome){
+    public List<Exame> recuperarExamePorNome(String nome){
 		StringBuilder hql = new StringBuilder("select obj ");
 		hql.append(" from Exame obj ");
 		hql.append(" where obj.nomeExame like :nome ");

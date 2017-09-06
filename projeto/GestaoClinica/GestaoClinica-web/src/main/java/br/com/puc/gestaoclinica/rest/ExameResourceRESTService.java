@@ -54,7 +54,7 @@ public class ExameResourceRESTService {
     @GET
     @Path("/pesquisar/{nome}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Medicamento> recuperarExamePorNome(@PathParam("nome") String nome) {
+    public List<Exame> recuperarExamePorNome(@PathParam("nome") String nome) {
         return repository.recuperarExamePorNome(nome);
     }
 }
