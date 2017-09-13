@@ -1,1 +1,5 @@
 .cursor {cursor: pointer;}
+
+tbody br{
+  display: none;
+}

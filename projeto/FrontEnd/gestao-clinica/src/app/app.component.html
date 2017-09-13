@@ -1,33 +1,58 @@
 <nav class="light-green" *ngIf="mostrarMenu" >
     <div class="nav-wrapper">
-      <a class="blue-text text-darken-2">{{perfil}}</a>
-      <a class="brand-logo right" style="padding-left: 15px"
-      routerLink="">
-      Gestão Clínica
-    </a>
-    <ul id="nav-mobile" class="left">
-      <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
-        <a routerLink="/usuario">Cadastrar Usuário</a>
-      </li>
-      <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
-        <a routerLink="/profissional">Cadastro Profissionais</a>
-      </li>
-      <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR' || perfil.type == 'RECEPCIONISTA'">
-        <a routerLink="/paciente">Cadastro Paciente</a>
-      </li>
-      <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
-        <a routerLink="/medicamento">Medicamentos</a>
-      </li>
-      <li routerLinkActive="active" *ngIf="perfil == 'RECEPCIONISTA'" >
-        <a routerLink="/controleAgenda">Agenda</a>
-      </li>
-      <li routerLinkActive="active" *ngIf="perfil == 'MEDICO'" >
-        <a routerLink="/atendimento">Prontuário Paciente</a>
-      </li>
-      <li routerLinkActive="active">
-        <a (click)="onLogout()">Logout</a>
-      </li>
-    </ul>
+      <!--><a class="blue-text text-darken-2">{{perfil}}</a></!-->
+      <a class="brand-logo" routerLink="">Gestão Clínica</a>
+      <a href="#" materialize="sideNav" data-activates="menu-mobile" class="button-collapse">
+        <i class="material-icons">menu</i>
+      </a>
+      <ul class="right hide-on-med-and-down">
+        <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
+          <a routerLink="/usuario">Cadastrar Usuário</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
+          <a routerLink="/profissional">Cadastro Profissionais</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR' || perfil.type == 'RECEPCIONISTA'">
+          <a routerLink="/paciente">Cadastro Paciente</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
+          <a routerLink="/medicamento">Medicamentos</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="perfil == 'RECEPCIONISTA'" >
+          <a routerLink="/controleAgenda">Agenda</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="perfil == 'MEDICO'" >
+          <a routerLink="/atendimento">Prontuário Paciente</a>
+        </li>
+        <li routerLinkActive="active">
+          <a (click)="onLogout()">Logout</a>
+        </li>
+      </ul>
+
+      <ul class="side-nav" id="menu-mobile">
+        <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
+          <a routerLink="/usuario">Cadastrar Usuário</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
+          <a routerLink="/profissional">Cadastro Profissionais</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR' || perfil.type == 'RECEPCIONISTA'">
+          <a routerLink="/paciente">Cadastro Paciente</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
+          <a routerLink="/medicamento">Medicamentos</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="perfil == 'RECEPCIONISTA'" >
+          <a routerLink="/controleAgenda">Agenda</a>
+        </li>
+        <li routerLinkActive="active" *ngIf="perfil == 'MEDICO'" >
+          <a routerLink="/atendimento">Prontuário Paciente</a>
+        </li>
+        <li routerLinkActive="active">
+          <a (click)="onLogout()">Logout</a>
+        </li>
+      </ul>
+
     </div>
 </nav>
 
