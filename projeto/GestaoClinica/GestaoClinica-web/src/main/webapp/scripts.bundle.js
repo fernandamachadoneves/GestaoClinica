@@ -22,10 +22,17 @@ module.exports = "/*!\n * Materialize v0.99.0 (http://materializecss.com)\n * Co
 	Author Tobias Koppers @sokra
 */
 module.exports = function(src) {
-	if (typeof execScript !== "undefined")
-		execScript(src);
-	else
-		eval.call(null, src);
+	try {
+		if (typeof eval !== "undefined") {
+			eval.call(null, src);
+		} else if (typeof execScript !== "undefined") {
+			execScript(src);
+		} else {
+			console.error("[Script Loader] EvalError: No eval function available");
+		}
+	} catch (error) {
+		console.error("[Script Loader] ", error.message);
+	}
 }
 
 

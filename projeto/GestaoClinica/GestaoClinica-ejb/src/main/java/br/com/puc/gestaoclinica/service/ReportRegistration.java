@@ -44,7 +44,8 @@ public class ReportRegistration {
 	}
 	
 	public void exportReport(Map<String, Object> parameters, HttpServletResponse response, HttpServletRequest request, String nomeRelatorio, Collection<?> list) throws Exception {
-		String jasperFile = request.getRealPath(REPORTS_DIR_PATH) + "/" + nomeRelatorio;
+		String separator = System.getProperty("file.separator");
+		String jasperFile = request.getRealPath(REPORTS_DIR_PATH) + separator + nomeRelatorio;
 		response.addHeader("Access-Control-Allow-Origin", "*");
 		ReportUtil.execute(jasperFile, ReportUtil.TIPO_RELATORIO_PDF, parameters, list, nomeRelatorio, response);	
 		

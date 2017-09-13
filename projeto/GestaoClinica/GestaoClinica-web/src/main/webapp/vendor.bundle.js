@@ -958,6 +958,7 @@ MaskedInputDirective = __decorate([
             '(blur)': '_onTouched()'
         },
         selector: '[textMask]',
+        exportAs: 'textMask',
         providers: [exports.MASKEDINPUT_VALUE_ACCESSOR]
     }),
     __param(0, core_1.Inject(core_1.Renderer)), __param(1, core_1.Inject(core_1.ElementRef)),
@@ -1229,8 +1230,8 @@ var CalToggle;
 })(CalToggle || (CalToggle = {}));
 var Year;
 (function (Year) {
-    Year[Year["min"] = 1100] = "min";
-    Year[Year["max"] = 9100] = "max";
+    Year[Year["min"] = 1000] = "min";
+    Year[Year["max"] = 9999] = "max";
 })(Year || (Year = {}));
 var InputFocusBlur;
 (function (InputFocusBlur) {
@@ -1481,7 +1482,12 @@ var MyDatePicker = (function () {
         else {
             var date = this.utilService.isDateValid(value, this.opts.dateFormat, this.opts.minYear, this.opts.maxYear, this.opts.disableUntil, this.opts.disableSince, this.opts.disableWeekends, this.opts.disableWeekdays, this.opts.disableDays, this.opts.disableDateRanges, this.opts.monthLabels, this.opts.enableDays);
             if (date.day !== 0 && date.month !== 0 && date.year !== 0) {
-                this.selectDate(date, CalToggle.CloseByDateSel);
+                if (!this.utilService.isSameDate(date, this.selectedDate)) {
+                    this.selectDate(date, CalToggle.CloseByDateSel);
+                }
+                else {
+                    this.updateDateValue(date, false);
+                }
             }
             else {
                 this.invalidInputFieldChanged(value);
@@ -1767,7 +1773,7 @@ var MyDatePicker = (function () {
         if (!this.opts.inline) {
             setTimeout(function () {
                 _this.inputBoxEl.nativeElement.focus();
-            }, 10);
+            }, 100);
         }
     };
     MyDatePicker.prototype.updateDateValue = function (date, clear) {
@@ -2771,18 +2777,27 @@ MzButtonDirective.propDecorators = {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MzCardActionDirective; });
 
 var MzCardComponent = (function () {
-    function MzCardComponent() {
+    function MzCardComponent(changeDetectorRef, elementRef) {
+        this.changeDetectorRef = changeDetectorRef;
+        this.elementRef = elementRef;
+        this.hasCardAction = true;
+        this.hasCardTitle = true;
     }
     MzCardComponent.prototype.ngAfterViewInit = function () {
-        this.initCardAction();
+        this.hasCardTitle = this.hasTitleTagAndNotEmpty();
+        this.hasCardAction = this.hasActionTagAndNotEmpty();
+        this.changeDetectorRef.detectChanges();
     };
-    MzCardComponent.prototype.initCardAction = function () {
-        var cardActionElement = $(this.cardActionWrapper.nativeElement).find('mz-card-action');
-        // hide action wrapper when mz-card-action element is not present
-        // or when mz-card-action does not contain any html (text or elements)
-        if (cardActionElement.length === 0 || cardActionElement[0].innerHTML.trim() === '') {
-            this.cardActionWrapper.nativeElement.style.display = 'none';
-        }
+    MzCardComponent.prototype.hasActionTagAndNotEmpty = function () {
+        var cardActionElement = this.elementRef.nativeElement.querySelector('mz-card-action');
+        return this.isElementDisplayed(cardActionElement);
+    };
+    MzCardComponent.prototype.hasTitleTagAndNotEmpty = function () {
+        var cardTitleElement = this.elementRef.nativeElement.querySelector('mz-card-title');
+        return this.isElementDisplayed(cardTitleElement);
+    };
+    MzCardComponent.prototype.isElementDisplayed = function (element) {
+        return element && element.innerHTML.trim() !== '';
     };
     return MzCardComponent;
 }());
@@ -2790,17 +2805,19 @@ var MzCardComponent = (function () {
 MzCardComponent.decorators = [
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
                 selector: 'mz-card',
-                template: "<div class=\"card {{ backgroundClass }}\" [class.hoverable]=\"hoverable\"><div class=\"card-content {{ textClass }}\"><span class=\"card-title\"><ng-content select=\"mz-card-title\"></ng-content></span><p><ng-content select=\"mz-card-content\"></ng-content></p></div><div #cardActionWrapper class=\"card-action\"><ng-content select=\"mz-card-action\"></ng-content></div></div>",
+                template: "<div class=\"card {{ backgroundClass }}\" [class.hoverable]=\"hoverable\"><div class=\"card-content {{ textClass }}\"><div class=\"card-title\" *ngIf=\"hasCardTitle\"><ng-content select=\"mz-card-title\"></ng-content></div><p><ng-content select=\"mz-card-content\"></ng-content></p></div><div class=\"card-action\" *ngIf=\"hasCardAction\"><ng-content select=\"mz-card-action\"></ng-content></div></div>",
                 styles: [""],
             },] },
 ];
 /** @nocollapse */
-MzCardComponent.ctorParameters = function () { return []; };
+MzCardComponent.ctorParameters = function () { return [
+    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"], },
+    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
+]; };
 MzCardComponent.propDecorators = {
     'backgroundClass': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
     'hoverable': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
     'textClass': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
-    'cardActionWrapper': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"], args: ['cardActionWrapper',] },],
 };
 // Declare the tags to avoid error: '<mz-card-x>' is not a known element
 // https://github.com/angular/angular/issues/11251
@@ -2926,7 +2943,7 @@ var MzCheckboxDirective = (function (_super) {
     MzCheckboxDirective.prototype.createLabelElement = function () {
         var labelElement = document.createElement('label');
         labelElement.setAttribute('for', this.id);
-        this.renderer.invokeElementMethod(this.checkboxContainerElement, 'append', [labelElement]);
+        this.renderer.invokeElementMethod(this.checkboxElement, 'after', [labelElement]);
         return $(labelElement);
     };
     MzCheckboxDirective.prototype.handleProperties = function () {
@@ -3959,10 +3976,9 @@ var __extends = (this && this.__extends) || (function () {
 
 var MzInputDirective = (function (_super) {
     __extends(MzInputDirective, _super);
-    function MzInputDirective(ngControl, ngModel, elementRef, renderer) {
+    function MzInputDirective(ngControl, elementRef, renderer) {
         var _this = _super.call(this) || this;
         _this.ngControl = ngControl;
-        _this.ngModel = ngModel;
         _this.elementRef = elementRef;
         _this.renderer = renderer;
         return _this;
@@ -3970,7 +3986,7 @@ var MzInputDirective = (function (_super) {
     MzInputDirective.prototype.ngOnInit = function () {
         this.initHandlers();
         this.initElements();
-        this.initInputSubscriber();
+        this.initInputSubscription();
         this.handleProperties();
     };
     MzInputDirective.prototype.ngOnDestroy = function () {
@@ -3995,16 +4011,16 @@ var MzInputDirective = (function (_super) {
         this.inputContainerElement = $(this.elementRef.nativeElement).parent('.input-field');
         this.labelElement = this.createLabelElement();
     };
-    MzInputDirective.prototype.initInputSubscriber = function () {
+    MzInputDirective.prototype.initInputSubscription = function () {
         var _this = this;
-        if (this.ngModel) {
-            this.inputValueSubscription = this.ngModel.valueChanges.subscribe(function () { return _this.setLabelActive(); });
+        if (this.ngControl) {
+            this.inputValueSubscription = this.ngControl.valueChanges.subscribe(function () { return _this.setLabelActive(); });
         }
     };
     MzInputDirective.prototype.createLabelElement = function () {
         var labelElement = document.createElement('label');
         labelElement.setAttribute('for', this.id);
-        this.renderer.invokeElementMethod(this.inputContainerElement, 'append', [labelElement]);
+        this.renderer.invokeElementMethod(this.inputElement, 'after', [labelElement]);
         return $(labelElement);
     };
     MzInputDirective.prototype.handleProperties = function () {
@@ -4084,7 +4100,8 @@ var MzInputDirective = (function (_super) {
     };
     MzInputDirective.prototype.setLabelActive = function () {
         var _this = this;
-        // need setTimeout otherwise it wont make label float in some circonstances (forcing validation for example)
+        // need setTimeout otherwise it wont make label float in some circonstances
+        // for example: forcing validation for example, reseting form programmaticaly, ...
         setTimeout(function () {
             var inputValue = _this.inputElement[0].value;
             var isActive = !!_this.placeholder || !!inputValue;
@@ -4111,7 +4128,6 @@ MzInputDirective.decorators = [
 /** @nocollapse */
 MzInputDirective.ctorParameters = function () { return [
     { type: __WEBPACK_IMPORTED_MODULE_1__angular_forms__["NgControl"], decorators: [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Optional"] },] },
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_forms__["NgModel"], decorators: [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Optional"] },] },
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
 ]; };
@@ -5034,7 +5050,7 @@ var MzRadioButtonDirective = (function (_super) {
     MzRadioButtonDirective.prototype.createLabelElement = function () {
         var labelElement = document.createElement('label');
         labelElement.setAttribute('for', this.id);
-        this.renderer.invokeElementMethod(this.inputContainerElement, 'append', [labelElement]);
+        this.renderer.invokeElementMethod(this.inputElement, 'after', [labelElement]);
         return $(labelElement);
     };
     MzRadioButtonDirective.prototype.handleProperties = function () {
@@ -5091,11 +5107,93 @@ MzRadioButtonDirective.propDecorators = {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__validation_validation_component__ = __webpack_require__("../../../../ng2-materialize/dist/validation/validation.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__select_directive__ = __webpack_require__("../../../../ng2-materialize/dist/select/select.directive.js");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MzSelectContainerComponent; });
+
+
+
 
 var MzSelectContainerComponent = (function () {
     function MzSelectContainerComponent() {
     }
+    MzSelectContainerComponent.prototype.ngAfterViewInit = function () {
+        this.initControlSubscription();
+        this.initSelectSubscription();
+    };
+    MzSelectContainerComponent.prototype.ngOnDestroy = function () {
+        this.removeControlSubscription();
+        this.removeSelectSubscription();
+    };
+    MzSelectContainerComponent.prototype.initControlSubscription = function () {
+        var _this = this;
+        if (this.ngControl) {
+            this.mzSelectDirective.disabled = this.ngControl.control.disabled;
+            this.statusChangesSubscription = this.ngControl.control.statusChanges.subscribe(function (status) {
+                // to handle enabling/disabling formControl
+                var disabled = status === 'DISABLED';
+                if (disabled !== _this.mzSelectDirective.disabled) {
+                    _this.mzSelectDirective.disabled = disabled;
+                    _this.mzSelectDirective.handleDisabled();
+                }
+            });
+            this.selectValueSubscription = this.ngControl.valueChanges.subscribe(function (value) {
+                var inputValue = _this.mzSelectDirective.inputElement.val();
+                var selectedOptionText = _this.mzSelectDirective.selectElement
+                    .children('option:selected')
+                    .text();
+                // synchronize input and select when value changes programmatically
+                if (inputValue !== selectedOptionText) {
+                    _this.mzSelectDirective.inputElement.val(selectedOptionText);
+                    var dropdownOptions = _this.mzSelectDirective.inputElement
+                        .siblings('ul.dropdown-content')
+                        .children('li');
+                    dropdownOptions
+                        .removeClass('active selected');
+                    dropdownOptions
+                        .filter(function (index, element) { return element.textContent === selectedOptionText; })
+                        .filter(function (index, element) { return !element.classList.contains('disabled'); })
+                        .addClass('active');
+                    if (_this.mzValidationComponent) {
+                        _this.mzValidationComponent.setValidationState();
+                    }
+                }
+            });
+        }
+    };
+    MzSelectContainerComponent.prototype.initSelectSubscription = function () {
+        var _this = this;
+        if (this.mzSelectDirective) {
+            this.mzSelectDirective.onUpdate.subscribe(function () { return _this.registerOnBlur(); });
+            this.registerOnBlur();
+        }
+    };
+    MzSelectContainerComponent.prototype.registerOnBlur = function () {
+        var _this = this;
+        this.mzSelectDirective.inputElement.on('blur', function () {
+            if (_this.ngControl) {
+                _this.ngControl.control.markAsTouched();
+            }
+            if (_this.mzValidationComponent) {
+                _this.mzValidationComponent.setValidationState();
+            }
+        });
+    };
+    MzSelectContainerComponent.prototype.removeControlSubscription = function () {
+        if (this.mzSelectDirective) {
+            this.mzSelectDirective.onUpdate.unsubscribe();
+            this.mzSelectDirective.inputElement.off();
+        }
+    };
+    MzSelectContainerComponent.prototype.removeSelectSubscription = function () {
+        if (this.statusChangesSubscription) {
+            this.statusChangesSubscription.unsubscribe();
+        }
+        if (this.selectValueSubscription) {
+            this.selectValueSubscription.unsubscribe();
+        }
+    };
     return MzSelectContainerComponent;
 }());
 
@@ -5108,6 +5206,11 @@ MzSelectContainerComponent.decorators = [
 ];
 /** @nocollapse */
 MzSelectContainerComponent.ctorParameters = function () { return []; };
+MzSelectContainerComponent.propDecorators = {
+    'mzSelectDirective': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChild"], args: [__WEBPACK_IMPORTED_MODULE_3__select_directive__["a" /* MzSelectDirective */],] },],
+    'mzValidationComponent': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChild"], args: [__WEBPACK_IMPORTED_MODULE_2__validation_validation_component__["a" /* MzValidationComponent */],] },],
+    'ngControl': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ContentChild"], args: [__WEBPACK_IMPORTED_MODULE_1__angular_forms__["NgControl"],] },],
+};
 
 
 /***/ }),
@@ -5142,26 +5245,35 @@ var __extends = (this && this.__extends) || (function () {
 
 var MzSelectDirective = (function (_super) {
     __extends(MzSelectDirective, _super);
-    function MzSelectDirective(elementRef, renderer, changeDetectorRef) {
+    function MzSelectDirective(changeDetectorRef, elementRef, renderer) {
         var _this = _super.call(this) || this;
+        _this.changeDetectorRef = changeDetectorRef;
         _this.elementRef = elementRef;
         _this.renderer = renderer;
-        _this.changeDetectorRef = changeDetectorRef;
+        _this.onUpdate = new __WEBPACK_IMPORTED_MODULE_3__angular_core__["EventEmitter"]();
         _this.suspend = false;
         return _this;
     }
+    Object.defineProperty(MzSelectDirective.prototype, "inputElement", {
+        get: function () {
+            return this.selectElement.siblings('input.select-dropdown');
+        },
+        enumerable: true,
+        configurable: true
+    });
     MzSelectDirective.prototype.ngOnInit = function () {
         this.initHandlers();
         this.initElements();
         this.initOnChange();
         this.handleProperties();
-        // must be done after handlePlacehodler
+        // must be done after handlePlaceholder
         this.initSelectedOption();
         // must be done after handleProperties
         this.initMaterialSelect();
         // must be done after initMaterialSelect
         this.listenOptionChanges();
         this.initFilledIn();
+        this.handleDOMEvents();
     };
     MzSelectDirective.prototype.ngOnDestroy = function () {
         this.renderer.invokeElementMethod(this.selectElement, 'material_select', ['destroy']);
@@ -5214,10 +5326,16 @@ var MzSelectDirective = (function (_super) {
             _this.suspend = false;
         });
     };
+    MzSelectDirective.prototype.handleDOMEvents = function () {
+        var _this = this;
+        this.inputElement.on('blur focus', function (event) {
+            _this.selectElement[0].dispatchEvent(new Event(event.type));
+        });
+    };
     MzSelectDirective.prototype.createLabelElement = function () {
         var labelElement = document.createElement('label');
         labelElement.setAttribute('for', this.id);
-        this.renderer.invokeElementMethod(this.selectContainerElement, 'append', [labelElement]);
+        this.renderer.invokeElementMethod(this.selectElement, 'after', [labelElement]);
         return $(labelElement);
     };
     MzSelectDirective.prototype.handleProperties = function () {
@@ -5241,7 +5359,7 @@ var MzSelectDirective = (function (_super) {
         // therefore we don't want to remove or add it here
         if (this.disabled != null) {
             this.renderer.setElementProperty(this.selectElement[0], 'disabled', !!this.disabled);
-            this.initMaterialSelect();
+            this.updateMaterialSelect();
         }
     };
     MzSelectDirective.prototype.handleLabel = function () {
@@ -5295,13 +5413,17 @@ var MzSelectDirective = (function (_super) {
         this.mutationObserver = new MutationObserver(function (mutations) {
             _this.updateMaterialSelect();
         });
-        this.mutationObserver.observe($(this.selectElement)[0], mutationObserverConfiguration);
+        this.mutationObserver.observe(this.selectElement[0], mutationObserverConfiguration);
     };
     MzSelectDirective.prototype.updateMaterialSelect = function () {
+        var _this = this;
         this.initMaterialSelect();
         if (this.filledIn) {
             this.initFilledIn();
         }
+        // wait for materialize select to be initialized
+        // /!\ race condition warning /!\
+        setTimeout(function () { return _this.onUpdate.emit(); });
     };
     return MzSelectDirective;
 }(__WEBPACK_IMPORTED_MODULE_4__shared_handle_prop_changes__["a" /* HandlePropChanges */]));
@@ -5313,9 +5435,9 @@ MzSelectDirective.decorators = [
 ];
 /** @nocollapse */
 MzSelectDirective.ctorParameters = function () { return [
+    { type: __WEBPACK_IMPORTED_MODULE_3__angular_core__["ChangeDetectorRef"], },
     { type: __WEBPACK_IMPORTED_MODULE_3__angular_core__["ElementRef"], },
     { type: __WEBPACK_IMPORTED_MODULE_3__angular_core__["Renderer"], },
-    { type: __WEBPACK_IMPORTED_MODULE_3__angular_core__["ChangeDetectorRef"], },
 ]; };
 MzSelectDirective.propDecorators = {
     'id': [{ type: __WEBPACK_IMPORTED_MODULE_3__angular_core__["Input"] },],
@@ -5323,6 +5445,7 @@ MzSelectDirective.propDecorators = {
     'placeholder': [{ type: __WEBPACK_IMPORTED_MODULE_3__angular_core__["Input"] },],
     'label': [{ type: __WEBPACK_IMPORTED_MODULE_3__angular_core__["Input"] },],
     'filledIn': [{ type: __WEBPACK_IMPORTED_MODULE_3__angular_core__["Input"] },],
+    'onUpdate': [{ type: __WEBPACK_IMPORTED_MODULE_3__angular_core__["Output"] },],
 };
 
 
@@ -6055,7 +6178,8 @@ MzTextareaPrefixDirective.ctorParameters = function () { return [
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_handle_prop_changes__ = __webpack_require__("../../../../ng2-materialize/dist/shared/handle-prop-changes.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_handle_prop_changes__ = __webpack_require__("../../../../ng2-materialize/dist/shared/handle-prop-changes.js");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MzTextareaDirective; });
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -6069,10 +6193,12 @@ var __extends = (this && this.__extends) || (function () {
 })();
 
 
+
 var MzTextareaDirective = (function (_super) {
     __extends(MzTextareaDirective, _super);
-    function MzTextareaDirective(elementRef, renderer) {
+    function MzTextareaDirective(ngControl, elementRef, renderer) {
         var _this = _super.call(this) || this;
+        _this.ngControl = ngControl;
         _this.elementRef = elementRef;
         _this.renderer = renderer;
         return _this;
@@ -6080,7 +6206,13 @@ var MzTextareaDirective = (function (_super) {
     MzTextareaDirective.prototype.ngOnInit = function () {
         this.initHandlers();
         this.initElements();
+        this.initTextareaSubscription();
         this.handleProperties();
+    };
+    MzTextareaDirective.prototype.ngOnDestroy = function () {
+        if (this.textareaValueSubscription) {
+            this.textareaValueSubscription.unsubscribe();
+        }
     };
     MzTextareaDirective.prototype.initHandlers = function () {
         var _this = this;
@@ -6099,10 +6231,16 @@ var MzTextareaDirective = (function (_super) {
     MzTextareaDirective.prototype.initTextarea = function () {
         this.renderer.setElementClass(this.textareaElement[0], 'materialize-textarea', true);
     };
+    MzTextareaDirective.prototype.initTextareaSubscription = function () {
+        var _this = this;
+        if (this.ngControl) {
+            this.textareaValueSubscription = this.ngControl.valueChanges.subscribe(function () { return _this.setLabelActive(); });
+        }
+    };
     MzTextareaDirective.prototype.createLabelElement = function () {
         var labelElement = document.createElement('label');
         labelElement.setAttribute('for', this.id);
-        this.renderer.invokeElementMethod(this.textareaContainerElement, 'append', [labelElement]);
+        this.renderer.invokeElementMethod(this.textareaElement, 'after', [labelElement]);
         return $(labelElement);
     };
     MzTextareaDirective.prototype.handleProperties = function () {
@@ -6129,14 +6267,9 @@ var MzTextareaDirective = (function (_super) {
         }
     };
     MzTextareaDirective.prototype.handlePlaceholder = function () {
-        var _this = this;
         var placeholder = !!this.placeholder ? this.placeholder : null;
         this.renderer.setElementAttribute(this.textareaElement[0], 'placeholder', placeholder);
-        setTimeout(function () {
-            var inputValue = _this.textareaElement[0].value;
-            var isActive = !!_this.placeholder || !!inputValue;
-            _this.renderer.setElementClass(_this.labelElement[0], 'active', isActive);
-        });
+        this.setLabelActive();
     };
     MzTextareaDirective.prototype.setCharacterCount = function () {
         var _this = this;
@@ -6146,6 +6279,16 @@ var MzTextareaDirective = (function (_super) {
         setTimeout(function () {
             _this.renderer.invokeElementMethod(_this.textareaElement, 'trigger', ['input']);
             _this.renderer.invokeElementMethod(_this.textareaElement, 'trigger', ['blur']);
+        });
+    };
+    MzTextareaDirective.prototype.setLabelActive = function () {
+        var _this = this;
+        // need setTimeout otherwise it wont make label float in some circonstances
+        // for example: forcing validation for example, reseting form programmaticaly, ...
+        setTimeout(function () {
+            var textareaValue = _this.textareaElement[0].value;
+            var isActive = !!_this.placeholder || !!textareaValue;
+            _this.renderer.setElementClass(_this.labelElement[0], 'active', isActive);
         });
     };
     MzTextareaDirective.prototype.removeCharacterCount = function () {
@@ -6158,7 +6301,7 @@ var MzTextareaDirective = (function (_super) {
         this.renderer.setElementClass(this.textareaElement[0], 'valid', false);
     };
     return MzTextareaDirective;
-}(__WEBPACK_IMPORTED_MODULE_1__shared_handle_prop_changes__["a" /* HandlePropChanges */]));
+}(__WEBPACK_IMPORTED_MODULE_2__shared_handle_prop_changes__["a" /* HandlePropChanges */]));
 
 MzTextareaDirective.decorators = [
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"], args: [{
@@ -6167,6 +6310,7 @@ MzTextareaDirective.decorators = [
 ];
 /** @nocollapse */
 MzTextareaDirective.ctorParameters = function () { return [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_forms__["NgControl"], decorators: [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Optional"] },] },
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
 ]; };
@@ -6336,7 +6480,7 @@ MzErrorMessageComponent.decorators = [
     { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Component"], args: [{
                 selector: 'mz-error-message',
                 template: "<div [@enterAnimation]=\"errorMessage\" class=\"invalid\" *ngIf=\"(control.touched || control.dirty) && control.invalid && errorMessage\">{{ errorMessage }}</div>",
-                styles: ["div.invalid{color:#e30613;font-size:.8rem;opacity:1}input+label+:host div.invalid,mz-select-container :host div.invalid,textarea+label+:host div.invalid{height:19px;margin-top:-19px}"],
+                styles: ["div.invalid{color:#e30613;font-size:.8rem;opacity:1;overflow-wrap:break-word}input:not([type=checkbox])+label+:host div.invalid,mz-select-container :host div.invalid,textarea+label+:host div.invalid{margin-top:-19px;min-height:19px}"],
                 animations: [
                     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_animations__["a" /* trigger */])('enterAnimation', [
                         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_animations__["b" /* transition */])(':enter', [
@@ -6427,15 +6571,12 @@ var ErrorMessageResource = (function () {
 
 
 var MzValidationComponent = (function () {
-    function MzValidationComponent(ngControl, elementRef, renderer, resolver, viewContainerRef) {
-        this.ngControl = ngControl;
+    function MzValidationComponent(elementRef, resolver, viewContainerRef, ngControl, renderer) {
         this.elementRef = elementRef;
-        this.renderer = renderer;
         this.resolver = resolver;
         this.viewContainerRef = viewContainerRef;
-        this._disabled = false;
-        this._disablingState = false;
-        this._enablingState = false;
+        this.ngControl = ngControl;
+        this.renderer = renderer;
         this._formControlDisabled = false;
         this._required = false;
         this.errorMessageComponent = null;
@@ -6495,7 +6636,6 @@ var MzValidationComponent = (function () {
     MzValidationComponent.prototype.ngOnDestroy = function () {
         this.statusChangesSubscription.unsubscribe();
         this.errorMessageComponent.destroy();
-        this.inputSelectDropdown.off('blur');
     };
     MzValidationComponent.prototype.clearValidationState = function (element) {
         this.renderer.setElementClass(element[0], 'valid', false);
@@ -6510,11 +6650,8 @@ var MzValidationComponent = (function () {
         }
     };
     MzValidationComponent.prototype.initElements = function () {
-        this.labelElement = $('label[for=' + this.id + ']')[0];
+        this.labelElement = $('label[for="' + this.id + '"]')[0];
         this.nativeElement = $(this.elementRef.nativeElement);
-        if (this.isNativeSelectElement) {
-            this.initNativeSelectElement();
-        }
         this.createRequiredSpanElement();
     };
     MzValidationComponent.prototype.initErrorMessageComponent = function () {
@@ -6526,32 +6663,9 @@ var MzValidationComponent = (function () {
         var errorMessage = this.nativeElement.parent().children('mz-error-message');
         this.renderer.invokeElementMethod(errorMessage, 'insertAfter', [this.labelElement]);
     };
-    MzValidationComponent.prototype.initNativeSelectElement = function () {
-        var _this = this;
-        // Wait for materialize_select function to be executed when the element has mz-select directive.
-        setTimeout(function () {
-            _this.inputSelectDropdown.on('blur', function () {
-                _this.ngControl.control.markAsTouched();
-                _this.setValidationState();
-            });
-        });
-    };
     MzValidationComponent.prototype.setValidationState = function () {
-        // to disable field
-        if (this._disablingState) {
-            this.updateSelect();
-            this.clearValidationState(this.elementToAddValidation);
-            this._disablingState = false;
-            return;
-        }
-        // to enable field
-        if (this._enablingState) {
-            this.updateSelect();
-            this._enablingState = false;
-        }
-        // to reset form
+        // to handle reset form
         if (this.ngControl.control.untouched && this.ngControl.control.pristine) {
-            this.updateSelect();
             this.clearValidationState(this.elementToAddValidation);
             return;
         }
@@ -6566,28 +6680,18 @@ var MzValidationComponent = (function () {
                 this.renderer.setElementClass(this.elementToAddValidation[0], 'invalid', true);
             }
         }
+        else {
+            this.clearValidationState(this.elementToAddValidation);
+        }
     };
     MzValidationComponent.prototype.subscribeStatusChanges = function () {
         var _this = this;
-        this._disabled = this.ngControl.control.disabled;
         this.statusChangesSubscription = this.ngControl.control.statusChanges.subscribe(function (status) {
-            var disabled = status === 'DISABLED';
-            if (disabled !== _this._disabled) {
-                _this._disablingState = disabled;
-                _this._enablingState = !disabled;
-            }
-            _this._disabled = disabled;
             // TODO Find a better way to handle validation after the form subscription. (see demo-app form-validation)
-            // Wait for the valueChanges method from FormGroup to have been triggered before handling the validation state.
-            // /!\ Race condition warning /!\
+            // wait for the valueChanges method from FormGroup to have been triggered before handling the validation state
+            // /!\ race condition warning /!\
             setTimeout(function () { return _this.setValidationState(); });
         });
-    };
-    MzValidationComponent.prototype.updateSelect = function () {
-        if (this.isNativeSelectElement) {
-            this.renderer.invokeElementMethod(this.nativeElement, 'material_select');
-            this.initNativeSelectElement();
-        }
     };
     return MzValidationComponent;
 }());
@@ -6602,11 +6706,11 @@ MzValidationComponent.decorators = [
 ];
 /** @nocollapse */
 MzValidationComponent.ctorParameters = function () { return [
-    { type: __WEBPACK_IMPORTED_MODULE_1__angular_forms__["NgControl"], },
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
-    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ComponentFactoryResolver"], },
     { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_forms__["NgControl"], },
+    { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
 ]; };
 MzValidationComponent.propDecorators = {
     'id': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
