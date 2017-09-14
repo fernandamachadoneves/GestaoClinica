@@ -28,26 +28,30 @@
 <a *ngIf="exibirBotaoPesquisar"  class="waves-effect waves-light btn" (click)="pesquisar()">Pesquisar</a>
 
 <div *ngIf="pesquisou">
-   <table class="responsive-table">
-        <thead>
-          <tr>
-              <th>Horario</th>
-              <th>Paciente</th>
-              <th></th>
-          </tr>
-        </thead>
+  <div class="row">
+    <div class="col s12 m8 l4">
+      <h5>Horário</h5>
+    </div>
+    <div class="col s12 m8 l4">
+     <h5>Paciente</h5>
+    </div>
+        <div class="col s12 m8 l4">
 
-        <tbody *ngFor="let horarios of listaConsultasProf">
-          <tr>
-            <td>{{horarios.horario}}</td>
-            <td>{{horarios.nomePaciente}}</td>
-            <td><a *ngIf="!horarios.agendado" class="waves-effect waves-light btn" href="#modalAgendar" (click)="agendar(horarios.horario)">Agendar</a>
+    </div>
+  </div>
+
+  <div class="row" *ngFor="let horarios of listaConsultasProf">
+    <div class="col s12 m8 l4">
+      {{horarios.horario}}
+    </div>
+    <div class="col s12 m8 l4">
+      {{horarios.nomePaciente}}
+    </div>
+    <div class="col s12 m8 l4">
+      <a *ngIf="!horarios.agendado" class="waves-effect waves-light btn" href="#modalAgendar" (click)="agendar(horarios.horario)">Agendar</a>
                 <a *ngIf="horarios.agendado" class="waves-effect waves-light btn red" (click)="desmarcar(horarios.idMarcacaoConsulta)">Desmarcar</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
+    </div>
+  </div>
 </div>
 
   <!-- Modal Structure -->
