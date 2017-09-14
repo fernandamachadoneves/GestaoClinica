@@ -35,8 +35,8 @@ export class AuthService {
             } else{
               this._cookie.removeAll();
               this.mostrarMenuEmitter.emit(false);
-              $('.modal').modal('open');
-              //Materialize.toast('Usuário ou senha inválidos', 4000, "");
+              //$('.modal').modal('open');
+              Materialize.toast('Usuário ou senha inválidos', 4000, "");
             }
           }
       );

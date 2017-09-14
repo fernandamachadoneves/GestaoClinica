@@ -1,33 +1,34 @@
-<div class="container">
-  <h5>Login</h5>
-
-    <div class="row">
-      <div class="input-field col s6">
-        <i class="material-icons prefix">account_circle</i>
-        <input id="usuario" [(ngModel)]="usuario.login" type="text" class="validate">
-        <label class="active" for="usuario">Usuário</label>
-      </div>
+ <div class="container">
+        <div class="row">
+            <div class="col s12 m8 offset-m2">
+                <div class="login-form">
+                    <div class="card">
+                        <div class="card-image">
+                            <img [src]="LOGO">
+                            <span class="card-title">
+                            <h2>Login</h2>
+                            <h6>Gestão Cliníca</h6>
+                        </span>
+                        </div>
+                        <div class="card-content">
+                            <div class="input-field">
+                                <input id="usuario" [(ngModel)]="usuario.login" type="text" class="validate">
+                                <label for="usuario">Usuário</label>
+                            </div>
+                            <div class="input-field">
+                                <input id="senha" [(ngModel)]="usuario.senha" type="password" class="validate">
+                                <label for="senha">Senha</label>
+                            </div>
+                        </div>
+                        <div class="card-action blue-grey lighten-3">
+                            <div class="center-align">
+                                
+                                <a class="btn blue-grey darken-1" (click)=fazerLogin()>
+                                    <i class="material-icons left">vpn_key</i>Login</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="row">
-      <div class="input-field col s6">
-        <i class="material-icons prefix">lock</i>
-        <input id="senha" [(ngModel)]="usuario.senha" type="password" class="validate">
-        <label class="active" for="senha">Senha</label>
-      </div>
-    </div>
-
-    <button class="btn waves-effect waves-light" type="submit" name="action" (click)=fazerLogin()>Login
-      <i class="material-icons right">send</i>
-    </button>
-  
-</div>
-
- <div id="modal" class="modal">
-    <br/>
-    <h6 class="center-align">Login ou senha inválidos</h6>
-    <br/>
-    <div class="center-align">
-      <a class="modal-action modal-close waves-effect waves-light btn">ok</a>
-    </div>
-  </div>

@@ -9,6 +9,8 @@ import { Component, OnInit, EventEmitter } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
+  private LOGO = require("./img/teste.jpg");
+
   private usuario: Usuario = new Usuario();
 
   constructor(private _authService: AuthService) { }
