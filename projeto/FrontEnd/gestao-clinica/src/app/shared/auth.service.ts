@@ -19,29 +19,50 @@ export class AuthService {
 
   fazerLogin(usuario: Usuario){
     debugger
-    if (usuario.login == 'adm@gestaoclinica.com' && usuario.senha == '123123'){
+    if (this.validarCamposObrigatorio(usuario)) {
+       if (usuario.login == 'adm@gestaoclinica.com' && usuario.senha == '123123'){
         this._cookie.put('login', usuario.login);
         this._cookie.put('perfil', 'ADMINISTRADOR');
         this.mostrarMenuEmitter.emit(true);
         this._router.navigate(['/']);
+        } else {   
+          this._usuarioService.recuperarUsuarioPorEmailSenha(usuario.login, usuario.senha).subscribe(
+            result => {
+                if (result != null && result !== undefined){
+                  this._cookie.put('perfil', result.perfil.type);
+                  this._cookie.put('login', usuario.login);
+                  this.mostrarMenuEmitter.emit(true);
+                  this._router.navigate(['/']);
+                } else{
+                  this._cookie.removeAll();
+                  this.mostrarMenuEmitter.emit(false);
+                  //$('.modal').modal('open');
+                  Materialize.toast('Usuário ou senha inválidos', 4000, "");
+                }
+              }
+            );    
+        }
     } else {
-      this._usuarioService.recuperarUsuarioPorEmailSenha(usuario.login, usuario.senha).subscribe(
-        result => {
-            if (result != null && result !== undefined){
-              this._cookie.put('perfil', result.perfil.type);
-              this._cookie.put('login', usuario.login);
-              this.mostrarMenuEmitter.emit(true);
-              this._router.navigate(['/']);
-            } else{
-              this._cookie.removeAll();
-              this.mostrarMenuEmitter.emit(false);
-              //$('.modal').modal('open');
-              Materialize.toast('Usuário ou senha inválidos', 4000, "");
-            }
-          }
-      );
+      this._cookie.removeAll();
+      this.mostrarMenuEmitter.emit(false);
+    }
+  }
+
+  validarCamposObrigatorio (usuario: Usuario) {
+    if (usuario == undefined){
+       Materialize.toast('Usuário e senha são obrigatórios', 4000, "");
+       return false;
+    } else {
+      if (usuario.login == undefined || usuario.login == '') {
+        Materialize.toast('Usuário é obrigatório', 4000, "");
+        return false;
+      } else if (usuario.senha == undefined || usuario.senha == ''){
+          Materialize.toast('Senha é obrigatório', 4000, "");
+          return false;
+      }
     }
 
+    return true;
   }
 
   usuarioEstaAutenticado(){
