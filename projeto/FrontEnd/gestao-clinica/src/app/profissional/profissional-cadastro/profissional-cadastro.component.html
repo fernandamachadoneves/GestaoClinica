@@ -1,21 +1,18 @@
-<h5>{{ title }}</h5>
-<div class="row" *ngIf="profissional" >
-  <form materialize class="col s12" [formGroup]="form" (ngSubmit)="onSave()">
+<h5>Cadastro Usuário</h5>
+<div *ngIf="profissional">
+  <form materialize [formGroup]="form" (ngSubmit)="onSave()">
     <div class="row">
-      <div class="input-field col s12">
+      <div class="input-field col s12 m8 l6">
         <i class="material-icons prefix">account_circle</i>
         <input id="nome" type="text" class="validate"
                [(ngModel)]="profissional.nome" formControlName="nome"
-               [class.invalid]="form.controls['nome'].touched && !form.controls['nome'].valid"
-        >
+               [class.invalid]="form.controls['nome'].touched && !form.controls['nome'].valid">
         <label for="nome"
                [class.active]="profissional.nome"
                data-error="É preciso informar ao menos 3 caracteres">
         </label>
       </div>
-    </div>
-    <div class="row">
-      <div class="input-field col s12">
+      <div class="input-field col s12 m6 l6">
         <i class="material-icons prefix">email</i>
         <input id="email" type="email" class="validate"
                [(ngModel)]="profissional.email" formControlName="email"
@@ -28,8 +25,8 @@
       </div>
     </div>
 
-  <div class="row">
-      <div class="input-field col s12">
+    <div class="row">
+      <div class="input-field col s12 m6 l6">
         <i class="material-icons prefix">phone</i>
         <input id="telefone" type="text" class="validate" [textMask]="{mask: maskTelefone}"
                [(ngModel)]="profissional.telefone" formControlName="telefone"
@@ -40,10 +37,7 @@
           Telefone
         </label>
       </div>
-  </div>
-
-  <div class="row">
-      <div class="input-field col s12">
+      <div class="input-field col s12 m6 l6">
         <i class="material-icons prefix">work</i>
         <input id="crm" type="text" class="validate" data-length="6"
                [(ngModel)]="profissional.crm" formControlName="crm"
@@ -54,9 +48,12 @@
           CRM
         </label>
       </div>
-  </div>
+    </div>
+
+  
+  
   </form>
-  <form materialize class="col s12" [formGroup]="formConfig" (ngSubmit)="onSave()">
+  <form materialize class="col s12 m6 l8" [formGroup]="formConfig" (ngSubmit)="onSave()">
   <h5>Horário Atendimento</h5>
   <table class="responsive-table">
     <tbody>
@@ -87,7 +84,7 @@
   </table>
 
   <div class="row">
-      <div class="input-field col s3">
+      <div class="input-field col s12 l3">
         <i class="material-icons prefix">lock_open</i>
         <input id="horarioInicio" type="text" class="validate" [textMask]="{mask: maskHora}"
                [(ngModel)]="configuracaoHorarioProfissional.horarioInicio" formControlName="horarioInicio"
@@ -98,7 +95,7 @@
           Hora Início
         </label>
       </div>
-      <div class="input-field col s3">
+      <div class="input-field col s12 l3">
         <i class="material-icons prefix">lock_outline</i>
         <input id="horarioFinal" type="text" class="validate" [textMask]="{mask: maskHora}"
                [(ngModel)]="configuracaoHorarioProfissional.horarioFinal" formControlName="horarioFinal"
@@ -109,7 +106,7 @@
           Hora Fim
         </label>
       </div>
-      <div class="input-field col s6">
+      <div class="input-field col s12 l3">
         <i class="material-icons prefix">query_builder</i>
         <input id="tempoConsulta" type="text" class="validate" data-length="3"
                [(ngModel)]="configuracaoHorarioProfissional.tempoConsulta" formControlName="tempoConsulta"

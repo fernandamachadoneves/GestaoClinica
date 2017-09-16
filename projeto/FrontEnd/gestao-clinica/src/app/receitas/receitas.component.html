@@ -30,29 +30,24 @@
 <!-- Modal Receita -->
 
   <div id="modalReceita" class="modal">
-    <div class="row">
-      <div class="col s12">
-          <h5>Receita</h5>
-      </div>
-    </div>
- 
+    <div class="modal-content">
+    <h4>Receita</h4>
 
     <div *ngFor="let item of itensReceita; let i=index" >
       <div class="row">
-          <div class="col s12">
-            <div class="input-field col s4">
+            <div class="input-field col s12 l4">
               <input id="medGenerico" placeholder="Nome Medicamento" name="medGenerico" type="text" #med (change)="selecionouMedicamento($event, med.value, i)" [(ngModel)]="item.medicamento.nomeGenerico"
                 name="interestsAutoComplete" materialize="autocomplete" [materializeParams]="getAutocompleteParams()">
                 <label>Nome Genérico</label>  
             </div>
-            <div class="input-field col s7">
+            <div class="input-field col s12 l7">
               <input id="descricao" type="text" class="validate" data-length="30" [(ngModel)]="item.descricao" placeholder="Descrição">
               <label>Descrição</label>
             </div>
-            <div class="input-field col s1">
+            <div class="input-field col s12 l1">
               <i class="material-icons" *ngIf="i!=0" (click)="removeItemReceita(item, i)">delete</i>
             </div>
-          </div>
+          
       </div>
 
     </div>
@@ -62,7 +57,7 @@
         <i class="material-icons left" (click)="adicionarItemReceita()">add_box</i>Adicionar Medicamento
       </div>
     </div>
-
+    </div>
     <div class="modal-footer">
       <a class="modal-action waves-effect waves-green btn-flat" (click)="gravarReceita()">Gravar Receita</a>
       <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>

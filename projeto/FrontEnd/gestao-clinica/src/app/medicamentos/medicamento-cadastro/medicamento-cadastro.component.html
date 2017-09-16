@@ -1,6 +1,6 @@
-<h5>{{ title }}</h5>
+<h5>Cadastro Medicamento</h5>
 <div class="row" *ngIf="medicamento" >
-  <form materialize class="col s12" [formGroup]="form" (ngSubmit)="onSave()">
+  <form materialize class="col s12 m6 l6" [formGroup]="form" (ngSubmit)="onSave()">
     <div class="row">
       <div class="input-field col s12">
         <input id="nomeGenerico" type="text" class="validate"

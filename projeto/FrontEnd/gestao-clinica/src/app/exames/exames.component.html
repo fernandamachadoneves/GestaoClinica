@@ -36,28 +36,23 @@
 <!-- Modal Pedido Exame -->
 
   <div id="modalPedidoExame" class="modal">
-    <div class="row">
-      <div class="col s12">
-          <h5>Pedido Exame</h5>
-      </div>
-    </div>
+    <div class="modal-content">
+    <h5>Pedido Exame</h5>
 
     <div *ngFor="let item of itensPedidoExame; let i=index" >
       <div class="row">
-          <div class="col s12">
-            <div class="input-field col s5">
+            <div class="input-field col s12 l4">
               <input id="nomeExame" placeholder="Nome Exame" name="nomeExame" type="text" #exame (change)="selecionouExame($event, exame.value, i)" [(ngModel)]="item.exame.nomeExame"
                 name="interestsAutoComplete" materialize="autocomplete" [materializeParams]="getAutocompleteParams()">
                 <label>Nome Exame</label>  
             </div>
-            <div class="input-field col s6">
+            <div class="input-field col s12 l7">
               <input id="justificativa" type="text" class="validate" data-length="30" [(ngModel)]="item.justificativa" placeholder="Observação">
               <label>Observação</label>
             </div>
-            <div class="input-field col s1">
+            <div class="input-field col s12 l1">
               <i class="material-icons" *ngIf="i!=0" (click)="removeItemPedidoExame(item, i)">delete</i>
             </div>
-          </div>
       </div>
 
     </div>
@@ -71,6 +66,7 @@
     <div class="modal-footer">
       <a class="modal-action waves-effect waves-green btn-flat" (click)="gravarPedido()">Gravar Pedido Exame</a>
       <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
+    </div>
     </div>
   </div>
 
@@ -163,23 +159,25 @@
 
   <!-- Modal Selecionar exames pedido -->
    <div id="modalImprimirPedido" class="modal">
-    <div class="row">
-      <div class="col s12">
-          <h5>Imprimir Pedido Exame</h5>
-          <br/>
-          Selecione os exames que deseja agrupar para impressão:
-          <br/>
-          <br/>
-            <div *ngFor="let item of listPedidosPaciente; let i=index" >
-              <div class="row">
-                <div class="col s12">
-                  <input type="checkbox" class="filled-in" id="{{item.id}}" (click)="checkExamePedido($event, item)" [checked]="item.selecionado"/>
-                  <label for="{{item.id}}"> {{item.exame.nomeExame}}</label>
-                </div>  
-              </div>
-            </div> 
+     <div class="modal-content">
+       <h5>Imprimir Pedido Exame</h5>
+
+      <div class="row">
+        <div class="col s12">
+            Selecione os exames que deseja agrupar para impressão:
+            <br/>
+            <br/>
+              <div *ngFor="let item of listPedidosPaciente; let i=index" >
+                <div class="row">
+                  <div class="col s12">
+                    <input type="checkbox" class="filled-in" id="{{item.id}}" (click)="checkExamePedido($event, item)" [checked]="item.selecionado"/>
+                    <label for="{{item.id}}"> {{item.exame.nomeExame}}</label>
+                  </div>  
+                </div>
+              </div> 
+        </div>
       </div>
-    </div>
+     </div>
 
     <div class="modal-footer">
       <a class="modal-action waves-effect waves-green btn-flat" (click)="imprimirPedido()">Imprimir Pedido</a>

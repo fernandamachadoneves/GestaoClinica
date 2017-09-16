@@ -3,7 +3,7 @@
 
       <form materialize #formCtrl="ngForm">
         <div class="row">
-          <div class="input-field col s6">
+          <div class="input-field col s12 l8">
             <i class="material-icons prefix">group</i>
              <select materialize="material_select" id="selectPerfil" name="selectPerfil" [(ngModel)]="perfil" (change)="selecionarPerfil()">
                 <option value="" disabled selected>Selecione o perfil</option>
@@ -16,7 +16,7 @@
         </div>
 
         <div class="row" *ngIf="selecionouPerfil && !perfilMedico" >
-          <div class="input-field col s6">
+          <div class="input-field col s12 l8">
             <i class="material-icons prefix">account_circle</i>
             <input id="login" type="text" name="login"
                   [(ngModel)]="usuario.login">
@@ -26,27 +26,24 @@
           </div>
         </div>
 
-        <div class="row" *ngIf="selecionouPerfil && perfilMedico">
-          <div class="input-field col s3" *ngIf="!selecionouEmail">
-            <i class="material-icons prefix">group</i>
-            <label>
-              <a title="Selecionar Email Profissional" href="#modal" (click)="selecionarEmailProfissional()">Selecionar Email</a>
-            </label>
+        <div  class="row" *ngIf="selecionouPerfil && perfilMedico &&!selecionouEmail">
+          <div class="col s12 l8">
+              <i class="small material-icons left">account_circle</i>
+            <a title="Selecionar Email Profissional" href="#modal" (click)="selecionarEmailProfissional()">
+              Selecionar Email</a>
           </div>
-          <div *ngIf="selecionouEmail">
-            <div class="input-field col s1">
-              <i class="material-icons prefix">group</i>
-            </div>
-            <div class="input-field col s5">
-              <output *ngIf="selecionouEmail">{{this.usuario.login}}</output>
-              <a href="#modal" (click)="selecionarEmailProfissional()"><i class="material-icons">mode_edit</i></a>
-            </div>
+        </div>
+
+        <div class="row" *ngIf="selecionouPerfil && perfilMedico && selecionouEmail">
+          <div class="col s12 l8">
+            <output><i class="small material-icons left">account_circle</i>{{this.usuario.login}}</output>
+            <a href="#modal" (click)="selecionarEmailProfissional()"><i class="material-icons">mode_edit</i></a>
           </div>
         </div>
         <br/>
 
         <div class="row" *ngIf="selecionouPerfil">
-          <div class="input-field col s6">
+          <div class="input-field col s12 l8">
             <i class="material-icons prefix">lock</i>
             <input id="senha" type="password" name="senha"
                   [(ngModel)]="usuario.senha">
@@ -72,19 +69,16 @@
   <div id="modal" class="modal">
     <div class="modal-content">
       <h5>Selecione o profissional:</h5>
-          <div>
-            <div class="row">
-              <div class="col s12">
-                <div class="row">
-                  <div class="input-field col s6">
-                      <div class="collection" *ngFor="let item of profCadastrados">
-                        <a class="collection-item" (click)="selecionarEmail(item.email)">{{item?.nome}} - {{item?.email}}</a>
-                      </div>
-                  </div>
-                </div>
-              </div>
-          </div>
+      <div class="row">
+        <div class="input-field col s12">
+            <div class="collection">
+               <ng-container *ngFor="let item of profCadastrados">
+                 <a class="collection-item" (click)="selecionarEmail(item.email)">
+                   {{item?.nome}}: {{item?.email}}</a>
+               </ng-container>
+            </div>
         </div>
+      </div>
     </div>
   </div>
 
