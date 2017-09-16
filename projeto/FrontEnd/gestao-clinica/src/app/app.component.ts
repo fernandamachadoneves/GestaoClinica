@@ -23,10 +23,8 @@ export class AppComponent {
   }
 
    ngAfterViewInit() {
-         $(".dropdown-button").dropdown();
-         $('.button-collapse').sideNav();
-
-
+      $(".dropdown-button").dropdown();
+      $('.button-collapse').sideNav();
    }
 
   ngOnInit(){

@@ -50,13 +50,8 @@
           <a routerLink="/medicamento"><i class="material-icons left">local_hospital</i>Medicamentos</a>
         </li>
         <li routerLinkActive="active" *ngIf="perfil == 'RECEPCIONISTA'" >
-           <a class="dropdown-button" data-activates="dropdownMobile" data-beloworigin="true">
-            <i class="material-icons left">today</i>
-            <i class="material-icons right">arrow_drop_down</i> Agenda</a>
-              <ul class="dropdown-content" id="dropdownMobile">
-                <li><a routerLink="/agendaProfissinal">Profissional</a></li>
-                <li><a routerLink="/agendaPaciente">Paciente</a></li>
-              </ul>
+          <a routerLink="/agendaProfissinal"><i class="material-icons left">today</i>Profissional</a>
+          <a routerLink="/agendaPaciente"><i class="material-icons left">today</i>Paciente</a>
         </li>
         <li routerLinkActive="active" *ngIf="perfil == 'MEDICO'" >
           <a routerLink="/atendimento"><i class="material-icons left">content_paste</i>Prontuário Paciente</a>
