@@ -14,12 +14,12 @@
     <tbody *ngFor="let item of listPedidosPaciente">
       <tr>
         <td title="Deletar Pedido"><a class="cursor" (click)="deletarItemPedidoExame(item)"><i class="small material-icons redIcon">delete</i></a></td>
-        <td><a title="Editar Pedido" *ngIf="item.tipoResultado!=null" href="#modalEditItemPedidoExame" (click)="editarItemPedidoExame(item)"><i class="small material-icons orangeIcon">edit</i></a></td>
+        <td><a title="Editar Pedido" *ngIf="item.tipoResultado==null" href="#modalEditItemPedidoExame" (click)="editarItemPedidoExame(item)"><i class="small material-icons orangeIcon">edit</i></a></td>
         <td>{{item.pedidoExame.dataPedido | date:"dd/MM/yyyy"}}</td>
         <td>{{item.pedidoExame.profissional.nome}}</td>
         <td>{{item.exame.nomeExame}}</td>
-        <td *ngIf="item.tipoResultado==null"  title="Editar Resultado Exame"><a href="#modalResultado" (click)="lancarResultado(item)"><i class="small material-icons">keyboard_hide</i></a></td>
-        <td *ngIf="item.tipoResultado!=null" title="Lançar Resultado Exame"><a href="#modalResultado" (click)="lancarResultado(item)"><i class="small material-icons greenIcon">keyboard_hide</i></a></td>
+        <td *ngIf="item.tipoResultado==null"  title="Lançar Resultado Exame"><a href="#modalResultado" (click)="lancarResultado(item)"><i class="small material-icons">keyboard_hide</i></a></td>
+        <td *ngIf="item.tipoResultado!=null" title="Editar Resultado Exame"><a href="#modalResultado" (click)="lancarResultado(item)"><i class="small material-icons greenIcon">keyboard_hide</i></a></td>
         <td *ngIf="item.tipoResultado!=null"><a  title="Imprimir Resultado" class="cursor" (click)="gerarRelatorioResultadoExame(item.id)"><i class="small material-icons blackIcon">print</i></a></td>
       </tr>
     </tbody>
