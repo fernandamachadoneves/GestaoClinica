@@ -3,6 +3,7 @@ import { Perfil } from './shared/models/perfil';
 import { Router } from '@angular/router';
 import { AuthService } from './shared/auth.service';
 import { Component } from '@angular/core';
+import {MaterializeDirective} from 'angular2-materialize';
 
 @Component({
   selector: 'app-root',
@@ -21,14 +22,14 @@ export class AppComponent {
 
   }
 
+   ngAfterViewInit() {
+         $(".dropdown-button").dropdown();
+         $('.button-collapse').sideNav();
+
+
+   }
+
   ngOnInit(){
-    debugger
-    $('.button-collapse').sideNav({
-      menuWidth: 300, // Default is 240
-      edge: 'left', // Choose the horizontal origin
-      closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
-    }
-  );
     this._autService.mostrarMenuEmitter.subscribe(
       mostrar =>  {
         if (!this.mostrarMenu){
