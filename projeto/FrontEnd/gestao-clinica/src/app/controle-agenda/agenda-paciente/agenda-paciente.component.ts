@@ -63,8 +63,7 @@ export class AgendaPacienteComponent implements OnInit {
               if (marcacoes!==null && marcacoes!=undefined && marcacoes.length > 0){
                 this.listConsultas = marcacoes;
               } else {
-                //Materialize.toast('Paciente não possui nenhuma consulta agendada', 3000, "");
-                alert('Paciente não possui nenhuma consulta agendada');
+                Materialize.toast('Paciente não possui nenhuma consulta agendada', 3000, "");
               }
           });
       }
@@ -78,8 +77,7 @@ export class AgendaPacienteComponent implements OnInit {
         if (marcacoes!==null && marcacoes!=undefined && marcacoes.length > 0){
           this.listConsultas = marcacoes;
         } else {
-          //Materialize.toast('Paciente não possui nenhuma consulta agendada', 3000, "");
-          alert('Paciente não possui nenhuma consulta agendada');
+          Materialize.toast('Paciente não possui nenhuma consulta agendada', 3000, "");
         }
     });
   }

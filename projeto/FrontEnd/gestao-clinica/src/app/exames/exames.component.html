@@ -74,48 +74,36 @@
   <!-- Modal Resultado Exame -->
 
   <div id="modalResultado" class="modal">
-    <div class="row">
-      <div class="col s12">
-          <h5>Lançar Resultado Exame</h5>
-          <br/>
-          <b>Exame: </b> {{exameLancarResultado?.nomeExame}}
-      </div>
-    </div>
+    <div class="modal-content">
+      <h5>Lançar Resultado Exame</h5>
+      <br/>
+      <b>Exame: </b> {{exameLancarResultado?.nomeExame}}
+      <div class="row">
 
-
-    <div class="row">
-      <div class="col s12">
-        <div class="input-field col s9">
-          <label>Data Realização</label>
-          <br/>
-          <br/>
-            <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="model"
-              (dateChanged)="onDateChanged($event)"></my-date-picker>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col s12">
-        <div class="input-field col s3">
-            <select materialize="material_select" id="selectTipoResult" name="selectTipoResult" [(ngModel)]="tipoResultado">
-                <option value="" disabled selected>Selecione o resultado</option>
-                <option value="NORMAL">Normal</option>
-                <option value="ALTERADO">Alterado</option>
-                <option value="SUSPEITO">Suspeito</option>
-            </select>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col s12">
-          <div class="row">
-            <div class="input-field col s12">
-              <textarea id="obs" class="materialize-textarea" [(ngModel)]="resultadoObs" placeholder="Observação"></textarea>
-              <label for="obs">Observação</label>
-            </div>
+          <div class="input-field col s12 m8 l6">
+            <label>Data Realização</label>
+            <br/>
+            <br/>
+              <my-date-picker name="mydate" [options]="myDatePickerOptions" [(ngModel)]="model"
+                (dateChanged)="onDateChanged($event)"></my-date-picker>
           </div>
+          <div class="input-field col s12 m8 l6">
+              <select materialize="material_select" id="selectTipoResult" name="selectTipoResult" [(ngModel)]="tipoResultado">
+                  <option value="" disabled selected>Selecione o resultado</option>
+                  <option value="NORMAL">Normal</option>
+                  <option value="ALTERADO">Alterado</option>
+                  <option value="SUSPEITO">Suspeito</option>
+              </select>
+          </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+              <div class="input-field col s12">
+                <textarea id="obs" class="materialize-textarea" [(ngModel)]="resultadoObs" placeholder="Observação"></textarea>
+                <label for="obs">Observação</label>
+              </div>
+        </div>
       </div>
     </div>
 
@@ -130,12 +118,8 @@
   <!-- Modal Editar item Pedido Exame -->
 
   <div id="modalEditItemPedidoExame" class="modal">
-    <div class="row">
-      <div class="col s12">
-          <h5>Pedido Exame</h5>
-      </div>
-    </div>
-
+    <div class="modal-content">
+      <h5>Pedido Exame</h5>
       <div class="row">
           <div class="col s12">
             <div class="input-field col s5">
@@ -149,7 +133,7 @@
             </div>
           </div>
       </div>
-
+    </div>
     <div class="modal-footer">
       <a class="modal-action waves-effect waves-green btn-flat" (click)="salvarEdicaoItemPedido()">Gravar Alteração</a>
       <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
@@ -160,7 +144,7 @@
   <!-- Modal Selecionar exames pedido -->
    <div id="modalImprimirPedido" class="modal">
      <div class="modal-content">
-       <h5>Imprimir Pedido Exame</h5>
+      <h5>Imprimir Pedido Exame</h5>
 
       <div class="row">
         <div class="col s12">

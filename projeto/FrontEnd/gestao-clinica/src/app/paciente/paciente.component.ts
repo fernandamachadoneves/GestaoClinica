@@ -39,6 +39,9 @@ export class PacienteComponent implements OnInit {
     if (this.pacientePesquisa != ''){
       this._pacienteService.recuperarPacientePorNome(this.pacientePesquisa).subscribe(
         result => {
+           if (result.length == 0) {
+            Materialize.toast('Nenhum paciente foi encontrado com o nome informado', 4000, "");
+          }
           this.pacientes = result;
         }
       );

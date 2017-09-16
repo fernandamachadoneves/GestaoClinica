@@ -9,7 +9,7 @@
               <a class="btn-floating" (click)="pesquisar()"><i class="material-icons">search</i></a>
           </div>
           </div>
-        <div class="collection">
+        <div class="collection" *ngIf="profissionais.length > 0">
           <ng-container *ngFor="let prof of profissionais">
             <a class="collection-item"
               [routerLink]="[prof.id]"

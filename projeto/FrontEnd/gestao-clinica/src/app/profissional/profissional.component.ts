@@ -39,6 +39,9 @@ export class ProfissionalComponent implements OnInit {
     if (this.profissionalPesquisa != ''){
       this._profissionalService.recuperarProfissionalPorNome(this.profissionalPesquisa).subscribe(
         profissional => {
+          if (profissional.length == 0) {
+            Materialize.toast('Nenhum médico foi encontrado com o nome informado', 4000, "");
+          }
           this.profissionais = profissional;
         }
       );
