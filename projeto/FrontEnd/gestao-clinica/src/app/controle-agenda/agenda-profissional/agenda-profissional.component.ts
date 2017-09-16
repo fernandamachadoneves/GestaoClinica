@@ -63,7 +63,7 @@ export class AgendaProfissionalComponent implements OnInit {
   }
 
   alterarProfissional(){
-    this.router.navigate(['/controleAgenda']);
+    this.router.navigate(['/agendaProfissinal']);
   }
 
   selecionouProfissinal($event, profSecionado) {

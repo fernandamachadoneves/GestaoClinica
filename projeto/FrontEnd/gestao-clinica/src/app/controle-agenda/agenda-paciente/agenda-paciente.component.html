@@ -1,9 +1,11 @@
-<div class="col s12">
+<div class="container">
   <div class="row">
-    <div class="input-field col s6">
-        <input id="nomePaciente" name="nomePaciente" type="text" #pac (change)="selecionouPaciente($event, pac.value)"
-          name="interestsAutoComplete" materialize="autocomplete" [materializeParams]="getAutocompleteParams()">
-        <label>Paciente</label>  
+    <div class="col s12 m8 l6">
+      <div class="input-field">
+          <input id="nomePaciente" name="nomePaciente" type="text" #pac (change)="selecionouPaciente($event, pac.value)"
+            name="interestsAutoComplete" materialize="autocomplete" [materializeParams]="getAutocompleteParams()">
+          <label>Paciente</label>  
+      </div>
     </div>
   </div>
   <a *ngIf="exibirPesquisar"  class="waves-effect waves-light btn" (click)="pesquisar()">Pesquisar</a>

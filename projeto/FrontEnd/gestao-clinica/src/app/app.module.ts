@@ -27,7 +27,6 @@ import { Routes, RouterModule }   from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { MaterializeModule } from 'ng2-materialize';
-import { ControleAgendaComponent } from './controle-agenda/controle-agenda.component';
 import { PacienteComponent } from './paciente/paciente.component';
 import { ProfissionalDetailComponent } from './profissional/profissional-detail/profissional-detail.component';
 import { ProfissionalCadastroComponent } from './profissional/profissional-cadastro/profissional-cadastro.component';
@@ -55,7 +54,6 @@ import {CookieService} from 'angular2-cookie/core';
 @NgModule({
   declarations: [
     AppComponent,
-    ControleAgendaComponent,
     PacienteComponent,
     ProfissionalComponent,
     ProfissionalDetailComponent,

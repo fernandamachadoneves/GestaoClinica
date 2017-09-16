@@ -1,6 +1,6 @@
- <br>
- <div class="row">
-   <div class="col s6">
+<div class="container">
+  <div class="row">
+   <div class="col s12 m8 l6">
           <label>Profissional</label>
           <br/> 
           <div *ngIf="!selecionouProfissional">
@@ -27,31 +27,23 @@
         
 <a *ngIf="exibirBotaoPesquisar"  class="waves-effect waves-light btn" (click)="pesquisar()">Pesquisar</a>
 
-<div *ngIf="pesquisou">
-  <div class="row">
-    <div class="col s12 m8 l4">
-      <h5>Horário</h5>
-    </div>
-    <div class="col s12 m8 l4">
-     <h5>Paciente</h5>
-    </div>
-        <div class="col s12 m8 l4">
-
-    </div>
-  </div>
-
-  <div class="row" *ngFor="let horarios of listaConsultasProf">
-    <div class="col s12 m8 l4">
-      {{horarios.horario}}
-    </div>
-    <div class="col s12 m8 l4">
-      {{horarios.nomePaciente}}
-    </div>
-    <div class="col s12 m8 l4">
-      <a *ngIf="!horarios.agendado" class="waves-effect waves-light btn" href="#modalAgendar" (click)="agendar(horarios.horario)">Agendar</a>
-                <a *ngIf="horarios.agendado" class="waves-effect waves-light btn red" (click)="desmarcar(horarios.idMarcacaoConsulta)">Desmarcar</a>
-    </div>
-  </div>
+<div *ngIf="pesquisou" class="col s12 m8 l12">
+  <br/>
+<br/>
+<div class="row">
+     <div class="col s12 m12 l12">
+    <ul class="collection with-header">
+      <li class="collection-header"><h5>Agenda</h5></li>
+      <li class="collection-item avatar" *ngFor="let horarios of listaConsultasProf">
+        <i class="material-icons circle">date_range</i>
+        <span class="title">{{horarios.horario}}</span>
+        <p>
+           {{horarios.nomePaciente}}
+        </p>
+        <a *ngIf="!horarios.agendado" class="secondary-content" href="#modalAgendar" (click)="agendar(horarios.horario)"><span class="new badge" data-badge-caption="Marcar"></span></a>
+        <a *ngIf="horarios.agendado" class="secondary-content" (click)="desmarcar(horarios.idMarcacaoConsulta)"><span class="new badge red" data-badge-caption="Desmarcar"></span></a>
+    </ul>
+     </div>
 </div>
 
   <!-- Modal Structure -->
@@ -79,3 +71,4 @@
     </div>
   </div>
 
+</div>

@@ -19,7 +19,7 @@
           <a routerLink="/medicamento">Medicamentos</a>
         </li>
         <li routerLinkActive="active" *ngIf="perfil == 'RECEPCIONISTA'" >
-          <a class="dropdown-button" data-activates="dropdown" data-beloworigin="true" routerLink="/controleAgenda">
+          <a class="dropdown-button" data-activates="dropdown" data-beloworigin="true">
             <i class="material-icons right">arrow_drop_down</i> Agenda</a>
         </li>
         <li routerLinkActive="active" *ngIf="perfil == 'MEDICO'" >
@@ -31,8 +31,8 @@
       </ul>
 
       <ul class="dropdown-content" id="dropdown">
-        <li><a>Profissional</a></li>
-        <li><a>Paciente</a></li>
+        <li><a routerLink="/agendaProfissinal">Profissional</a></li>
+        <li><a routerLink="/agendaPaciente">Paciente</a></li>
       </ul>
 
       <ul class="side-nav" id="menu-mobile">
@@ -48,9 +48,12 @@
         <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
           <a routerLink="/medicamento">Medicamentos</a>
         </li>
+        
         <li routerLinkActive="active" *ngIf="perfil == 'RECEPCIONISTA'" >
-          <a routerLink="/controleAgenda">Agenda</a>
+          <a class="dropdown-button" data-activates="dropdown" data-beloworigin="true">
+            <i class="material-icons right">arrow_drop_down</i> Agenda</a>
         </li>
+
         <li routerLinkActive="active" *ngIf="perfil == 'MEDICO'" >
           <a routerLink="/atendimento">Prontuário Paciente</a>
         </li>
