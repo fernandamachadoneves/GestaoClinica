@@ -8,12 +8,14 @@
             <a class="btn-floating" (click)="pesquisar()"><i class="material-icons">search</i></a>
         </div>
         </div>
-      <div class="collection" *ngFor="let pac of pacientes">
-        <a class="collection-item"
-          [routerLink]="[pac.id]"
-          routerLinkActive="active">
-          {{ pac.nome }}
-        </a>
+      <div class="collection">
+        <ng-container *ngFor="let pac of pacientes">
+          <a class="collection-item"
+            [routerLink]="[pac.id]"
+            routerLinkActive="active">
+            {{ pac.nome }}
+          </a>
+        </ng-container>
       </div>
 
       <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
