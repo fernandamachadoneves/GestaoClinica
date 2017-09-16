@@ -23,6 +23,12 @@ export class AppComponent {
 
   ngOnInit(){
     debugger
+    $('.button-collapse').sideNav({
+      menuWidth: 300, // Default is 240
+      edge: 'left', // Choose the horizontal origin
+      closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+    }
+  );
     this._autService.mostrarMenuEmitter.subscribe(
       mostrar =>  {
         if (!this.mostrarMenu){

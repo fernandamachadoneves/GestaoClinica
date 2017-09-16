@@ -1,8 +1,8 @@
 <nav class="light-green" *ngIf="mostrarMenu" >
     <div class="nav-wrapper">
       <!--><a class="blue-text text-darken-2">{{perfil}}</a></!-->
-      <a class="brand-logo" routerLink="">Gestão Clínica</a>
-      <a href="#" materialize="sideNav" data-activates="menu-mobile" class="button-collapse">
+      <a class="brand-logo">Gestão Clínica</a>
+      <a href="#" materialize="sideNav" data-activates="menu-mobile" class="button-collapse hide-on-large-only">
         <i class="material-icons">menu</i>
       </a>
       <ul class="right hide-on-med-and-down">
@@ -51,6 +51,10 @@
         <li routerLinkActive="active" *ngIf="perfil == 'RECEPCIONISTA'" >
            <a class="dropdown-button" data-activates="dropdownMobile" data-beloworigin="true">
             <i class="material-icons right">arrow_drop_down</i> Agenda</a>
+              <ul class="dropdown-content" id="dropdownMobile">
+                <li><a routerLink="/agendaProfissinal">Profissional</a></li>
+                <li><a routerLink="/agendaPaciente">Paciente</a></li>
+              </ul>
         </li>
         <li routerLinkActive="active" *ngIf="perfil == 'MEDICO'" >
           <a routerLink="/atendimento">Prontuário Paciente</a>
@@ -58,11 +62,6 @@
         <li routerLinkActive="active">
           <a (click)="onLogout()">Logout</a>
         </li>
-      </ul>
-
-      <ul class="dropdown-content" id="dropdownMobile">
-        <li><a routerLink="/agendaProfissinal">Profissional</a></li>
-        <li><a routerLink="/agendaPaciente">Paciente</a></li>
       </ul>
 
     </div>
