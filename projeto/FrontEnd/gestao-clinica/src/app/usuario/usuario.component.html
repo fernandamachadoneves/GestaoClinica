@@ -1,33 +1,34 @@
 <div>
-  <h5>Usuários cadastrados:</h5>
- 
-  <table class="responsive-table">
-    <thead>
-    <tr>
-      <th data-field="name">Login</th>
-      <th data-field="name">Perfil</th>
-      <th data-field="name">Editar</th>
-      <th data-field="name">Deletar</th>
-    </tr>
-    </thead>
 
-    <tbody>
-      <tr *ngFor="let usuario of usuarios">
-        <td>{{ usuario.login }}</td>
-        <td>{{ usuario.perfil.descricao }}</td>
-        <td>
-          <a [routerLink]="['/usuario', usuario.id]">
-            <i class="material-icons">mode_edit</i>
-          </a>
-        </td>
-        <td>
-          <a class="cursor" (click)="deletarUsuario(usuario)">
-            <i class="material-icons">delete</i>
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div class="row">
+  <div class="col s12 m12 l12">
+    <ul class="collection with-header">
+      <li class="collection-header"><h5>Usuários cadastrados:</h5></li>
+      <ng-container *ngFor="let usuario of usuarios">
+        <li class="collection-item avatar">
+          <i class="material-icons circle" *ngIf="usuario.perfil.type == 'ADMINISTRADOR'">build</i>
+          <i class="material-icons circle" *ngIf="usuario.perfil.type == 'RECEPCIONISTA'">today</i>
+          <i class="material-icons circle" *ngIf="usuario.perfil.type == 'MEDICO'">work</i>
+          <span class="title">{{usuario.perfil.descricao}}</span>
+          <p>
+            {{usuario.login}}
+          </p>
+          <span class="secondary-content">
+            <a [routerLink]="['/usuario', usuario.id]">
+              <i class="material-icons">mode_edit</i>
+            </a>
+            <a class="cursor" (click)="deletarUsuario(usuario)">
+              <i class="material-icons redIcon">delete</i>
+            </a>
+          </span>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</div>
+
+ 
+ 
  
 </div>
 
