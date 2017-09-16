@@ -7,23 +7,24 @@
       </a>
       <ul class="right hide-on-med-and-down">
         <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
-          <a routerLink="/usuario">Cadastrar Usuário</a>
+          <a routerLink="/usuario"><i class="material-icons left">account_circle</i>Cadastrar Usuário</a>
         </li>
         <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
-          <a routerLink="/profissional">Cadastro Profissionais</a>
+          <a routerLink="/profissional"><i class="material-icons left">work</i>Cadastro Profissionais</a>
         </li>
         <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR' || perfil.type == 'RECEPCIONISTA'">
-          <a routerLink="/paciente">Cadastro Paciente</a>
+          <a routerLink="/paciente"><i class="material-icons left">face</i>Cadastro Paciente</a>
         </li>
         <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
-          <a routerLink="/medicamento">Medicamentos</a>
+          <a routerLink="/medicamento"><i class="material-icons left">local_hospital</i>Medicamentos</a>
         </li>
         <li routerLinkActive="active" *ngIf="perfil == 'RECEPCIONISTA'" >
           <a class="dropdown-button" data-activates="dropdown" data-beloworigin="true">
+            <i class="material-icons left">today</i>
             <i class="material-icons right">arrow_drop_down</i> Agenda</a>
         </li>
         <li routerLinkActive="active" *ngIf="perfil == 'MEDICO'" >
-          <a routerLink="/atendimento">Prontuário Paciente</a>
+          <a routerLink="/atendimento"><i class="material-icons left">content_paste</i>Prontuário Paciente</a>
         </li>
         <li routerLinkActive="active">
           <a (click)="onLogout()">Logout</a>
@@ -37,19 +38,20 @@
 
       <ul class="side-nav" id="menu-mobile">
         <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
-          <a routerLink="/usuario">Cadastrar Usuário</a>
+          <a routerLink="/usuario"><i class="material-icons left">account_circle</i>Cadastrar Usuário</a>
         </li>
         <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
-          <a routerLink="/profissional">Cadastro Profissionais</a>
+          <a routerLink="/profissional"><i class="material-icons left">work</i>Cadastro Profissionais</a>
         </li>
         <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR' || perfil.type == 'RECEPCIONISTA'">
-          <a routerLink="/paciente">Cadastro Paciente</a>
+          <a routerLink="/paciente"><i class="material-icons left">face</i>Cadastro Paciente</a>
         </li>
         <li routerLinkActive="active" *ngIf="perfil == 'ADMINISTRADOR'">
-          <a routerLink="/medicamento">Medicamentos</a>
+          <a routerLink="/medicamento"><i class="material-icons left">local_hospital</i>Medicamentos</a>
         </li>
         <li routerLinkActive="active" *ngIf="perfil == 'RECEPCIONISTA'" >
            <a class="dropdown-button" data-activates="dropdownMobile" data-beloworigin="true">
+            <i class="material-icons left">today</i>
             <i class="material-icons right">arrow_drop_down</i> Agenda</a>
               <ul class="dropdown-content" id="dropdownMobile">
                 <li><a routerLink="/agendaProfissinal">Profissional</a></li>
@@ -57,7 +59,7 @@
               </ul>
         </li>
         <li routerLinkActive="active" *ngIf="perfil == 'MEDICO'" >
-          <a routerLink="/atendimento">Prontuário Paciente</a>
+          <a routerLink="/atendimento"><i class="material-icons left">content_paste</i>Prontuário Paciente</a>
         </li>
         <li routerLinkActive="active">
           <a (click)="onLogout()">Logout</a>
@@ -67,6 +69,6 @@
     </div>
 </nav>
 
-<div>
+<div class="container">
   <router-outlet></router-outlet>
 </div>

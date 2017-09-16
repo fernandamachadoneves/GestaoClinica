@@ -33,12 +33,10 @@ const routes: Routes = [
   { path: 'usuario/novo', component: UsuarioDetailComponent, canActivate: [AdmGuard]},
   { path: 'usuario/:id', component: UsuarioDetailComponent, canActivate: [AdmGuard]},
   { path: 'profissional', component: ProfissionalComponent,
-    canActivate: [AdmGuard],
-    children: [
-      { path: 'novo', component: ProfissionalCadastroComponent },
-      { path: ':id', component: ProfissionalDetailComponent },
-      { path: ':id/edit', component: ProfissionalCadastroComponent }
-  ]},
+    canActivate: [AdmGuard]},
+  { path: 'profissional/novo', component: ProfissionalCadastroComponent, canActivate: [AdmGuard]},
+  { path: 'profissional/:id', component: ProfissionalDetailComponent, canActivate: [AdmGuard]},
+  { path: 'profissional/:id/edit', component: ProfissionalCadastroComponent, canActivate: [AdmGuard]},
   { path: 'paciente', component: PacienteComponent,
   canActivate: [AdmGuard],
   children: [
